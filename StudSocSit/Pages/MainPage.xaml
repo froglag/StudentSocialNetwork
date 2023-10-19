@@ -63,7 +63,7 @@
 
                 <Button Grid.Column="1" Name="cmButton">
                     <Button.ContextMenu>
-                        <ContextMenu Name="cm" Opened="OnOpened" Closed="OnClosed" StaysOpen="true">
+                        <ContextMenu Name="cm" StaysOpen="true">
                             <MenuItem Header="Account"/>
                             <MenuItem Header="History"/>
                         </ContextMenu>
