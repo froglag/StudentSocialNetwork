@@ -1,5 +1,4 @@
-﻿using StudSocSit.Pages;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,17 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace StudSocSit
+namespace StudSocSit.Pages.AdminPages
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for AccountSettingPage.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class AccountSettingPage : Page
     {
-        public MainWindow()
+        public AccountSettingPage()
         {
             InitializeComponent();
-            MainFrame.Navigate(new MainPage());
         }
     }
 }
