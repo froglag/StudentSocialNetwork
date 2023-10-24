@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace ApplicationDbContext.Models
 {
     public class MessageModel
     {
+        [Key]
         public int MessageId { get; set; }
         public string Text { get; set; }
         public DateTime Timestamp { get; set; }
