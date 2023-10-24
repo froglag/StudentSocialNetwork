@@ -3,6 +3,7 @@ using System;
 using ApplicationDbContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ApplicationDbContext.Migrations
 {
     [DbContext(typeof(ReservoomDbContext))]
-    partial class ReservoomDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231024184635_ChangedSomeProps")]
+    partial class ChangedSomeProps
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.12");
@@ -59,9 +62,6 @@ namespace ApplicationDbContext.Migrations
                     b.Property<int>("ChatId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("ChatModelChatId")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("Text")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -71,7 +71,9 @@ namespace ApplicationDbContext.Migrations
 
                     b.HasKey("MessageId");
 
-                    b.HasIndex("ChatModelChatId");
+                    b.HasIndex("AuthorId");
+
+                    b.HasIndex("ChatId");
 
                     b.ToTable("Message");
                 });
@@ -97,6 +99,8 @@ namespace ApplicationDbContext.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("NewsId");
+
+                    b.HasIndex("AuthorId");
 
                     b.ToTable("News");
                 });
@@ -150,9 +154,32 @@ namespace ApplicationDbContext.Migrations
 
             modelBuilder.Entity("ApplicationDbContext.Models.MessageModel", b =>
                 {
-                    b.HasOne("ApplicationDbContext.Models.ChatModel", null)
+                    b.HasOne("ApplicationDbContext.Models.StudentModel", "Author")
+                        .WithMany()
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ApplicationDbContext.Models.ChatModel", "Chat")
                         .WithMany("Messages")
-                        .HasForeignKey("ChatModelChatId");
+                        .HasForeignKey("ChatId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Author");
+
+                    b.Navigation("Chat");
+                });
+
+            modelBuilder.Entity("ApplicationDbContext.Models.NewsModel", b =>
+                {
+                    b.HasOne("ApplicationDbContext.Models.StudentModel", "Author")
+                        .WithMany()
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Author");
                 });
 
             modelBuilder.Entity("ApplicationDbContext.Models.StudentModel", b =>

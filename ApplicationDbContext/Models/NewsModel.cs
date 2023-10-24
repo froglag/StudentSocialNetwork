@@ -12,6 +12,5 @@ namespace ApplicationDbContext.Models
         public DateTime PublishDate { get; set; }
 
         public int AuthorId { get; set; }
-        public StudentModel Author { get; set; }
     }
 }

@@ -11,9 +11,7 @@ namespace ApplicationDbContext.Models
         public DateTime Timestamp { get; set; }
 
         public int ChatId { get; set; }
-        public ChatModel Chat { get; set; }
 
         public int AuthorId { get; set; }
-        public StudentModel Author { get; set; }
     }
 }
