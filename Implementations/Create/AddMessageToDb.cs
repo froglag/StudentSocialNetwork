@@ -7,12 +7,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace Model
+namespace Model.Create
 {
-    public class AddMessegeToDb
+    public class AddMessageToDb
     {
         private ReservoomDbContext _context;
-        public AddMessegeToDb(ReservoomDbContext context)
+        public AddMessageToDb(ReservoomDbContext context)
         {
             _context = context;
         }

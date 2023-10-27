@@ -8,7 +8,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Model
+namespace Model.Create
 {
     public class AddFriendToDb
     {
@@ -21,21 +21,19 @@ namespace Model
 
         public void Do(Request request)
         {
-            var friend = new FriendModel
-            {
-                FriendId = request.FriendId,
-                StudentId = request.StudentId,
-            };
-            _context.Friend.Add(friend);
-
-            _context.Student.FirstOrDefault(s => s.StudentId == request.StudentId).Friends.Add(friend);
-
+            var studentIdentity = _context.Student.FirstOrDefault(s => s.StudentId == request.StudentId);
+            var friendIdentity = _context.Student.Where(s => s.StudentId == request.FriendId).First();
+            if (friendIdentity != null && studentIdentity != null) 
+            { 
+                studentIdentity.Friends.Add(friendIdentity);
+            }
             _context.SaveChanges();
         }
+
         public class Request
         {
-            public int FriendId { get; set; }
             public int StudentId { get; set; }
+            public int FriendId { get; set;}
         }
     }
 }

@@ -2,7 +2,7 @@
 using ApplicationDbContext.Models;
 using System;
 
-namespace Model
+namespace Model.Create
 {
     public class AddNewsToDb
     {
