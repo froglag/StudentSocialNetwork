@@ -1,0 +1,117 @@
+﻿<UserControl x:Class="View.MainPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+      xmlns:local="clr-namespace:View" 
+      xmlns:System="clr-namespace:System;assembly=mscorlib"
+      xmlns:viewmodel="clr-namespace:ViewModel"
+      xmlns:select="clr-namespace:Selecters"
+      d:DataContext="{d:DesignInstance Type=viewmodel:MainPageVM}"
+             mc:Ignorable="d"
+      d:DesignHeight="450" d:DesignWidth="800">
+    
+    <!-- Main layout grid with two columns -->
+    <Grid Background="Gray">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1.5*"/>
+            <ColumnDefinition Width="3*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Left Section (User Profile and Contacts) -->
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.7*"/>
+                <RowDefinition Height="3.5*"/>
+                <RowDefinition Height="0.7*"/>
+            </Grid.RowDefinitions>
+
+            <!-- User Profile Section -->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1.5*"/>
+                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="0.3*"/>
+                </Grid.ColumnDefinitions>
+                <Image x:Name="MyAccountImage" Grid.Column="0" Margin="5" HorizontalAlignment="Center"/>
+                <Label x:Name="MyDescription" Grid.Column="1" Content="{Binding StudentInfo.FirstName}"/>
+                <Button x:Name="SearchButton" Grid.Column="2"/>
+            </Grid>
+
+            <!-- Contacts List (ScrollViewer) -->
+            <ScrollViewer Grid.Row="1">
+                <ListView x:Name="ListContacts" ItemsSource="{Binding StudentInfo.Friends}">
+                    <ListView.View>
+                        <GridView>
+                            <GridView.Columns>
+                                <GridViewColumn DisplayMemberBinding="{Binding Name}" />
+                            </GridView.Columns>
+                        </GridView>
+                    </ListView.View>
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="SelectionChanged">
+                            <i:InvokeCommandAction Command="{Binding GetChatMessagesCommand}" 
+                                    CommandParameter="{Binding SelectedItem, ElementName=ListContacts}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </ListView>
+            </ScrollViewer>
+            
+            
+            <!-- Space at the bottom -->
+            <Image Grid.Row="2" HorizontalAlignment="Center"/>
+        </Grid>
+
+        <!-- Right Section (Chat Messages and Input) -->
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.5*"/>
+                <RowDefinition Height="4*"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            <Grid.Resources>
+                <select:MessageTemplateSelector x:Key="MessageTemplateSelector"/>
+
+                <DataTemplate x:Key="MyMessageTemplate">
+                    <TextBlock Text="{Binding Messages.Text}" TextAlignment="Right" />
+                </DataTemplate>
+
+                <DataTemplate x:Key="OtherMessageTemplate">
+                    <TextBlock Text="{Binding Messages.Text}" TextAlignment="Left" />
+                </DataTemplate>
+            </Grid.Resources>
+            <!-- Context Menu Button -->
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="6*"/>
+                    <ColumnDefinition Width="0.5*"/>
+                </Grid.ColumnDefinitions>
+
+                <Button Grid.Column="1" Name="cmButton">
+                    <Button.ContextMenu>
+                        <ContextMenu Name="cm" StaysOpen="true">
+                            <MenuItem Header="Account"/>
+                            <MenuItem Header="History"/>
+                        </ContextMenu>
+                    </Button.ContextMenu>
+                </Button>
+            </Grid>
+
+            <!-- Chat Messages (ScrollViewer) -->
+            <ScrollViewer Grid.Row="1" x:Name="ChatMassages">
+                <ListView ItemsSource="{Binding MessageContent}" ItemTemplateSelector="{StaticResource MessageTemplateSelector}"/>
+            </ScrollViewer>
+
+            <!-- Input Textbox and Submit Button -->
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="7*"/>
+                    <ColumnDefinition Width="0.5*"/>
+                </Grid.ColumnDefinitions>
+                <TextBox Grid.Column="0" TextWrapping="Wrap"></TextBox>
+                <Button Grid.Column="1" HorizontalAlignment="Center">Submit</Button>
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>

@@ -10,6 +10,7 @@ namespace ApplicationDbContext
         public DbSet<MessageModel> Message { get; set; }
         public DbSet<ChatModel> Chat { get; set; }
         public DbSet<NewsModel> News { get; set; }
+        public DbSet<UserModel> User { get; set; }
 
         public ReservoomDbContext(DbContextOptions options):base(options)
         {
