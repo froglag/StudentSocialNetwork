@@ -9,7 +9,7 @@ namespace ApplicationDbContext.Models
         [Key]
         public int ChatId { get; set; }
 
-        public ICollection<MessageModel> Messages { get; set; }
+        public IEnumerable<MessageModel> Messages { get; set; }
 
         public ICollection<StudentModel> Participants { get; set; }
     }

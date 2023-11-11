@@ -51,7 +51,7 @@
                     </ListView.View>
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="SelectionChanged">
-                            <i:InvokeCommandAction Command="{Binding GetChatMessagesCommand}" 
+                            <i:InvokeCommandAction Command="{Binding GetMessages}" 
                                     CommandParameter="{Binding SelectedItem, ElementName=ListContacts}" />
                         </i:EventTrigger>
                     </i:Interaction.Triggers>

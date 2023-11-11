@@ -8,13 +8,15 @@ namespace ApplicationDbContext.Models
     {
         [Key]
         public int StudentId { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string Email { get; set; }
-        public string PhoneNumber { get; set; }
-        public string FacultyName { get; set; }
-        public string Specialization { get; set; }
+        public string? FirstName { get; set; }
+        public string? LastName { get; set; }
+        [EmailAddress]
+        public string? Email { get; set; }
+        [Phone]
+        public int? PhoneNumber { get; set; }
+        public string? FacultyName { get; set; }
+        public string? Specialization { get; set; }
 
-        public ICollection<StudentModel> Friends { get; set; }
+        public ICollection<StudentModel>? Friends { get; set; }
     }
 }

@@ -10,9 +10,9 @@ namespace ViewModel;
 public class MainPageVM : ViewModelBase
 {
     private readonly ReservoomDbContext _context;
-    private readonly StudentModel _student;
+    private StudentModel _student;
     private IEnumerable<MessageCollection>? _messagesCollection;
-    private ICommand GetMessages;
+    public ICommand GetMessages { get; }
 
 
     public MainPageVM(ReservoomDbContext context, StudentModel student)
@@ -20,7 +20,6 @@ public class MainPageVM : ViewModelBase
         _context = context;
         _student = student;
         GetMessages = new GetChatMessagesCommand(_context, _student, _messagesCollection);
-
     }
     
     public IEnumerable<MessageCollection>? MessageContent
@@ -38,5 +37,14 @@ public class MainPageVM : ViewModelBase
         public MessageModel? Messages { get; set; }
         public int StudentId { get; set; }
         public int FriendId { get; set; }
+    }
+    public StudentModel StudentInfo
+    {
+        get => _student;
+        set
+        {
+            _student = value;
+            OnPropertyChanged(nameof(StudentInfo));
+        }
     }
 }

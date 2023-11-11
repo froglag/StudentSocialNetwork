@@ -17,7 +17,7 @@ namespace Model.Get
             _context = context;
         }
 
-        public ICollection<MessageModel>? Do(ICollection<StudentModel> participans)
+        public IEnumerable<MessageModel>? Do(ICollection<StudentModel> participans)
         {
             return _context.Chat
                 .Where(c => c.Participants == participans)

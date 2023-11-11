@@ -18,7 +18,6 @@ namespace StudSocSit
     {
         private const string ConnectionString = "Data Source = reservoom.db";
         private readonly NavigationStore _navigationStore;
-        private GetStudentInfo.Request _userModel;
         public App() => _navigationStore = new NavigationStore();
         protected override void OnStartup(StartupEventArgs e)
         {
@@ -26,8 +25,7 @@ namespace StudSocSit
             ReservoomDbContext reservoomDbContext = new ReservoomDbContext(options);
             reservoomDbContext.Database.Migrate();
 
-            var student = new GetStudentInfo(reservoomDbContext).Do(_userModel);
-            _navigationStore.CurrentViewModel = new MainPageVM(reservoomDbContext, student);
+            _navigationStore.CurrentViewModel = new LoginVM(reservoomDbContext, _navigationStore);
             var mainWindow = new MainWindow()
             {
                 DataContext = new MainWindowVM(_navigationStore)

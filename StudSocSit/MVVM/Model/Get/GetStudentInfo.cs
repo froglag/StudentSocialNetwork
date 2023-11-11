@@ -21,9 +21,17 @@ namespace Model.Get
 
         public StudentModel? Do(Request request)
         {
-            return _context.User.Where(u => u.UserName == request.UserName && u.Password == request.Password)
-                .Select(u => u.Student)
-                .First();
+            if (request != null)
+            {
+                return _context.User.Where(u => u.UserName == request.UserName && u.Password == request.Password)
+                                .Select(u => u.Student)
+                                .First();
+            }
+            else
+            {
+                return null;
+            }
+                
         }
 
         public class Request

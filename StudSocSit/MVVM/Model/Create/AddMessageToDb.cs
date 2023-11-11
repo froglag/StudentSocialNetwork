@@ -27,7 +27,7 @@ namespace Model.Create
                 AuthorId = request.AuthorId,
             };
             _context.Message.Add(messageModel);
-            _context.Chat.First(c => c.ChatId == request.ChatId).Messages.Add(messageModel);
+            _context.Chat.First(c => c.ChatId == request.ChatId).Messages.Append(messageModel);
             _context.SaveChanges();
         }
 
