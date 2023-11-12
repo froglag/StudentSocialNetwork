@@ -36,7 +36,14 @@
                 </Grid.ColumnDefinitions>
                 <Image x:Name="MyAccountImage" Grid.Column="0" Margin="5" HorizontalAlignment="Center"/>
                 <Label x:Name="MyDescription" Grid.Column="1" Content="{Binding StudentInfo.FirstName}"/>
-                <Button x:Name="SearchButton" Grid.Column="2"/>
+                <Grid Grid.Column="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Button x:Name="SearchButton" Grid.Row="0" Content="?" Command="{Binding NavigationToSearchPage}" />
+                </Grid>
+                
             </Grid>
 
             <!-- Contacts List (ScrollViewer) -->

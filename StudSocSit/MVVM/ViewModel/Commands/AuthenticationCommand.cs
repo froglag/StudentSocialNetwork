@@ -1,4 +1,5 @@
 ﻿using ApplicationDbContext;
+using Model.Get;
 using StudSocSit.Store;
 using System;
 using System.Collections.Generic;
@@ -28,7 +29,10 @@ public class AuthenticationCommand : CommandBase
         try
         {
             var user = _context.User.Where(u => u.UserName == _userAuth.UserName && u.Password == _userAuth.Password).First();
-            _navigationStore.CurrentViewModel = new MainPageVM(_context, user.Student);
+            var studentInfoRequest = new GetStudentInfo.Request { UserName = user.UserName, Password = user.Password };
+            var studentInfo = new GetStudentInfo(_context).Do(studentInfoRequest);
+            var navigate = new  NavigateToMainPageCommand(_context, _navigationStore, studentInfo);
+            navigate.Execute(parameter);
         }
         catch (Exception ex)
         {

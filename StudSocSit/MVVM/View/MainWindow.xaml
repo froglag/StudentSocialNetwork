@@ -20,6 +20,12 @@
             <DataTemplate DataType="{x:Type TypeName= viewModel:SighinVM}">
                 <view:SighinPage/>
             </DataTemplate>
+            <DataTemplate DataType="{x:Type TypeName= viewModel:SearchPageVM}">
+                <view:SearchPage/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type TypeName= viewModel:AccountPageVM}">
+                <view:AccountPage/>
+            </DataTemplate>
         </Grid.Resources>
         <ContentControl Content="{Binding CurrentViewModel}"/>
     </Grid>

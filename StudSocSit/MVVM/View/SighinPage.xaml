@@ -21,7 +21,7 @@
                 <ColumnDefinition Width="0.15*"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="0" Command="{Binding NavigationToLoginPage}"/>
+            <Button Grid.Column="0" Command="{Binding NavigationToLoginPage}" Content="Back" FontSize="20"/>
         </Grid>
         <Grid Grid.Row="1" Width="500" HorizontalAlignment="Center">
             <Grid.RowDefinitions>
@@ -48,7 +48,7 @@
                     <ColumnDefinition/>
                     <ColumnDefinition Width="3.5*"/>
                 </Grid.ColumnDefinitions>
-                <Label Grid.Column="0" HorizontalAlignment="Right">User name:</Label>
+                <Label Grid.Column="0" HorizontalAlignment="Right">User name*:</Label>
                 <TextBox Grid.Column="1" Text="{Binding UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </Grid>
             <Grid Grid.Row="2">
@@ -56,7 +56,7 @@
                     <ColumnDefinition/>
                     <ColumnDefinition Width="3.5*"/>
                 </Grid.ColumnDefinitions>
-                <Label Grid.Column="0" HorizontalAlignment="Right">Password:</Label>
+                <Label Grid.Column="0" HorizontalAlignment="Right">Password*:</Label>
                 <TextBox Grid.Column="1" Text="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </Grid>
             <Grid Grid.Row="3">
@@ -64,7 +64,7 @@
                     <ColumnDefinition/>
                     <ColumnDefinition Width="3.5*"/>
                 </Grid.ColumnDefinitions>
-                <Label Grid.Column="0" HorizontalAlignment="Right">Name:</Label>
+                <Label Grid.Column="0" HorizontalAlignment="Right">Name*:</Label>
                 <TextBox Grid.Column="1" Text="{Binding FirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </Grid>
             <Grid Grid.Row="4">

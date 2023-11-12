@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using ViewModel;
 using ViewModel.Commands;
-using static ViewModel.SighinVM;
 
 namespace Commands;
 public class RegistrationSubmitCommand : CommandBase
