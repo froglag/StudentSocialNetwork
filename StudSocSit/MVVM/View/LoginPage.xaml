@@ -30,7 +30,7 @@
                 <Label HorizontalAlignment="Right"
                        VerticalAlignment="Center"
                        FontSize="20">Usename:</Label>
-                <TextBox Grid.Column="1" Margin="20" Text="{Binding UserName}"/>
+                <TextBox Grid.Column="1" Margin="20" Text="{Binding UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </Grid>
 
             <Grid Grid.Row="1">
@@ -41,7 +41,7 @@
                 <Label HorizontalAlignment="Right"
            VerticalAlignment="Center"
            FontSize="20">Password:</Label>
-                <TextBox Grid.Column="1" Margin="20" Text="{Binding Password}"/>
+                <TextBox Grid.Column="1" Margin="20" Text="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </Grid>
             <Grid Grid.Row="2">
                 <Grid.ColumnDefinitions>

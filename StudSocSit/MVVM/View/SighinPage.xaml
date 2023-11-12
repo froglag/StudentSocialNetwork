@@ -49,7 +49,7 @@
                     <ColumnDefinition Width="3.5*"/>
                 </Grid.ColumnDefinitions>
                 <Label Grid.Column="0" HorizontalAlignment="Right">User name:</Label>
-                <TextBox Grid.Column="1" Text="{Binding StudentInfo.UserName}"/>
+                <TextBox Grid.Column="1" Text="{Binding UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </Grid>
             <Grid Grid.Row="2">
                 <Grid.ColumnDefinitions>
@@ -57,7 +57,7 @@
                     <ColumnDefinition Width="3.5*"/>
                 </Grid.ColumnDefinitions>
                 <Label Grid.Column="0" HorizontalAlignment="Right">Password:</Label>
-                <TextBox Grid.Column="1" Text="{Binding StudentInfo.Password}"/>
+                <TextBox Grid.Column="1" Text="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </Grid>
             <Grid Grid.Row="3">
                 <Grid.ColumnDefinitions>
@@ -65,7 +65,7 @@
                     <ColumnDefinition Width="3.5*"/>
                 </Grid.ColumnDefinitions>
                 <Label Grid.Column="0" HorizontalAlignment="Right">Name:</Label>
-                <TextBox Grid.Column="1" Text="{Binding StudentInfo.FirstName}"/>
+                <TextBox Grid.Column="1" Text="{Binding FirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </Grid>
             <Grid Grid.Row="4">
                 <Grid.ColumnDefinitions>
@@ -73,7 +73,7 @@
                     <ColumnDefinition Width="3.5*"/>
                 </Grid.ColumnDefinitions>
                 <Label Grid.Column="0" HorizontalAlignment="Right">Surname:</Label>
-                <TextBox Grid.Column="1" Text="{Binding StudentInfo.LastName}"/>
+                <TextBox Grid.Column="1" Text="{Binding LastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </Grid>
             <Grid Grid.Row="5">
                 <Grid.ColumnDefinitions>
@@ -81,7 +81,7 @@
                     <ColumnDefinition Width="3.5*"/>
                 </Grid.ColumnDefinitions>
                 <Label Grid.Column="0" HorizontalAlignment="Right">Email:</Label>
-                <TextBox Grid.Column="1" Text="{Binding StudentInfo.Email}"/>
+                <TextBox Grid.Column="1" Text="{Binding Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </Grid>
             <Grid Grid.Row="6">
                 <Grid.ColumnDefinitions>
@@ -89,7 +89,7 @@
                     <ColumnDefinition Width="3.5*"/>
                 </Grid.ColumnDefinitions>
                 <Label Grid.Column="0" HorizontalAlignment="Right">Phonenumber:</Label>
-                <TextBox Grid.Column="1" Text="{Binding StudentInfo.PhoneNumber}"/>
+                <TextBox Grid.Column="1" Text="{Binding PhoneNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </Grid>
             <Grid Grid.Row="7">
                 <Grid.ColumnDefinitions>
@@ -97,7 +97,7 @@
                     <ColumnDefinition Width="3.5*"/>
                 </Grid.ColumnDefinitions>
                 <Label Grid.Column="0" HorizontalAlignment="Right">Faculty:</Label>
-                <TextBox Grid.Column="1" Text="{Binding StudentInfo.FacultyName}"/>
+                <TextBox Grid.Column="1" Text="{Binding FacultyName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </Grid>
             <Grid Grid.Row="8">
                 <Grid.ColumnDefinitions>
@@ -105,7 +105,7 @@
                     <ColumnDefinition Width="3.5*"/>
                 </Grid.ColumnDefinitions>
                 <Label Grid.Column="0" HorizontalAlignment="Right">Specialization:</Label>
-                <TextBox Grid.Column="1" Text="{Binding StudentInfo.Specialization}"/>
+                <TextBox Grid.Column="1" Text="{Binding Specialization, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </Grid>
         </Grid>
         

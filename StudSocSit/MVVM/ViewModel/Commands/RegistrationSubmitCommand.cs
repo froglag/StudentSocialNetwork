@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using ViewModel;
 using ViewModel.Commands;
+using static ViewModel.SighinVM;
 
 namespace Commands;
 public class RegistrationSubmitCommand : CommandBase
@@ -26,7 +27,7 @@ public class RegistrationSubmitCommand : CommandBase
     }
     public override void Execute(object? parameter)
     {
-        if (_studentInfo == null ||_studentInfo.UserName ==  null || _studentInfo.Password == null || _studentInfo.FirstName == null)
+        if (_studentInfo.UserName ==  null || _studentInfo.Password == null || _studentInfo.FirstName == null)
         {
             MessageBox.Show("Not all complited");
         }
