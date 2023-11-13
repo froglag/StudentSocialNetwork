@@ -18,6 +18,8 @@ public class MainPageVM : ViewModelBase
 
     public ICommand GetMessages { get; }
     public ICommand NavigationToSearchPage { get; }
+    public ICommand NavigationToAccountSettingPage { get; }
+    public ICommand NavigationToLoginPage { get; }
 
     public MainPageVM(ReservoomDbContext context, NavigationStore navigationStore, StudentModel? student)
     {
@@ -26,6 +28,8 @@ public class MainPageVM : ViewModelBase
         StudentInfo = student;
         GetMessages = new GetChatMessagesCommand(_context, _student, _messagesCollection);
         NavigationToSearchPage = new NavigateToSearchPageCommand(context, _navigationStore, student);
+        NavigationToAccountSettingPage = new NavigateToAccountSettingPageCommand(context, _navigationStore, student);
+        NavigationToLoginPage = new NavigateToLoginPageCommand(context, _navigationStore);
     }
     
     public IEnumerable<MessageCollection>? MessageContent

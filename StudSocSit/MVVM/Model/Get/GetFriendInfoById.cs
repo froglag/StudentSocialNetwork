@@ -1,4 +1,5 @@
 ﻿using ApplicationDbContext;
+using ApplicationDbContext.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,22 +9,20 @@ using System.Windows.Controls;
 
 namespace Model.Get
 {
-    public class GetFriendId
+    public class GetFriendInfoById
     {
         private readonly ReservoomDbContext _context;
 
-        public GetFriendId(ReservoomDbContext context)
+        public GetFriendInfoById(ReservoomDbContext context)
         {
             _context = context;
         }
 
-        public int[]? Do(int studentId)
+        public StudentModel? Do(int studentId)
         {
             return _context.Student
                 .Where(s => s.StudentId == studentId)
-                .Select(s => s.Friends.Select(f => f.StudentId))
-                .First()
-                .ToArray();
+                .First();
         }
 
     }

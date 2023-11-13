@@ -22,16 +22,20 @@
                 <ColumnDefinition Width="0.5*"/>
             </Grid.ColumnDefinitions>
 
-            <Button x:Name="BackButton" Grid.Column="0"></Button>
+            <Button x:Name="BackButton" Grid.Column="0" Command="{Binding NavigationToMainPage}"></Button>
 
-            <Button Grid.Column="2" Name="cmButton">
-                <Button.ContextMenu>
-                    <ContextMenu Name="cm" StaysOpen="true">
-                        <MenuItem Header="Account"/>
-                        <MenuItem Header="History"/>
-                    </ContextMenu>
-                </Button.ContextMenu>
-            </Button>
+            <Menu Background="Transparent" HorizontalAlignment="Stretch" Grid.Column="2">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Rows="1"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+
+                <MenuItem Background="White" FlowDirection="RightToLeft">
+                    <MenuItem Header="Setting" Command="{Binding NavigationToAccountSettingPage}"/>
+                    <MenuItem Header="LogOut" Command="{Binding NavigationToLoginPage}"/>
+                </MenuItem>
+            </Menu>
         </Grid>
 
         <Grid Grid.Row="1">
@@ -55,16 +59,16 @@
                 </Grid.RowDefinitions>
 
                 <Label Grid.Column="0" Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Center">Name:</Label>
-                <TextBox Grid.Column="1" Grid.Row="0" IsReadOnly="True" Background="Transparent"/>
+                <TextBlock Grid.Column="1" Grid.Row="0" Background="Transparent" Text="{Binding Friend.FirstName}"/>
 
                 <Label Grid.Column="0" Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Center">Surname:</Label>
-                <TextBox Grid.Column="1" Grid.Row="1" IsReadOnly="True" Background="Transparent"/>
+                <TextBlock Grid.Column="1" Grid.Row="1" Background="Transparent" Text="{Binding Friend.LastName}"/>
 
                 <Label Grid.Column="0" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Center">E-Mail:</Label>
-                <TextBox Grid.Column="1" Grid.Row="2" IsReadOnly="True" Background="Transparent"/>
+                <TextBlock Grid.Column="1" Grid.Row="2" Background="Transparent" Text="{Binding Friend.Email}"/>
 
                 <Label Grid.Column="0" Grid.Row="3" HorizontalAlignment="Right" VerticalAlignment="Center">Phone Number:</Label>
-                <TextBox Grid.Column="1" Grid.Row="3" IsReadOnly="True" Background="Transparent"/>
+                <TextBlock Grid.Column="1" Grid.Row="3" Background="Transparent" Text="{Binding Friend.PhoneNumber}"/>
             </Grid>
         </Grid>
 

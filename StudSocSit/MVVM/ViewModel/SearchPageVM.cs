@@ -19,6 +19,7 @@ public class SearchPageVM : ViewModelBase
     private List<StudentModel> studentsList;
 
     public ICommand NavigationToMainPage { get; }
+    public ICommand NavigationToAccountPage { get; }
 
     public SearchPageVM(ReservoomDbContext context, NavigationStore navigationStore, StudentModel? student)
     {
@@ -27,6 +28,7 @@ public class SearchPageVM : ViewModelBase
         _navigationStore = navigationStore;
         _student = student;
         NavigationToMainPage = new NavigateToMainPageCommand(context, navigationStore, student);
+        NavigationToAccountPage = new NavigateToAccountPageCommand(context, navigationStore, student);
     }
 
     public List<StudentModel> Students

@@ -29,20 +29,24 @@
         </Grid>
 
         <ScrollViewer Grid.Row="2" Margin="20, 10, 0, 10">
-            <ListView ItemsSource="{Binding Students}">
+            <ListView ItemsSource="{Binding Students}"  x:Name="ListStudentView">
                 <ListView.View>
-                    <GridView>
-                        <GridViewColumn>
+                    <GridView AllowsColumnReorder="True" ColumnHeaderToolTip="Authors">
+                        <GridViewColumn Header="Account Image" >
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
-                                    <Image/>
+                                    <Button Command="{Binding ElementName=ListStudentView, Path=DataContext.NavigationToAccountPage}" CommandParameter="{Binding StudentId}" Background="Transparent">
+                                        <Image/>
+                                    </Button>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
-                        <GridViewColumn>
+                        <GridViewColumn Header="Name">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding FirstName}" />
+                                    <Button Command="{Binding ElementName=ListStudentView, Path=DataContext.NavigationToAccountPage}" CommandParameter="{Binding StudentId}" Background="Transparent">
+                                        <TextBlock Text="{Binding FirstName}" />
+                                    </Button>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>

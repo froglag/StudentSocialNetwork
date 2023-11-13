@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 
 namespace Model.Get
 {
-    public class GetStudentInfo
+    public class GetAuthorizedStudentInfo
     {
         private readonly ReservoomDbContext _context;
 
-        public GetStudentInfo(ReservoomDbContext context)
+        public GetAuthorizedStudentInfo(ReservoomDbContext context)
         {
             _context = context;
         }

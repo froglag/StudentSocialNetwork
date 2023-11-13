@@ -1,7 +1,6 @@
 ﻿using ApplicationDbContext;
 using ApplicationDbContext.Models;
 using Microsoft.EntityFrameworkCore;
-using Model.Get;
 using StudSocSit.Store;
 using System;
 using System.Collections.Generic;
@@ -12,21 +11,19 @@ using ViewModel;
 using ViewModel.Commands;
 
 namespace Commands;
-public class NavigateToAccountPageCommand : CommandBase
+public class NavigateToAccountSettingPageCommand : CommandBase
 {
-    private StudentModel? _student;
     private ReservoomDbContext _context;
+    private StudentModel? _student;
     private readonly NavigationStore _navigationStore;
-    public NavigateToAccountPageCommand(ReservoomDbContext context, NavigationStore navigationStore, StudentModel? student)
+    public NavigateToAccountSettingPageCommand(ReservoomDbContext context, NavigationStore navigationStore, StudentModel? student)
     {
-        _student = student;
         _context = context;
+        _student = student;
         _navigationStore = navigationStore;
     }
     public override void Execute(object? parameter)
     {
-        var friendId = (int)parameter;
-        var friend = new GetFriendInfoById(_context).Do(friendId);
-        _navigationStore.CurrentViewModel = new AccountPageVM(_context, _navigationStore, _student, friend);
+        _navigationStore.CurrentViewModel = new AccountSettingVM(_context, _navigationStore, _student);
     }
 }

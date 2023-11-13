@@ -1,83 +1,90 @@
-﻿using System;
+﻿using ApplicationDbContext.Models;
+using ApplicationDbContext;
+using StudSocSit.Store;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
+using Commands;
 
 namespace ViewModel;
 public class AccountSettingVM : ViewModelBase
 {
-    private string name { get; set; }
-    private string surname { get; set; }
-    [EmailAddress]
-    private string email { get; set; }
-    [Phone]
-    private int phonenumber { get; set; }
-    private string facultyName { get; set; }
-    private string specialization { get; set; }
+    private StudentModel? _student;
+    private StudentModel? friend;
+    public ICommand NavigationToMainPage { get; }
+    public ICommand UpdateUserInfo { get; }
+    public ICommand NavigationToAccountSettingPage { get; }
+    public ICommand NavigationToLoginPage { get; }
 
-    public AccountSettingVM()
+    public AccountSettingVM(ReservoomDbContext context, NavigationStore navigationStore, StudentModel? student)
     {
-        
+        _student = student;
+        NavigationToMainPage = new NavigateToMainPageCommand(context, navigationStore, student);
+        UpdateUserInfo = new UpdateUserInfoCommand(context, _student);
+        NavigationToAccountSettingPage = new NavigateToAccountSettingPageCommand(context, navigationStore, student);
+        NavigationToLoginPage = new NavigateToLoginPageCommand(context, navigationStore);
     }
 
-    public string Name
+    public string FirstName
     {
-        get => name;
+        get => _student.FirstName;
         set
         {
-            name = value;
-            OnPropertyChanged(nameof(Name));
+            _student.FirstName = value;
+            OnPropertyChanged(nameof(FirstName));
         }
     }
 
-    public string Surname
+    public string LastName
     {
-        get => surname;
+        get => _student.LastName;
         set
         {
-            surname = value;
-            OnPropertyChanged(nameof(Surname));
+            _student.LastName = value;
+            OnPropertyChanged(nameof(LastName));
         }
     }
 
     public string Email
     {
-        get => email;
+        get => _student.Email;
         set
         {
-            email = value;
+            _student.Email = value;
             OnPropertyChanged(nameof(Email));
         }
     }
 
-    public int Phonenumber
+    public int? Phonenumber
     {
-        get => phonenumber;
+        get => _student.PhoneNumber;
         set
         {
-            phonenumber = value;
+            _student.PhoneNumber = value;
             OnPropertyChanged(nameof(Phonenumber));
         }
     }
 
     public string FacultyName
     {
-        get => facultyName;
+        get => _student.FacultyName;
         set
         {
-            facultyName = value;
+            _student.FacultyName = value;
             OnPropertyChanged(nameof(FacultyName));
         }
     }
 
     public string Specialization
     {
-        get => specialization;
+        get => _student.Specialization;
         set
         {
-            specialization = value;
+            _student.Specialization = value;
             OnPropertyChanged(nameof(Specialization));
         }
     }
