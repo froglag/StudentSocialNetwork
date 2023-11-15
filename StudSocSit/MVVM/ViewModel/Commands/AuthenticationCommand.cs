@@ -16,7 +16,7 @@ namespace Commands;
 public class AuthenticationCommand : CommandBase
 {
     private ReservoomDbContext _context;
-    private NavigationStore? _navigationStore;
+    private NavigationStore _navigationStore;
     private UserAuth _userAuth;
     public AuthenticationCommand(ReservoomDbContext context, NavigationStore navigationStore, UserAuth userAuth)
     {
@@ -31,10 +31,12 @@ public class AuthenticationCommand : CommandBase
             var user = _context.User.Where(u => u.UserName == _userAuth.UserName && u.Password == _userAuth.Password).First();
             var studentInfoRequest = new GetAuthorizedStudentInfo.Request { UserName = user.UserName, Password = user.Password };
             var studentInfo = new GetAuthorizedStudentInfo(_context).Do(studentInfoRequest);
-            var navigate = new  NavigateToMainPageCommand(_context, _navigationStore, studentInfo);
-            navigate.Execute(parameter);
+            if(studentInfo != null)
+            {
+                new NavigateToMainPageCommand(_context, _navigationStore, studentInfo).Execute(parameter);
+            }
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             MessageBox.Show("Wronge Login or Password");
         }

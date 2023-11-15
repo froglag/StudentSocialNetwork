@@ -14,7 +14,6 @@ namespace ViewModel;
 public class AccountSettingVM : ViewModelBase
 {
     private StudentModel? _student;
-    private StudentModel? friend;
     public ICommand NavigationToMainPage { get; }
     public ICommand UpdateUserInfo { get; }
     public ICommand NavigationToAccountSettingPage { get; }

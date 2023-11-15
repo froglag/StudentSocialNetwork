@@ -10,45 +10,52 @@ using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 using static ViewModel.MainPageVM;
 using Microsoft.Win32.SafeHandles;
+using ApplicationDbContext.Migrations;
 
 namespace ViewModel.Commands
 {
     public class GetChatMessagesCommand : CommandBase
     {
-        private readonly ReservoomDbContext _context;
-        private readonly StudentModel _student;
-        private ICollection<StudentModel>? _participants;
-        private IEnumerable<MessageCollection>? _messagesCollection;
-        private int studentId;
-        private int friendId;
+        private ReservoomDbContext _context;
+        private StudentModel? _student;
+        private ICollection<StudentModel?>? _participants;
+        private IEnumerable<MessageCollection>? _messageContent;
+        private int? _friendId;
 
-
-        public GetChatMessagesCommand(ReservoomDbContext context, StudentModel student, IEnumerable<MessageCollection>? messagesCollection)
+        public GetChatMessagesCommand(ReservoomDbContext context, StudentModel? student, IEnumerable<MessageCollection>? messageContent, int? friendId)
         {
             _context = context;
             _student = student;
-            _messagesCollection = messagesCollection;
-    }
+            _messageContent = messageContent;
+            _friendId = friendId; 
+        }
         public override void Execute(object? parameter)
         {
-            _participants = new List<StudentModel>();
-            if(parameter is StudentModel friend)
+            int? friendId = parameter as int?;
+
+            _friendId = friendId;
+
+            var friend = new GetStudentInfoById(_context).Do(friendId);
+            if (_participants != null)
             {
                 _participants.Add(_student);
                 _participants.Add(friend);
-                studentId = _student.StudentId;
-                friendId = friend.StudentId;
-            }
-            
-            var messages = new ObservableCollection<MessageModel>(new GetChatMessages(_context).Do(_participants));
-            foreach (var m in messages)
-            {
-                _messagesCollection.Append(new MessageCollection
+
+
+                var messages = new GetChatMessages(_context).Do(_participants);
+                if(messages != null && _messageContent != null && _student != null)
                 {
-                    Messages = m,
-                    StudentId = studentId,
-                    FriendId = friendId
-                });
+                    foreach (var m in messages)
+                    {
+                        _messageContent.Append(new MessageCollection
+                        {
+                            Messages = m,
+                            FriendId = friendId,
+                            StudentId = _student.StudentId
+                        });
+                    }
+                }
+                
             }
         }
     }

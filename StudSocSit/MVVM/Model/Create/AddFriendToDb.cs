@@ -21,7 +21,7 @@ namespace Model.Create
 
         public void Do(Request request)
         {
-            var studentIdentity = _context.Student.FirstOrDefault(s => s.StudentId == request.StudentId);
+            var studentIdentity = _context.Student.First(s => s.StudentId == request.StudentId);
             var friendIdentity = _context.Student.Where(s => s.StudentId == request.FriendId).First();
             if (friendIdentity != null && studentIdentity != null) 
             { 
@@ -32,8 +32,8 @@ namespace Model.Create
 
         public class Request
         {
-            public int StudentId { get; set; }
-            public int FriendId { get; set;}
+            public int? StudentId { get; set; }
+            public int? FriendId { get; set;}
         }
     }
 }

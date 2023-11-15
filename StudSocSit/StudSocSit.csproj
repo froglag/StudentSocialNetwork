@@ -23,9 +23,6 @@
     <Compile Update="MVVM\View\AccountSettingPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="MVVM\View\HistoryPage.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Update="MVVM\View\LoginPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>

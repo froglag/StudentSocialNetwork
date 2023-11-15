@@ -17,12 +17,13 @@ namespace Model.Get
             _context = context;
         }
 
-        public IEnumerable<MessageModel>? Do(ICollection<StudentModel> participans)
+        public IEnumerable<MessageModel>? Do(ICollection<StudentModel?>? participans)
         {
             return _context.Chat
                 .Where(c => c.Participants == participans)
-                .Select(c => c.Messages)
-                .First();
+                .First()
+                .Messages;
+
         }
 
     }

@@ -19,25 +19,33 @@ namespace Model.Create
 
         public void Do(Request request)
         {
-            MessageModel messageModel = new()
+            if(request.ChatId != null)
             {
-                Text = request.Text,
-                Timestamp = DateTime.Now,
-                ChatId = request.ChatId,
-                AuthorId = request.AuthorId,
-            };
-            _context.Message.Add(messageModel);
-            _context.Chat.First(c => c.ChatId == request.ChatId).Messages.Append(messageModel);
-            _context.SaveChanges();
+                MessageModel messageModel = new()
+                {
+                    Text = request.Text,
+                    Timestamp = DateTime.Now,
+                    ChatId = request.ChatId,
+                    AuthorId = request.AuthorId,
+                };
+                var chatMessages = _context.Chat.First(c => c.ChatId == request.ChatId).Messages;
+                if(chatMessages != null )
+                {
+                    _context.Message.Add(messageModel);
+                    chatMessages.Append(messageModel);
+                    _context.SaveChanges();
+                }
+                
+            }
         }
 
         public class Request
         {
-            public string Text { get; set; }
+            public string? Text { get; set; }
 
-            public int ChatId { get; set; }
+            public int? ChatId { get; set; }
 
-            public int AuthorId { get; set; }
+            public int? AuthorId { get; set; }
         }
     }
 }

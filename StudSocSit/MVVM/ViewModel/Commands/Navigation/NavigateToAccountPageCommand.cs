@@ -26,7 +26,7 @@ public class NavigateToAccountPageCommand : CommandBase
     public override void Execute(object? parameter)
     {
         var friendId = (int)parameter;
-        var friend = new GetFriendInfoById(_context).Do(friendId);
+        var friend = new GetStudentInfoById(_context).Do(friendId);
         _navigationStore.CurrentViewModel = new AccountPageVM(_context, _navigationStore, _student, friend);
     }
 }

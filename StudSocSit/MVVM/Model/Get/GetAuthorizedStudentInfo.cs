@@ -23,9 +23,16 @@ namespace Model.Get
         {
             if (request != null)
             {
-                return _context.User.Where(u => u.UserName == request.UserName && u.Password == request.Password)
+                try
+                {
+                    return _context.User.Where(u => u.UserName == request.UserName && u.Password == request.Password)
                                 .Select(u => u.Student)
                                 .First();
+                }catch (Exception)
+                {
+                    return null;
+                }
+                
             }
             else
             {
@@ -36,8 +43,8 @@ namespace Model.Get
 
         public class Request
         {
-            public string UserName { get; set; }
-            public string Password { get; set; }
+            public string? UserName { get; set; }
+            public string? Password { get; set; }
         }
     }
 }

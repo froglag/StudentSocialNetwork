@@ -51,20 +51,21 @@
 
             <!-- Contacts List (ScrollViewer) -->
             <ScrollViewer Grid.Row="1">
-                <ListView x:Name="ListContacts" ItemsSource="{Binding StudentInfo.Friends}">
+                <ListView ItemsSource="{Binding StudentInfo.Friends}" x:Name="ContactListView">
                     <ListView.View>
                         <GridView>
-                            <GridView.Columns>
-                                <GridViewColumn DisplayMemberBinding="{Binding Name}" />
-                            </GridView.Columns>
+                            <GridViewColumn>
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Command="{Binding ElementName=ContactListView, Path=DataContext.GetMessages}" CommandParameter="{Binding StudentId}">
+                                            <TextBlock Text="{Binding FirstName}"/>
+                                        </Button>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
                         </GridView>
                     </ListView.View>
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="SelectionChanged">
-                            <i:InvokeCommandAction Command="{Binding GetMessages}" 
-                                    CommandParameter="{Binding SelectedItem, ElementName=ListContacts}" />
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
+                    
                 </ListView>
             </ScrollViewer>
 
@@ -106,6 +107,7 @@
 
                     <MenuItem Background="White" FlowDirection="RightToLeft">
                         <MenuItem Header="Setting" Command="{Binding NavigationToAccountSettingPage}"/>
+                        <MenuItem Header="Friend Request" Command="{Binding NavigationToFriendRequest}"/>
                         <MenuItem Header="LogOut" Command="{Binding NavigationToLoginPage}"/>
                     </MenuItem>
                 </Menu>
@@ -122,8 +124,8 @@
                     <ColumnDefinition Width="7*"/>
                     <ColumnDefinition Width="0.5*"/>
                 </Grid.ColumnDefinitions>
-                <TextBox Grid.Column="0" TextWrapping="Wrap"></TextBox>
-                <Button Grid.Column="1" HorizontalAlignment="Center">Submit</Button>
+                <TextBox Grid.Column="0" TextWrapping="Wrap" Text="{Binding Message, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <Button Grid.Column="1" HorizontalAlignment="Center" Command="{Binding AddMessage}" CommandParameter="{Binding Message}">Submit</Button>
             </Grid>
         </Grid>
     </Grid>

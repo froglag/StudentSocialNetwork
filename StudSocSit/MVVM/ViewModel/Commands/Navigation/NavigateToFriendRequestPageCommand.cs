@@ -10,20 +10,20 @@ using ViewModel;
 using ViewModel.Commands;
 
 namespace Commands;
-public class NavigateToMainPageCommand : CommandBase
+public class NavigateToFriendRequestPageCommand : CommandBase
 {
-    private readonly NavigationStore _navigationStore;
+    private NavigationStore _navigationStore;
     private ReservoomDbContext _context;
-    private StudentModel? _student;
-
-    public NavigateToMainPageCommand(ReservoomDbContext context, NavigationStore navigation, StudentModel? student)
+    private StudentModel _student;
+    public NavigateToFriendRequestPageCommand(ReservoomDbContext context, NavigationStore navigationStore, StudentModel student)
     {
         _context = context;
-        _navigationStore = navigation;
+        _navigationStore = navigationStore;
         _student = student;
     }
+
     public override void Execute(object? parameter)
     {
-        _navigationStore.CurrentViewModel = new MainPageVM(_context, _navigationStore, _student);
+        _navigationStore.CurrentViewModel = new FriendRequestPageVM(_context, _navigationStore, _student);
     }
 }
