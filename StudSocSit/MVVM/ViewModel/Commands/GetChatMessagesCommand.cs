@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 using static ViewModel.MainPageVM;
 using Microsoft.Win32.SafeHandles;
-using ApplicationDbContext.Migrations;
 
 namespace ViewModel.Commands
 {

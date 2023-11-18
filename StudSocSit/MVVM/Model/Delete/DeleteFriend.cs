@@ -1,5 +1,4 @@
 ﻿using ApplicationDbContext;
-using SQLitePCL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,22 +18,12 @@ namespace Model.Delete
 
         public void Do(Request request)
         {
-            var studentIdentity = _context.Student
-                .Where(s => s.StudentId == request.StudentId)
-                .First();
-
-            var friendIdentity = studentIdentity.Friends
-                .Where(f => f.StudentId == request.FriendId)
-                .First();
-
-            studentIdentity.Friends.Remove(friendIdentity);
-
-            _context.SaveChanges();
+            
         }
         public class Request
         {
-            public int StudentId { get; set; }
-            public int FriendId { get; set; }
+            public int? StudentId { get; set; }
+            public int? FriendId { get; set; }
         }
     }
 }

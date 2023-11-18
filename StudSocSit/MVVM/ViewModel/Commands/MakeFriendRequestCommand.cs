@@ -29,8 +29,8 @@ public class MakeFriendRequestCommand : CommandBase
 
             new AddFriendRiquest(_context).Do(new AddFriendRiquest.Request
             {
-                StudentId = _student.StudentId,
-                FriendId = friendId
+                SenderId = _student.StudentId,
+                ReceiverId = friendId
             });
         }
     }

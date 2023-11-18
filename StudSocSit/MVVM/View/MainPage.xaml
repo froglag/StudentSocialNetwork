@@ -51,7 +51,7 @@
 
             <!-- Contacts List (ScrollViewer) -->
             <ScrollViewer Grid.Row="1">
-                <ListView ItemsSource="{Binding StudentInfo.Friends}" x:Name="ContactListView">
+                <ListView ItemsSource="{Binding Friends}" x:Name="ContactListView">
                     <ListView.View>
                         <GridView>
                             <GridViewColumn>

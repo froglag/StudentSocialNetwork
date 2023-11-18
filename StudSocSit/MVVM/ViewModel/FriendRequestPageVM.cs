@@ -19,14 +19,17 @@ public class FriendRequestPageVM : ViewModelBase
 
     public FriendRequestPageVM(ReservoomDbContext context, NavigationStore navigationStore, StudentModel student)
     {
-        if(student != null && student.FriendRequests != null)
+        Friends = new List<StudentModel>();
+        var friendRequest = context.FriendRequest.Where(f => f.ReceiverId == student.StudentId).ToList();
+        if (student != null && friendRequest != null)
         {
-            foreach (var friendId in student.FriendRequests)
+            
+            foreach (var friendId in friendRequest)
             {
-                var info = new GetStudentInfoById(context).Do(friendId.FriendId);
-                if (info != null && friends != null)
+                var info = new GetStudentInfoById(context).Do(friendId.SenderId);
+                if (info != null)
                 {
-                    friends.Add(info);
+                    Friends.Add(info);
                 }
             }
         }

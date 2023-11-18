@@ -5,8 +5,6 @@ VisualStudioVersion = 17.7.34031.279
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StudSocSit", "StudSocSit\StudSocSit.csproj", "{F84C2EAD-2DAA-4AFF-A091-C572699D8DEA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApplicationDbContext", "ApplicationDbContext\ApplicationDbContext.csproj", "{8BE0AB09-871E-4C09-AF65-B3533EBF07AF}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,10 +15,6 @@ Global
 		{F84C2EAD-2DAA-4AFF-A091-C572699D8DEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F84C2EAD-2DAA-4AFF-A091-C572699D8DEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F84C2EAD-2DAA-4AFF-A091-C572699D8DEA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8BE0AB09-871E-4C09-AF65-B3533EBF07AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8BE0AB09-871E-4C09-AF65-B3533EBF07AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8BE0AB09-871E-4C09-AF65-B3533EBF07AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8BE0AB09-871E-4C09-AF65-B3533EBF07AF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

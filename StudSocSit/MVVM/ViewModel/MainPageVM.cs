@@ -13,6 +13,7 @@ namespace ViewModel;
 public class MainPageVM : ViewModelBase
 {
     private readonly StudentModel _student;
+    private List<StudentModel> friends;
     private readonly ReservoomDbContext _context;
     private IEnumerable<MessageCollection>? _messagesCollection;
     private NavigationStore _navigationStore;
@@ -31,6 +32,20 @@ public class MainPageVM : ViewModelBase
         _student = student;
         _context = context;
         _navigationStore = navigationStore;
+        friends = new List<StudentModel>();
+        var friendsIdentity = _context.Friends.Where(f => f.StudentId == _student.StudentId).ToList();
+        if(friendsIdentity != null)
+        {
+            foreach(var f in friendsIdentity)
+            {
+                var friend = _context.Student.FirstOrDefault(s => s.StudentId == f.FriendId);
+                if (friend != null)
+                {
+                    friends.Add(friend);
+                }
+                
+            }
+        }
 
 
         GetMessages = new GetChatMessagesCommand(_context, student, MessageContent, FriendId);
@@ -79,5 +94,10 @@ public class MainPageVM : ViewModelBase
             message = value;
             OnPropertyChanged(nameof(Message));
         }
+    }
+
+    public List<StudentModel> Friends
+    {
+        get => friends;
     }
 }

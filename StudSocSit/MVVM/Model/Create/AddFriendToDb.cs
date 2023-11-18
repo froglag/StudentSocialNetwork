@@ -1,6 +1,5 @@
 ﻿using ApplicationDbContext;
 using ApplicationDbContext.Models;
-using SQLitePCL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,13 +20,15 @@ namespace Model.Create
 
         public void Do(Request request)
         {
-            var studentIdentity = _context.Student.First(s => s.StudentId == request.StudentId);
-            var friendIdentity = _context.Student.Where(s => s.StudentId == request.FriendId).First();
-            if (friendIdentity != null && studentIdentity != null) 
-            { 
-                studentIdentity.Friends.Add(friendIdentity);
+            if(request.FriendId != null && request.StudentId != null)
+            {
+                _context.Friends.Add(new FriendsModel
+                {
+                    StudentId = request.StudentId,
+                    FriendId = request.FriendId
+                });
+                _context.SaveChanges();
             }
-            _context.SaveChanges();
         }
 
         public class Request

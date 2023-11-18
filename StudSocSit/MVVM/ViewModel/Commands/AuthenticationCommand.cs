@@ -26,19 +26,24 @@ public class AuthenticationCommand : CommandBase
     }
     public override void Execute(object? parameter)
     {
-        try
+            var user = _context.User.FirstOrDefault(u => u.UserName == _userAuth.UserName && u.Password == _userAuth.Password);
+        if (user != null)
         {
-            var user = _context.User.Where(u => u.UserName == _userAuth.UserName && u.Password == _userAuth.Password).First();
             var studentInfoRequest = new GetAuthorizedStudentInfo.Request { UserName = user.UserName, Password = user.Password };
             var studentInfo = new GetAuthorizedStudentInfo(_context).Do(studentInfoRequest);
-            if(studentInfo != null)
+            if (studentInfo != null)
             {
                 new NavigateToMainPageCommand(_context, _navigationStore, studentInfo).Execute(parameter);
             }
+            else
+            {
+                MessageBox.Show("Student Don't Exist");
+            }
         }
-        catch (Exception)
+        else
         {
             MessageBox.Show("Wronge Login or Password");
         }
-    }
+            
+    }      
 }

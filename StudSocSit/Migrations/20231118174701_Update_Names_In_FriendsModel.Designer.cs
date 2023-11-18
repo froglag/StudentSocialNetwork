@@ -3,28 +3,35 @@ using System;
 using ApplicationDbContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace ApplicationDbContext.Migrations
+namespace StudSocSit.Migrations
 {
     [DbContext(typeof(ReservoomDbContext))]
-    [Migration("20231115032558_Added_To_FriendRequest_StudentId_Property")]
-    partial class Added_To_FriendRequest_StudentId_Property
+    [Migration("20231118174701_Update_Names_In_FriendsModel")]
+    partial class Update_Names_In_FriendsModel
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "7.0.12");
+            modelBuilder
+                .HasAnnotation("ProductVersion", "7.0.12")
+                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
             modelBuilder.Entity("ApplicationDbContext.Models.ChatModel", b =>
                 {
                     b.Property<int>("ChatId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ChatId"));
 
                     b.HasKey("ChatId");
 
@@ -35,16 +42,18 @@ namespace ApplicationDbContext.Migrations
                 {
                     b.Property<int>("RequestId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
-                    b.Property<int?>("FriendId")
-                        .HasColumnType("INTEGER");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RequestId"));
 
-                    b.Property<int?>("StudentId")
-                        .HasColumnType("INTEGER");
+                    b.Property<int?>("ReceiverId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("SenderId")
+                        .HasColumnType("int");
 
                     b.Property<int?>("StudentModelStudentId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.HasKey("RequestId");
 
@@ -53,26 +62,52 @@ namespace ApplicationDbContext.Migrations
                     b.ToTable("FriendRequest");
                 });
 
+            modelBuilder.Entity("ApplicationDbContext.Models.FriendsModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("FriendId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("StudentId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("StudentModelStudentId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("StudentModelStudentId");
+
+                    b.ToTable("Friends");
+                });
+
             modelBuilder.Entity("ApplicationDbContext.Models.MessageModel", b =>
                 {
                     b.Property<int>("MessageId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MessageId"));
 
                     b.Property<int?>("AuthorId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<int?>("ChatId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<int?>("ChatModelChatId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<string>("Text")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("Timestamp")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("datetime2");
 
                     b.HasKey("MessageId");
 
@@ -85,37 +120,34 @@ namespace ApplicationDbContext.Migrations
                 {
                     b.Property<int>("StudentId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StudentId"));
 
                     b.Property<int?>("ChatModelChatId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<string>("Email")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FacultyName")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirstName")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("PhoneNumber")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<string>("Specialization")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int?>("StudentModelStudentId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("StudentId");
 
                     b.HasIndex("ChatModelChatId");
-
-                    b.HasIndex("StudentModelStudentId");
 
                     b.ToTable("Student");
                 });
@@ -124,16 +156,18 @@ namespace ApplicationDbContext.Migrations
                 {
                     b.Property<int>("UserId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"));
 
                     b.Property<string>("Password")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("StudentId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<string>("UserName")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("UserId");
 
@@ -149,6 +183,13 @@ namespace ApplicationDbContext.Migrations
                         .HasForeignKey("StudentModelStudentId");
                 });
 
+            modelBuilder.Entity("ApplicationDbContext.Models.FriendsModel", b =>
+                {
+                    b.HasOne("ApplicationDbContext.Models.StudentModel", null)
+                        .WithMany("Friends")
+                        .HasForeignKey("StudentModelStudentId");
+                });
+
             modelBuilder.Entity("ApplicationDbContext.Models.MessageModel", b =>
                 {
                     b.HasOne("ApplicationDbContext.Models.ChatModel", null)
@@ -161,10 +202,6 @@ namespace ApplicationDbContext.Migrations
                     b.HasOne("ApplicationDbContext.Models.ChatModel", null)
                         .WithMany("Participants")
                         .HasForeignKey("ChatModelChatId");
-
-                    b.HasOne("ApplicationDbContext.Models.StudentModel", null)
-                        .WithMany("Friends")
-                        .HasForeignKey("StudentModelStudentId");
                 });
 
             modelBuilder.Entity("ApplicationDbContext.Models.UserModel", b =>

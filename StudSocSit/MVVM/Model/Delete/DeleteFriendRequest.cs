@@ -19,18 +19,15 @@ namespace Model.Delete
 
         public void Do(int? friendId)
         {
-            try
+            if(friendId != null)
             {
-                var requestCollection = _context.Student.Where(s => s.FriendRequests.First(fr => fr.FriendId == friendId).FriendId == friendId).First().FriendRequests;
-                var request = requestCollection.First(fr => fr.FriendId == friendId);
-                requestCollection.Remove(request);
-                _context.SaveChanges();
-            }
-            finally
-            {
-
-            }
-            
+                var friendRequest = _context.FriendRequest.FirstOrDefault(fr => fr.SenderId == friendId);
+                if(friendRequest != null)
+                {
+                    _context.FriendRequest.Remove(friendRequest);
+                    _context.SaveChanges();
+                }
+            }   
         }
     }
 }

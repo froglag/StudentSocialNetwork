@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ApplicationDbContext.Models
 {
@@ -17,7 +18,8 @@ namespace ApplicationDbContext.Models
         public string? FacultyName { get; set; }
         public string? Specialization { get; set; }
 
-        public ICollection<StudentModel?>? Friends { get; set; }
-        public List<FriendRequestModel>? FriendRequests { get; set; }
+        public List<FriendsModel> Friends { get; set; }
+
+        public List<FriendRequestModel> FriendRequests { get; set; }
     }
 }

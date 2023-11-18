@@ -23,18 +23,21 @@ public class AcceptFriendRequestCommand : CommandBase
     public override void Execute(object? parameter)
     {
         var friendId = parameter as int?;
-        new AddFriendToDb(_context).Do(new AddFriendToDb.Request
+        if(_student != null)
         {
-            FriendId = friendId,
-            StudentId = _student.StudentId
-        });
+            new AddFriendToDb(_context).Do(new AddFriendToDb.Request
+            {
+                FriendId = friendId,
+                StudentId = _student.StudentId
+            });
 
-        new AddFriendToDb(_context).Do(new AddFriendToDb.Request
-        {
-            FriendId = _student.StudentId,
-            StudentId = friendId
-        });
+            new AddFriendToDb(_context).Do(new AddFriendToDb.Request
+            {
+                FriendId = _student.StudentId,
+                StudentId = friendId
+            });
 
-        new DeleteFriendRequest(_context).Do(friendId);
+            new DeleteFriendRequest(_context).Do(friendId);
+        }
     }
 }
