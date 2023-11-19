@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace ApplicationDbContext.Models
 {
@@ -8,9 +11,7 @@ namespace ApplicationDbContext.Models
     {
         [Key]
         public int ChatId { get; set; }
-
-        public IEnumerable<MessageModel>? Messages { get; set; }
-
-        public ICollection<StudentModel>? Participants { get; set; }
+        public int FirstStudentId { get; set; }
+        public int SecondStudentId { get; set; }
     }
 }

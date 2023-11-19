@@ -16,46 +16,48 @@ namespace ViewModel.Commands
     public class GetChatMessagesCommand : CommandBase
     {
         private ReservoomDbContext _context;
-        private StudentModel? _student;
-        private ICollection<StudentModel?>? _participants;
-        private IEnumerable<MessageCollection>? _messageContent;
-        private int? _friendId;
+        private readonly MainPageVM _mainPageVM;
 
-        public GetChatMessagesCommand(ReservoomDbContext context, StudentModel? student, IEnumerable<MessageCollection>? messageContent, int? friendId)
+        public GetChatMessagesCommand(ReservoomDbContext context, MainPageVM mainPageVM)
         {
             _context = context;
-            _student = student;
-            _messageContent = messageContent;
-            _friendId = friendId; 
+            _mainPageVM = mainPageVM;
         }
         public override void Execute(object? parameter)
         {
-            int? friendId = parameter as int?;
-
-            _friendId = friendId;
-
-            var friend = new GetStudentInfoById(_context).Do(friendId);
-            if (_participants != null)
+            _mainPageVM.MessageContent = null;
+            var friendId = parameter as int?;
+            if (friendId != null)
             {
-                _participants.Add(_student);
-                _participants.Add(friend);
+                _mainPageVM.FriendId = friendId;
 
-
-                var messages = new GetChatMessages(_context).Do(_participants);
-                if(messages != null && _messageContent != null && _student != null)
+                var chat = _context.Chat.FirstOrDefault(c => (c.FirstStudentId == _mainPageVM.StudentInfo.StudentId && c.SecondStudentId == (int)_mainPageVM.FriendId) || (c.FirstStudentId == (int)_mainPageVM.FriendId && c.SecondStudentId == _mainPageVM.StudentInfo.StudentId));
+                if (chat != null)
                 {
-                    foreach (var m in messages)
+                    var chatId = chat.ChatId;
+                    var messages = _context.Message.Where(m => m.ChatId == chatId);
+
+                    if (friendId != null && messages != null)
                     {
-                        _messageContent.Append(new MessageCollection
+                        if (_mainPageVM.MessageContent == null)
                         {
-                            Messages = m,
-                            FriendId = friendId,
-                            StudentId = _student.StudentId
-                        });
+                            _mainPageVM.MessageContent = new List<MessageCollection>();
+                        }
+
+                        foreach (var message in messages)
+                        {
+                            _mainPageVM.MessageContent.Add(new MessageCollection
+                            {
+                                Messages = message,
+                                StudentId = _mainPageVM.StudentInfo.StudentId,
+                                FriendId = friendId,
+                            });
+                        }
+
                     }
                 }
-                
             }
+           
         }
     }
 }

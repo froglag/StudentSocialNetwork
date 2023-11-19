@@ -6,23 +6,27 @@ namespace Selecters;
 
 public class MessageTemplateSelector : DataTemplateSelector
 {
-    public DataTemplate MyMessageTemplate { get; set; }
-    public DataTemplate OtherMessageTemplate { get; set; }
+    public DataTemplate? MyMessageTemplate { get; set; }
+    public DataTemplate? OtherMessageTemplate { get; set; }
 
     public override DataTemplate SelectTemplate(object item, DependencyObject container)
     {
-        var message = item as MainPageVM.MessageCollection; // Замените YourMessageType на реальный тип вашего сообщения
-
-        if (message != null)
+        if(MyMessageTemplate != null && OtherMessageTemplate != null)
         {
-            if (message.Messages.AuthorId == message.StudentId)
+            var message = item as MainPageVM.MessageCollection;
+
+            if (message != null && message.Messages != null)
             {
-                return MyMessageTemplate;
+                if (message.Messages.AuthorId == message.StudentId)
+                {
+                    return MyMessageTemplate;
+                }
+                else
+                {
+                    return OtherMessageTemplate;
+                }
             }
-            else
-            {
-                return OtherMessageTemplate;
-            }
+        
         }
 
         return base.SelectTemplate(item, container);

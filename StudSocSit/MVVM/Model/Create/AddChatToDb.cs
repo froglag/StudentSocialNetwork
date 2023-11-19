@@ -6,29 +6,29 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Model.Create
+namespace Model.Create;
+public class AddChatToDb
 {
-    public class AddChatToDb
+    private ReservoomDbContext _context;
+
+    public AddChatToDb(ReservoomDbContext context)
     {
-        private readonly ReservoomDbContext _context;
-        public AddChatToDb(ReservoomDbContext context)
-        {
-            _context = context;
-        }
+        _context = context;
+    }
 
-        public void Do(Request request)
+    public void Do(Request request)
+    {
+        _context.Chat.Add(new ChatModel
         {
-            ChatModel chatModel = new ChatModel
-            {
-                Participants = request.Participants,
-            };
-            _context.Chat.Add(chatModel);
-            _context.SaveChanges();
-        }
+            FirstStudentId = request.FirstStudentId,
+            SecondStudentId = request.SecondStudentId
+        });
+        _context.SaveChanges();
+    }
 
-        public class Request
-        {
-            public ICollection<StudentModel> Participants { get; set; }
-        }
+    public class Request
+    {
+        public int FirstStudentId { get; set; }
+        public int SecondStudentId { get; set; }
     }
 }

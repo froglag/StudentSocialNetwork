@@ -18,11 +18,7 @@ namespace Model.Delete
 
         public void Do(Request request)
         {
-            var chatIdentity = _context.Chat.Where(c => c.ChatId == request.ChatId).First();
-            var messageIdentity = chatIdentity.Messages.Where(m => m.MessageId == request.MessageId).First();
-
-            chatIdentity.Messages.ToList().Remove(messageIdentity);
-            _context.SaveChanges();
+            
         }
 
         public class Request

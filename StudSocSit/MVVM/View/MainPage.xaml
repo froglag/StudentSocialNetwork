@@ -48,25 +48,17 @@
                 </Grid>
 
             </Grid>
-
+            
             <!-- Contacts List (ScrollViewer) -->
-            <ScrollViewer Grid.Row="1">
-                <ListView ItemsSource="{Binding Friends}" x:Name="ContactListView">
-                    <ListView.View>
-                        <GridView>
-                            <GridViewColumn>
-                                <GridViewColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <Button Command="{Binding ElementName=ContactListView, Path=DataContext.GetMessages}" CommandParameter="{Binding StudentId}">
-                                            <TextBlock Text="{Binding FirstName}"/>
-                                        </Button>
-                                    </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                            </GridViewColumn>
-                        </GridView>
-                    </ListView.View>
-                    
-                </ListView>
+            <ScrollViewer Grid.Row="1" HorizontalContentAlignment="Stretch">
+                <ScrollViewer.Resources>
+                    <DataTemplate x:Key="FriendTemplate">
+                        <Button Command="{Binding ElementName=ContactListView, Path=DataContext.GetMessages}" CommandParameter="{Binding StudentId}" Margin="0" Background="Transparent" HorizontalContentAlignment="Stretch">
+                            <TextBlock Text="{Binding FirstName}"/>
+                        </Button>
+                    </DataTemplate>
+                </ScrollViewer.Resources>
+                <ListView ItemsSource="{Binding Friends}" x:Name="ContactListView" HorizontalContentAlignment="Stretch" ItemTemplate="{StaticResource FriendTemplate}"/>
             </ScrollViewer>
 
 
@@ -82,15 +74,21 @@
                 <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
             <Grid.Resources>
-                <select:MessageTemplateSelector x:Key="MessageTemplateSelector"/>
+                <select:MessageTemplateSelector x:Key="MessageTemplateSelector">
+                    <select:MessageTemplateSelector.MyMessageTemplate>
+                        <!-- Define your MyMessageTemplate here -->
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Messages.Text}" TextAlignment="Right" Background="LightBlue"/>
+                        </DataTemplate>
+                    </select:MessageTemplateSelector.MyMessageTemplate>
 
-                <DataTemplate x:Key="MyMessageTemplate">
-                    <TextBlock Text="{Binding Messages.Text}" TextAlignment="Right" />
-                </DataTemplate>
-
-                <DataTemplate x:Key="OtherMessageTemplate">
-                    <TextBlock Text="{Binding Messages.Text}" TextAlignment="Left" />
-                </DataTemplate>
+                    <select:MessageTemplateSelector.OtherMessageTemplate>
+                        <!-- Define your OtherMessageTemplate here -->
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Messages.Text}" TextAlignment="left" Background="LightGreen"/>
+                        </DataTemplate>
+                    </select:MessageTemplateSelector.OtherMessageTemplate>
+                </select:MessageTemplateSelector>
             </Grid.Resources>
             <!-- Context Menu Button -->
             <Grid Grid.Row="0">
@@ -114,8 +112,8 @@
             </Grid>
 
             <!-- Chat Messages (ScrollViewer) -->
-            <ScrollViewer Grid.Row="1" x:Name="ChatMassages">
-                <ListView ItemsSource="{Binding MessageContent}" ItemTemplateSelector="{StaticResource MessageTemplateSelector}"/>
+            <ScrollViewer Grid.Row="1" x:Name="ChatMassages" HorizontalContentAlignment="Stretch">
+                <ListView ItemsSource="{Binding MessageContent}" ItemTemplateSelector="{StaticResource MessageTemplateSelector}" HorizontalContentAlignment="Stretch"/>
             </ScrollViewer>
 
             <!-- Input Textbox and Submit Button -->
@@ -125,7 +123,7 @@
                     <ColumnDefinition Width="0.5*"/>
                 </Grid.ColumnDefinitions>
                 <TextBox Grid.Column="0" TextWrapping="Wrap" Text="{Binding Message, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                <Button Grid.Column="1" HorizontalAlignment="Center" Command="{Binding AddMessage}" CommandParameter="{Binding Message}">Submit</Button>
+                <Button Grid.Column="1" HorizontalAlignment="Center" Command="{Binding AddMessage}">Submit</Button>
             </Grid>
         </Grid>
     </Grid>

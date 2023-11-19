@@ -20,8 +20,9 @@ namespace Create
         public void Do(Request request)
         {
             var friendRequest = _context.FriendRequest.FirstOrDefault(fr => fr.SenderId == request.SenderId && fr.ReceiverId == request.ReceiverId);
+            var friend = _context.Friends.FirstOrDefault(f => f.StudentId == request.ReceiverId && f.FriendId == request.SenderId);
 
-            if (friendRequest == null)
+            if (friendRequest == null && friend == null)
             {
                 _context.FriendRequest.Add(new FriendRequestModel
                 {

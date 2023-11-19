@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace StudSocSit.Migrations
 {
     /// <inheritdoc />
-    public partial class Update_Names_In_FriendsModel : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -16,7 +16,9 @@ namespace StudSocSit.Migrations
                 columns: table => new
                 {
                     ChatId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1")
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FirstStudentId = table.Column<int>(type: "int", nullable: false),
+                    SecondStudentId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -32,17 +34,11 @@ namespace StudSocSit.Migrations
                     Text = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ChatId = table.Column<int>(type: "int", nullable: true),
-                    AuthorId = table.Column<int>(type: "int", nullable: true),
-                    ChatModelChatId = table.Column<int>(type: "int", nullable: true)
+                    AuthorId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Message", x => x.MessageId);
-                    table.ForeignKey(
-                        name: "FK_Message_Chat_ChatModelChatId",
-                        column: x => x.ChatModelChatId,
-                        principalTable: "Chat",
-                        principalColumn: "ChatId");
                 });
 
             migrationBuilder.CreateTable(
@@ -56,17 +52,11 @@ namespace StudSocSit.Migrations
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PhoneNumber = table.Column<int>(type: "int", nullable: true),
                     FacultyName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Specialization = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ChatModelChatId = table.Column<int>(type: "int", nullable: true)
+                    Specialization = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Student", x => x.StudentId);
-                    table.ForeignKey(
-                        name: "FK_Student_Chat_ChatModelChatId",
-                        column: x => x.ChatModelChatId,
-                        principalTable: "Chat",
-                        principalColumn: "ChatId");
                 });
 
             migrationBuilder.CreateTable(
@@ -140,16 +130,6 @@ namespace StudSocSit.Migrations
                 column: "StudentModelStudentId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Message_ChatModelChatId",
-                table: "Message",
-                column: "ChatModelChatId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Student_ChatModelChatId",
-                table: "Student",
-                column: "ChatModelChatId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_User_StudentId",
                 table: "User",
                 column: "StudentId");
@@ -158,6 +138,9 @@ namespace StudSocSit.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Chat");
+
             migrationBuilder.DropTable(
                 name: "FriendRequest");
 
@@ -172,9 +155,6 @@ namespace StudSocSit.Migrations
 
             migrationBuilder.DropTable(
                 name: "Student");
-
-            migrationBuilder.DropTable(
-                name: "Chat");
         }
     }
 }

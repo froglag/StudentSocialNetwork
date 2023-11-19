@@ -15,7 +15,7 @@ public class MainPageVM : ViewModelBase
     private readonly StudentModel _student;
     private List<StudentModel> friends;
     private readonly ReservoomDbContext _context;
-    private IEnumerable<MessageCollection>? _messagesCollection;
+    private List<MessageCollection>? _messagesCollection;
     private NavigationStore _navigationStore;
     private int? frindId;
     private string? message;
@@ -47,13 +47,12 @@ public class MainPageVM : ViewModelBase
             }
         }
 
-
-        GetMessages = new GetChatMessagesCommand(_context, student, MessageContent, FriendId);
+        GetMessages = new GetChatMessagesCommand(_context, this);
         NavigationToSearchPage = new NavigateToSearchPageCommand(context, _navigationStore, student);
         NavigationToAccountSettingPage = new NavigateToAccountSettingPageCommand(context, _navigationStore, student);
         NavigationToLoginPage = new NavigateToLoginPageCommand(context, _navigationStore);
         NavigationToFriendRequest = new NavigateToFriendRequestPageCommand(context, _navigationStore, student);
-        AddMessage = new AddMessageCommand(_context, student, FriendId);
+        AddMessage = new AddMessageCommand(_context, this);
     }
     public StudentModel StudentInfo
     {
@@ -61,7 +60,7 @@ public class MainPageVM : ViewModelBase
     }
 
     
-    public IEnumerable<MessageCollection>? MessageContent
+    public List<MessageCollection>? MessageContent
     {
         get => _messagesCollection;
         set

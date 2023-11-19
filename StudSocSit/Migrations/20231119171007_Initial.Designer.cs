@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace StudSocSit.Migrations
 {
     [DbContext(typeof(ReservoomDbContext))]
-    [Migration("20231118174701_Update_Names_In_FriendsModel")]
-    partial class Update_Names_In_FriendsModel
+    [Migration("20231119171007_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -32,6 +32,12 @@ namespace StudSocSit.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ChatId"));
+
+                    b.Property<int>("FirstStudentId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SecondStudentId")
+                        .HasColumnType("int");
 
                     b.HasKey("ChatId");
 
@@ -100,9 +106,6 @@ namespace StudSocSit.Migrations
                     b.Property<int?>("ChatId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ChatModelChatId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Text")
                         .HasColumnType("nvarchar(max)");
 
@@ -110,8 +113,6 @@ namespace StudSocSit.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("MessageId");
-
-                    b.HasIndex("ChatModelChatId");
 
                     b.ToTable("Message");
                 });
@@ -123,9 +124,6 @@ namespace StudSocSit.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StudentId"));
-
-                    b.Property<int?>("ChatModelChatId")
-                        .HasColumnType("int");
 
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
@@ -146,8 +144,6 @@ namespace StudSocSit.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("StudentId");
-
-                    b.HasIndex("ChatModelChatId");
 
                     b.ToTable("Student");
                 });
@@ -190,20 +186,6 @@ namespace StudSocSit.Migrations
                         .HasForeignKey("StudentModelStudentId");
                 });
 
-            modelBuilder.Entity("ApplicationDbContext.Models.MessageModel", b =>
-                {
-                    b.HasOne("ApplicationDbContext.Models.ChatModel", null)
-                        .WithMany("Messages")
-                        .HasForeignKey("ChatModelChatId");
-                });
-
-            modelBuilder.Entity("ApplicationDbContext.Models.StudentModel", b =>
-                {
-                    b.HasOne("ApplicationDbContext.Models.ChatModel", null)
-                        .WithMany("Participants")
-                        .HasForeignKey("ChatModelChatId");
-                });
-
             modelBuilder.Entity("ApplicationDbContext.Models.UserModel", b =>
                 {
                     b.HasOne("ApplicationDbContext.Models.StudentModel", "Student")
@@ -211,13 +193,6 @@ namespace StudSocSit.Migrations
                         .HasForeignKey("StudentId");
 
                     b.Navigation("Student");
-                });
-
-            modelBuilder.Entity("ApplicationDbContext.Models.ChatModel", b =>
-                {
-                    b.Navigation("Messages");
-
-                    b.Navigation("Participants");
                 });
 
             modelBuilder.Entity("ApplicationDbContext.Models.StudentModel", b =>

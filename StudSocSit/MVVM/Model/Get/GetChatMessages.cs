@@ -17,13 +17,9 @@ namespace Model.Get
             _context = context;
         }
 
-        public IEnumerable<MessageModel>? Do(ICollection<StudentModel?>? participans)
+        public List<MessageModel>? Do(int chatId)
         {
-            return _context.Chat
-                .Where(c => c.Participants == participans)
-                .First()
-                .Messages;
-
+            return _context.Message.Where(m => m.ChatId == chatId).ToList();
         }
 
     }
