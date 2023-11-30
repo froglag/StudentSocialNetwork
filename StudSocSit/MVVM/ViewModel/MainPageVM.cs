@@ -1,7 +1,6 @@
 ﻿using ApplicationDbContext;
 using ApplicationDbContext.Models;
 using Model.Get;
-using ViewModel.Commands;
 using System.Collections.Generic;
 using System.Windows.Input;
 using System.Collections.ObjectModel;
