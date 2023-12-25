@@ -9,7 +9,7 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800">
 
-    <Grid Background="Gray">
+    <Grid Background="DarkSlateGray">
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
             <RowDefinition Height="7*"/>
@@ -22,20 +22,15 @@
                 <ColumnDefinition Width="0.5*"/>
             </Grid.ColumnDefinitions>
 
-            <Button x:Name="BackButton" Grid.Column="0" Command="{Binding NavigationToMainPage}"></Button>
+            <Button Background="Transparent" x:Name="BackButton" Grid.Column="0" Command="{Binding NavigationToSearchPage}">
+                <Image Source="\MVVM\View\Image\Icons\icons8-back-100.png"/>
+            </Button>
 
-            <Menu Background="Transparent" HorizontalAlignment="Stretch" Grid.Column="2">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <UniformGrid Rows="1"/>
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
+            <Button Background="Transparent" x:Name="HomeButton" Grid.Column="2" Command="{Binding NavigationToMainPage}">
+                <Image Source="\MVVM\View\Image\Icons\icons8-home-64.png"/>
+            </Button>
+            
 
-                <MenuItem Background="White" FlowDirection="RightToLeft">
-                    <MenuItem Header="Setting" Command="{Binding NavigationToAccountSettingPage}"/>
-                    <MenuItem Header="LogOut" Command="{Binding NavigationToLoginPage}"/>
-                </MenuItem>
-            </Menu>
         </Grid>
 
         <Grid Grid.Row="1">
@@ -58,17 +53,27 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
 
-                <Label Grid.Column="0" Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Center">Name:</Label>
-                <TextBlock Grid.Column="1" Grid.Row="0" Background="Transparent" Text="{Binding Friend.FirstName}"/>
 
-                <Label Grid.Column="0" Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Center">Surname:</Label>
-                <TextBlock Grid.Column="1" Grid.Row="1" Background="Transparent" Text="{Binding Friend.LastName}"/>
+                <Label Grid.Column="0" Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="LightGray">Name:</Label>
+                <Border Grid.Column="1" Grid.Row="0" BorderThickness="1" BorderBrush="Gray"  Margin="5,15,0,15">
+                    <TextBlock  Background="Transparent" Text="{Binding Friend.FirstName}" />
+                </Border>
+                
 
-                <Label Grid.Column="0" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Center">E-Mail:</Label>
-                <TextBlock Grid.Column="1" Grid.Row="2" Background="Transparent" Text="{Binding Friend.Email}"/>
+                <Label Grid.Column="0" Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="LightGray">Surname:</Label>
+                <Border Grid.Column="1" Grid.Row="1" BorderThickness="1" BorderBrush="Gray"  Margin="5,15,0,15">
+                    <TextBlock  Background="Transparent" Text="{Binding Friend.LastName}" />
+                </Border>
 
-                <Label Grid.Column="0" Grid.Row="3" HorizontalAlignment="Right" VerticalAlignment="Center">Phone Number:</Label>
-                <TextBlock Grid.Column="1" Grid.Row="3" Background="Transparent" Text="{Binding Friend.PhoneNumber}"/>
+                <Label Grid.Column="0" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="LightGray">E-Mail:</Label>
+                <Border Grid.Column="1" Grid.Row="2" BorderThickness="1" BorderBrush="Gray"  Margin="5,15,0,15">
+                    <TextBlock  Background="Transparent" Text="{Binding Friend.Email}" />
+                </Border>
+
+                <Label Grid.Column="0" Grid.Row="3" HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="LightGray">Phone Number:</Label>
+                <Border Grid.Column="1" Grid.Row="3" BorderThickness="1" BorderBrush="Gray"  Margin="5,15,0,15">
+                    <TextBlock  Background="Transparent" Text="{Binding Friend.PhoneNumber}" />
+                </Border>
             </Grid>
         </Grid>
 

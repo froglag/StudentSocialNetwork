@@ -8,25 +8,31 @@
              d:DataContext="{d:DesignInstance Type=viewmodel:FriendRequestPageVM}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Background="Gray">
+    <Grid Background="DarkSlateGray">
         <Grid.RowDefinitions>
-            <RowDefinition Height="0.2*"/>
+            <RowDefinition Height="0.18*"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="0.15*"/>
+                <ColumnDefinition Width="0.12*"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="0" Content="Home" FontSize="20" Command="{Binding NavigationToMainPage}"/>
+            <Button Grid.Column="0" Command="{Binding NavigationToMainPage}" Background="Transparent" BorderBrush="Transparent">
+                <Image Source="\MVVM\View\Image\Icons\icons8-back-100.png"/>
+            </Button>
         </Grid>
 
         <ScrollViewer Grid.Row="1" Margin="20, 10, 0, 10">
-            <ListView ItemsSource="{Binding Friends}"  x:Name="ListStudentView">
+            <ListView ItemsSource="{Binding Friends}"  x:Name="ListStudentView" Background="Transparent">
                 <ListView.View>
                     <GridView AllowsColumnReorder="True" ColumnHeaderToolTip="Authors">
-
+                        <GridView.ColumnHeaderContainerStyle>
+                            <Style TargetType="{x:Type GridViewColumnHeader}">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </Style>
+                        </GridView.ColumnHeaderContainerStyle>
                         <GridViewColumn Header="Account Image" >
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
@@ -35,7 +41,7 @@
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
 
-                        <GridViewColumn Header="Name">
+                        <GridViewColumn>
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding FirstName}" />
@@ -46,11 +52,10 @@
                         <GridViewColumn>
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
-                                    <Button Command="{Binding ElementName=ListStudentView, Path=DataContext.AcceptFriendRequest}" CommandParameter="{Binding StudentId}" Content="Add Friend"/>
+                                    <Button Command="{Binding ElementName=ListStudentView, Path=DataContext.AcceptFriendRequest}" CommandParameter="{Binding StudentId}" Foreground="LightGray" Content="Add Friend" Background="Transparent"/>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
-
                     </GridView>
                 </ListView.View>
 

@@ -13,7 +13,7 @@
       d:DesignHeight="450" d:DesignWidth="800">
 
     <!-- Main layout grid with two columns -->
-    <Grid Background="Gray">
+    <Grid Background="DarkSlateGray">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1.5*"/>
             <ColumnDefinition Width="3*"/>
@@ -32,33 +32,37 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1.5*"/>
                     <ColumnDefinition Width="3*"/>
-                    <ColumnDefinition Width="0.3*"/>
+                    <ColumnDefinition Width="0.6*"/>
                 </Grid.ColumnDefinitions>
-                <Button Grid.Column="0" Margin="5" Command="{Binding NavigationToAccountSettingPage}">
-                    <Image HorizontalAlignment="Center"/>
+                <Image Grid.Column="0" Source="\MVVM\View\Image\Icons\logo.png" Margin="10"/>
+
+                <Button Grid.Column="1" Margin="5" Command="{Binding NavigationToAccountSettingPage}" HorizontalAlignment="Center" VerticalAlignment="Center" Background="Transparent">
+                    <Label x:Name="MyDescription" Grid.Column="1" Content="{Binding StudentInfo.FirstName}" Foreground="LightGray"/>
                 </Button>
-                
-                <Label x:Name="MyDescription" Grid.Column="1" Content="{Binding StudentInfo.FirstName}"/>
+
+
                 <Grid Grid.Column="2">
                     <Grid.RowDefinitions>
                         <RowDefinition/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
-                    <Button x:Name="SearchButton" Grid.Row="0" Content="?" Command="{Binding NavigationToSearchPage}" />
+                    <Button x:Name="SearchButton" Grid.Row="0" Command="{Binding NavigationToSearchPage}" Background="Transparent">
+                        <Image Source="\MVVM\View\Image\Icons\icons8-search-64.png"/>
+                    </Button>
                 </Grid>
 
             </Grid>
-            
+
             <!-- Contacts List (ScrollViewer) -->
             <ScrollViewer Grid.Row="1" HorizontalContentAlignment="Stretch">
                 <ScrollViewer.Resources>
                     <DataTemplate x:Key="FriendTemplate">
                         <Button Command="{Binding ElementName=ContactListView, Path=DataContext.GetMessages}" CommandParameter="{Binding StudentId}" Margin="0" Background="Transparent" HorizontalContentAlignment="Stretch">
-                            <TextBlock Text="{Binding FirstName}"/>
+                            <TextBlock Foreground="LightGray" Text="{Binding FirstName}"/>
                         </Button>
                     </DataTemplate>
                 </ScrollViewer.Resources>
-                <ListView ItemsSource="{Binding Friends}" x:Name="ContactListView" HorizontalContentAlignment="Stretch" ItemTemplate="{StaticResource FriendTemplate}"/>
+                <ListView ItemsSource="{Binding Friends}" x:Name="ContactListView" HorizontalContentAlignment="Stretch" ItemTemplate="{StaticResource FriendTemplate}" Background="Transparent" BorderBrush="Transparent"/>
             </ScrollViewer>
 
 
@@ -93,27 +97,31 @@
             <!-- Context Menu Button -->
             <Grid Grid.Row="0">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
+                    <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="0.1*"/>
                 </Grid.ColumnDefinitions>
-                <Menu Background="Transparent" HorizontalAlignment="Stretch" Grid.Column="1">
+                <Menu Background="Transparent" Grid.Column="1">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <UniformGrid Rows="1"/>
+                            <UniformGrid Rows="1" Columns="1" />
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
 
-                    <MenuItem Background="White" FlowDirection="RightToLeft">
+                    <MenuItem FlowDirection="RightToLeft">
+                        <MenuItem.Background>
+                            <ImageBrush ImageSource="\MVVM\View\Image\Icons\icons8-menu-100.png"/>
+                        </MenuItem.Background>
                         <MenuItem Header="Setting" Command="{Binding NavigationToAccountSettingPage}"/>
                         <MenuItem Header="Friend Request" Command="{Binding NavigationToFriendRequest}"/>
                         <MenuItem Header="LogOut" Command="{Binding NavigationToLoginPage}"/>
                     </MenuItem>
                 </Menu>
+                
             </Grid>
 
             <!-- Chat Messages (ScrollViewer) -->
             <ScrollViewer Grid.Row="1" x:Name="ChatMassages" HorizontalContentAlignment="Stretch">
-                <ListView ItemsSource="{Binding MessageContent}" ItemTemplateSelector="{StaticResource MessageTemplateSelector}" HorizontalContentAlignment="Stretch"/>
+                <ListView ItemsSource="{Binding MessageContent}" ItemTemplateSelector="{StaticResource MessageTemplateSelector}" HorizontalContentAlignment="Stretch" Background="#FF64AF9B"/>
             </ScrollViewer>
 
             <!-- Input Textbox and Submit Button -->
@@ -122,7 +130,7 @@
                     <ColumnDefinition Width="7*"/>
                     <ColumnDefinition Width="0.5*"/>
                 </Grid.ColumnDefinitions>
-                <TextBox Grid.Column="0" TextWrapping="Wrap" Text="{Binding Message, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBox Grid.Column="0" TextWrapping="Wrap" Text="{Binding Message}" Background="#CCFFFFFF"/>
                 <Button Grid.Column="1" HorizontalAlignment="Center" Command="{Binding AddMessage}">Submit</Button>
             </Grid>
         </Grid>

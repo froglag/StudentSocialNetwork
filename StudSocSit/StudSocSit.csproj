@@ -8,6 +8,36 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="MVVM\View\Image\Icons\icons8-back-100.png" />
+    <None Remove="MVVM\View\Image\Icons\icons8-contact-96.png" />
+    <None Remove="MVVM\View\Image\Icons\icons8-home-64.png" />
+    <None Remove="MVVM\View\Image\Icons\icons8-menu-100.png" />
+    <None Remove="MVVM\View\Image\Icons\icons8-search-64.png" />
+    <None Remove="MVVM\View\Image\Icons\logo.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="MVVM\View\Image\Icons\icons8-back-100.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="MVVM\View\Image\Icons\icons8-contact-96.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="MVVM\View\Image\Icons\icons8-home-64.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="MVVM\View\Image\Icons\icons8-menu-100.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="MVVM\View\Image\Icons\icons8-search-64.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="MVVM\View\Image\Icons\logo.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Update="MVVM\View\AccountPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>

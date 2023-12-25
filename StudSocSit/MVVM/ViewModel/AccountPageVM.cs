@@ -16,15 +16,11 @@ public class AccountPageVM : ViewModelBase
 
     public ICommand NavigationToSearchPage { get; }
     public ICommand NavigationToMainPage { get; }
-    public ICommand NavigationToAccountSettingPage { get; }
-    public ICommand NavigationToLoginPage { get; }
     public AccountPageVM(ReservoomDbContext context, NavigationStore navigationStore, StudentModel? student, StudentModel friend)
     {
         _friend = friend;
         NavigationToSearchPage = new NavigateToSearchPageCommand(context, navigationStore, student);
         NavigationToMainPage = new NavigateToMainPageCommand(context, navigationStore, student);
-        NavigationToAccountSettingPage = new NavigateToAccountSettingPageCommand(context, navigationStore, student);
-        NavigationToLoginPage = new NavigateToLoginPageCommand(context, navigationStore);
     }
 
     public StudentModel? Friend

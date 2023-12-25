@@ -9,12 +9,13 @@
       d:DataContext="{d:DesignInstance Type=viewmodel:LoginVM}"
       d:DesignHeight="450" d:DesignWidth="800">
 
-    <Grid Background="Gray">
+    <Grid Background="DarkSlateGray">
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition Height="3*"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
+        <Image Margin="0,10,0,0" Source="\MVVM\View\Image\Icons\logo.png"/>
 
         <Grid Grid.Row="1" Margin="100,20,100,0">
             <Grid.RowDefinitions>
@@ -29,7 +30,7 @@
                 </Grid.ColumnDefinitions>
                 <Label HorizontalAlignment="Right"
                        VerticalAlignment="Center"
-                       FontSize="20">Usename:</Label>
+                       FontSize="20" Foreground="LightGray">Usename:</Label>
                 <TextBox Grid.Column="1" Margin="20" Text="{Binding UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </Grid>
 
@@ -40,7 +41,7 @@
                 </Grid.ColumnDefinitions>
                 <Label HorizontalAlignment="Right"
            VerticalAlignment="Center"
-           FontSize="20">Password:</Label>
+           FontSize="20" Foreground="LightGray">Password:</Label>
                 <TextBox Grid.Column="1" Margin="20" Text="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </Grid>
             <Grid Grid.Row="2">
@@ -49,13 +50,13 @@
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
-                <Button Grid.Column="1" Content="Login" Command="{Binding Authentication}"/>
+                <Button FontSize="20" Grid.Column="1" Content="Login" Command="{Binding Authentication}"/>
             </Grid>
         </Grid>
 
         <Grid Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center">
             <TextBlock>
-                <Hyperlink Command="{Binding NavigateToSighinPage}">
+                <Hyperlink Foreground="Aqua" Command="{Binding NavigateToSighinPage}">
                     Sighin
                 </Hyperlink>
             </TextBlock>
