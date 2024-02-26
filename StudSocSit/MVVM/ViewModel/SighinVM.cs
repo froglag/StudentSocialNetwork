@@ -1,7 +1,7 @@
 ﻿using ApplicationDbContext;
 using ApplicationDbContext.Models;
 using Commands;
-using Model.Create;
+using StudentApplication.Create;
 using StudSocSit.Store;
 using System;
 using System.Collections.Generic;

@@ -1,6 +1,6 @@
 ﻿using ApplicationDbContext;
 using ApplicationDbContext.Models;
-using Model.Update;
+using StudentApplication.Update;
 using System;
 using System.Collections.Generic;
 using System.Linq;

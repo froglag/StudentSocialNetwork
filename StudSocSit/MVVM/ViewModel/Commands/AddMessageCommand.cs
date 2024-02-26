@@ -1,7 +1,7 @@
 ﻿using ApplicationDbContext;
 using ApplicationDbContext.Models;
-using Model.Create;
-using Model.Get;
+using StudentApplication.Create;
+using StudentApplication.Get;
 using System;
 using System.Collections.Generic;
 using System.Linq;

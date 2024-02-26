@@ -1,6 +1,4 @@
-﻿using ApplicationDbContext;
-using Microsoft.EntityFrameworkCore;
-using StudSocSit.Store;
+﻿using StudSocSit.Store;
 using System.Configuration;
 using System.Windows;
 using View;
@@ -17,9 +15,8 @@ namespace StudSocSit
         public App() => _navigationStore = new NavigationStore();
         protected override void OnStartup(StartupEventArgs e)
         {
-            ReservoomDbContext context = new ReservoomDbContext();
 
-            _navigationStore.CurrentViewModel = new LoginVM(context, _navigationStore);
+            //_navigationStore.CurrentViewModel = new LoginVM(context, _navigationStore);
             var mainWindow = new MainWindow()
             {
                 DataContext = new MainWindowVM(_navigationStore)

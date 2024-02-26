@@ -1,6 +1,6 @@
 ﻿using ApplicationDbContext;
 using ApplicationDbContext.Models;
-using Model.Get;
+using StudentApplication.Get;
 using System.Collections.Generic;
 using System.Windows.Input;
 using System.Collections.ObjectModel;

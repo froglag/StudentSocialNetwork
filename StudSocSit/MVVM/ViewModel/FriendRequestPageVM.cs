@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Model.Get;
+using StudentApplication.Get;
 
 namespace ViewModel;
 public class FriendRequestPageVM : ViewModelBase

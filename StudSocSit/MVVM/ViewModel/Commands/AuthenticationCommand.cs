@@ -1,5 +1,5 @@
 ﻿using ApplicationDbContext;
-using Model.Get;
+using StudentApplication.Get;
 using StudSocSit.Store;
 using System;
 using System.Collections.Generic;

@@ -1,7 +1,7 @@
 ﻿using ApplicationDbContext;
 using ApplicationDbContext.Models;
 using Microsoft.EntityFrameworkCore;
-using Model.Get;
+using StudentApplication.Get;
 using StudSocSit.Store;
 using System;
 using System.Collections.Generic;
