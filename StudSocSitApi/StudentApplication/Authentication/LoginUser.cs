@@ -8,7 +8,9 @@ using System.Text;
 using Microsoft.AspNetCore.Http;
 using System.Text.Json.Nodes;
 using Microsoft.AspNetCore.Identity;
-using ApplicationDbContext.Models;
+using ApplicationDbContext.Authentication;
+using System.ComponentModel.DataAnnotations;
+using Microsoft.Extensions.Configuration;
 
 namespace StudentApplication.Authentication;
 
@@ -18,14 +20,16 @@ namespace StudentApplication.Authentication;
 public class LoginUser
 {
     private readonly UserManager<UserModel> _userManager;
+    private readonly IConfiguration _configuration;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="LoginUser"/> class.
     /// </summary>
     /// <param name="userManager">The user manager for authentication.</param>
-    public LoginUser(UserManager<UserModel> userManager)
+    public LoginUser(UserManager<UserModel> userManager, IConfiguration configuration)
     {
         _userManager = userManager;
+        _configuration = configuration;
     }
 
     /// <summary>
@@ -35,38 +39,39 @@ public class LoginUser
     /// <returns>An <see cref="IResult"/> containing the authentication result.</returns>
     public async Task<IResult> Do(Request request)
     {
-        // Attempt to find the user by username
-        var user = await _userManager.FindByNameAsync(request.UserName);
-
-        // Check if the user exists and the password is correct
-        if (user == null || !await _userManager.CheckPasswordAsync(user, request.Password))
+        var user = await _userManager.FindByNameAsync(request.Username);
+        if (user != null && await _userManager.CheckPasswordAsync(user, request.Password))
         {
-            return Results.Unauthorized();
+            var userRoles = await _userManager.GetRolesAsync(user);
+
+            var authClaims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, user.UserName),
+                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                };
+
+            foreach (var userRole in userRoles)
+            {
+                authClaims.Add(new Claim(ClaimTypes.Role, userRole));
+            }
+
+            var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
+
+            var token = new JwtSecurityToken(
+                issuer: _configuration["JWT:ValidIssuer"],
+                audience: _configuration["JWT:ValidAudience"],
+                expires: DateTime.Now.AddHours(3),
+                claims: authClaims,
+                signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
+                );
+
+            return Results.Ok(new
+            {
+                token = new JwtSecurityTokenHandler().WriteToken(token),
+                expiration = token.ValidTo
+            });
         }
-
-        // Create claims for the user's role
-        var claims = new List<Claim> { new(ClaimTypes.Role, user.Role) };
-
-        // Generate a JWT token with the user's claims
-        var jwt = new JwtSecurityToken(
-            issuer: AuthOptions.ISSUER,
-            audience: AuthOptions.AUDIENCE,
-            claims: claims,
-            expires: DateTime.UtcNow.Add(TimeSpan.FromDays(1)),
-            signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
-
-        // Encode the JWT token
-        var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
-
-        // Prepare the result containing the access token and username
-        var result = new
-        {
-            access_token = encodedJwt,
-            username = request.UserName
-        };
-
-        // Return the result as JSON
-        return Results.Json(result);
+        return Results.Unauthorized();
     }
 
     /// <summary>
@@ -74,15 +79,11 @@ public class LoginUser
     /// </summary>
     public class Request
     {
-        /// <summary>
-        /// Gets or sets the user name for login.
-        /// </summary>
-        public string UserName { get; set; } = null!;
+        [Required(ErrorMessage = "User Name is required")]
+        public string Username { get; set; }
 
-        /// <summary>
-        /// Gets or sets the user password for login.
-        /// </summary>
-        public string Password { get; set; } = null!;
+        [Required(ErrorMessage = "Password is required")]
+        public string Password { get; set; }
     }
 }
 

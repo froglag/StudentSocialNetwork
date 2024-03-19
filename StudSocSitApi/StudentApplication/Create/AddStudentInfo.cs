@@ -1,5 +1,7 @@
 ﻿using ApplicationDbContext;
+using ApplicationDbContext.Authentication;
 using ApplicationDbContext.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -18,15 +20,17 @@ namespace StudentApplication.Authentication
     {
         private readonly ReservoomDbContext _context;
         private readonly ILogger _logger;
+        private readonly UserManager<UserModel> _userManager;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AddStudentInfo"/> class.
         /// </summary>
         /// <param name="context">The database context used for data operations.</param>
-        public AddStudentInfo(ReservoomDbContext context, ILogger logger)
+        public AddStudentInfo(ReservoomDbContext context, ILogger logger, UserManager<UserModel> userManager)
         {
             _context = context;
             _logger = logger;
+            _userManager = userManager;
         }
 
         /// <summary>
@@ -35,7 +39,7 @@ namespace StudentApplication.Authentication
         /// <param name="request">The request containing information about the student and user credentials.</param>
         public async Task<IResult> Do(Request request)
         {
-            var user = await _context.User.FirstOrDefaultAsync(u => u.UserId == request.UserId);
+            var user = await _userManager.FindByEmailAsync(request.UserName);
 
             // Check if either UserName or PasswordHash is not null before creating a new student
             if (user == null || request.FirstName == null)
@@ -44,7 +48,7 @@ namespace StudentApplication.Authentication
                 return Results.BadRequest("Invalid request data");
             }
 
-            var studentCheck = await _context.Student.FirstOrDefaultAsync(s => s.UserId == request.UserId);
+            var studentCheck = await _context.Student.FirstOrDefaultAsync(s => s.UserId == user.Id);
 
             if(studentCheck != null)
             {
@@ -58,11 +62,9 @@ namespace StudentApplication.Authentication
                 FirstName = request.FirstName,
                 LastName = request.LastName,
                 Email = request.Email,
-                PhoneNumber = request.PhoneNumber,
                 FacultyName = request.FacultyName,
                 Specialization = request.Specialization,
-
-                UserId = request.UserId,
+                User = user
             };
 
             try
@@ -85,14 +87,13 @@ namespace StudentApplication.Authentication
         /// </summary>
         public class Request
         {
-            public string FirstName { get; set; } = null!;
+            public string? FirstName { get; set; }
             public string? LastName { get; set; }
             public string? Email { get; set; }
-            public string? PhoneNumber { get; set; }
             public string? FacultyName { get; set; }
             public string? Specialization { get; set; }
 
-            public int UserId { get; set; }
+            public string UserName { get; set; }
         }
     }
 }

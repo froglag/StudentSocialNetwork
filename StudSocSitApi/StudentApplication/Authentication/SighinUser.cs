@@ -1,6 +1,7 @@
 ﻿using ApplicationDbContext;
-using ApplicationDbContext.Models;
+using ApplicationDbContext.Authentication;
 using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 
 namespace StudentApplication.Authentication;
 
@@ -27,24 +28,21 @@ public class SighinUser
     /// <returns>An <see cref="IResult"/> indicating the result of the operation.</returns>
     public async Task<IResult> Do(Request request)
     {
-        // Create a new user with the provided information
-        var user = new UserModel
+        var userExists = await _userManager.FindByNameAsync(request.Username);
+        if (userExists != null)
+            return Results.BadRequest("User already exists!");
+
+        UserModel user = new UserModel()
         {
-            UserName = request.UserName,
-            Role = request.Role,
+            Email = request.Email,
+            SecurityStamp = Guid.NewGuid().ToString(),
+            UserName = request.Username
         };
-
-        // Attempt to create the user using the user manager
         var result = await _userManager.CreateAsync(user, request.Password);
+        if (!result.Succeeded)
+            return Results.Problem("User creation failed! Please check user details and try again.");
 
-        // Check if the user creation was successful
-        if (result.Succeeded)
-        {
-            return Results.Ok();
-        }
-
-        // Return a BadRequest result with the error description if user creation fails
-        return Results.BadRequest("Request error: " + result.Errors.FirstOrDefault()?.Description);
+        return Results.Created("User created successfully!", result);
     }
 
     /// <summary>
@@ -52,19 +50,14 @@ public class SighinUser
     /// </summary>
     public class Request
     {
-        /// <summary>
-        /// Gets or sets the user name.
-        /// </summary>
-        public string UserName { get; set; } = null!;
+        [Required(ErrorMessage = "User Name is required")]
+        public string Username { get; set; }
 
-        /// <summary>
-        /// Gets or sets the user password.
-        /// </summary>
-        public string Password { get; set; } = null!;
+        [EmailAddress]
+        [Required(ErrorMessage = "Email is required")]
+        public string Email { get; set; }
 
-        /// <summary>
-        /// Gets or sets the user role.
-        /// </summary>
-        public string Role { get; set; } = null!;
+        [Required(ErrorMessage = "Password is required")]
+        public string Password { get; set; }
     }
 }

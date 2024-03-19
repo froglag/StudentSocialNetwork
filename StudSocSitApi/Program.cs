@@ -5,12 +5,13 @@ using Microsoft.OpenApi.Models;
 using System.Reflection;
 using ApplicationDbContext;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using ApplicationDbContext.Authentication;
 
 var builder = WebApplication.CreateBuilder(args);
 
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -31,30 +32,37 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
-    {
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            // указывает, будет ли валидироваться издатель при валидации токена
-            ValidateIssuer = true,
-            // строка, представляющая издателя
-            ValidIssuer = AuthOptions.ISSUER,
-            // будет ли валидироваться потребитель токена
-            ValidateAudience = true,
-            // установка потребителя токена
-            ValidAudience = AuthOptions.AUDIENCE,
-            // будет ли валидироваться время существования
-            ValidateLifetime = true,
-            // установка ключа безопасности
-            IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
-            // валидация ключа безопасности
-            ValidateIssuerSigningKey = true,
-        };
-    });
-
 var connectionString = builder.Configuration.GetConnectionString("Default");
 builder.Services.AddDbContext<ReservoomDbContext>(option => option.UseSqlServer(connectionString));
+
+builder.Services.AddIdentity<UserModel, IdentityRole>()
+    .AddEntityFrameworkStores<ReservoomDbContext>()
+    .AddDefaultTokenProviders();
+
+var audience = builder.Configuration.GetValue<string>("JWT:ValidAudience");
+var issuer = builder.Configuration.GetValue<string>("JWT:ValidIssuer");
+var signingKey = builder.Configuration.GetValue<string>("JWT:Secret");
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+    .AddJwtBearer(options =>
+{
+    options.SaveToken = true;
+    options.RequireHttpsMetadata = false;
+    options.TokenValidationParameters = new TokenValidationParameters()
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidAudience = audience,
+        ValidIssuer = issuer,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(signingKey))
+    };
+});
+
 
 var app = builder.Build();
 
@@ -69,7 +77,6 @@ if (app.Environment.IsDevelopment())
 }
 
 
-
 app.UseDeveloperExceptionPage();
 app.UseHttpsRedirection();
 
@@ -82,12 +89,3 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
-
-public class AuthOptions
-{
-    public const string ISSUER = "MyAuthServer";
-    public const string AUDIENCE = "MyAuthClient";
-    const string KEY = "dffdfdfdfdfdfdfdfdfdfdfdf";
-    public static SymmetricSecurityKey GetSymmetricSecurityKey() =>
-        new SymmetricSecurityKey(Encoding.UTF8.GetBytes(KEY));
-}

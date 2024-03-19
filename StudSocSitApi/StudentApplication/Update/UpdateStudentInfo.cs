@@ -49,8 +49,6 @@ namespace StudentApplication.Update
                     studentIdentity.LastName = request.LastName;
                 if (request.Email != null)
                     studentIdentity.Email = request.Email;
-                if (request.PhoneNumber != null)
-                    studentIdentity.PhoneNumber = request.PhoneNumber;
                 if (request.FacultyName != null)
                     studentIdentity.FacultyName = request.FacultyName;
                 if (request.Specialization != null)

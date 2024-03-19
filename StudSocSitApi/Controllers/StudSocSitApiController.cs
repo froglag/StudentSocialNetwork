@@ -3,13 +3,14 @@ using Microsoft.AspNetCore.Mvc;
 using StudentApplication.Create;
 using ApplicationDbContext;
 using StudentApplication.Get;
-using ApplicationDbContext.Models;
 using StudentApplication.Delete;
 using StudentApplication.Update;
 using StudentApplication.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using ApplicationDbContext.Authentication;
+using Microsoft.Extensions.Configuration;
 
 namespace StudSocSitApi.Controllers;
 
@@ -23,6 +24,7 @@ public class StudSocSitApiController : ControllerBase
     private readonly ReservoomDbContext _context;
     private readonly ILogger _logger;
     private readonly UserManager<UserModel> _userManager;
+    private readonly IConfiguration _configuration;
     private readonly AddStudentInfo _addStudentInfo;
     private readonly AddChatToDb _addChatToDb;
     private readonly AddFriendRequestToDb _addFriendRequestToDb;
@@ -39,13 +41,14 @@ public class StudSocSitApiController : ControllerBase
     /// <param name="context">The database context.</param>
     /// <param name="userManager">The user manager.</param>
     /// <param name="logger">The logger.</param>
-    public StudSocSitApiController(ReservoomDbContext context, UserManager<UserModel> userManager, ILogger logger)
+    public StudSocSitApiController(ReservoomDbContext context, UserManager<UserModel> userManager, ILogger logger, IConfiguration configuration)
     {
         _context = context;
         _logger = logger;
         _userManager = userManager;
+        _configuration = configuration;
 
-        _addStudentInfo = new AddStudentInfo(_context, _logger);
+        _addStudentInfo = new AddStudentInfo(_context, _logger, _userManager);
         _addChatToDb = new AddChatToDb(_context, _logger);
         _addFriendRequestToDb = new AddFriendRequestToDb(_context, _logger);
         _addFriendToDb = new AddFriendToDb(_context, _logger);
@@ -83,7 +86,7 @@ public class StudSocSitApiController : ControllerBase
     /// <param name="request">The request containing friend request information.</param>
     /// <returns>The result of the operation.</returns>
     [HttpPost("addfriendrequest")]
-    [Authorize(Roles = "student")]
+    [Authorize(Roles = UserRoles.User)]
     public async Task<IActionResult> AddFriendRequestToDb([FromBody] AddFriendRequestToDb.Request request) => Ok(await _addFriendRequestToDb.Do(request));
 
     /// <summary>
@@ -92,7 +95,7 @@ public class StudSocSitApiController : ControllerBase
     /// <param name="request">The request containing friend information.</param>
     /// <returns>The result of the operation.</returns>
     [HttpPost("addfriend")]
-    [Authorize(Roles = "student")]
+    [Authorize(Roles = UserRoles.User)]
     public async Task<IActionResult> AddFriendToDb([FromBody] AddFriendToDb.Request request) => Ok(await _addFriendToDb.Do(request));
 
     /// <summary>
@@ -101,7 +104,7 @@ public class StudSocSitApiController : ControllerBase
     /// <param name="request">The request containing message information.</param>
     /// <returns>The result of the operation.</returns>
     [HttpPost("addmessage")]
-    [Authorize(Roles = "student")]
+    [Authorize(Roles = "                        ")]
     public async Task<IActionResult> AddMessageToDb([FromBody] AddMessageToDb.Request request) => Ok(await _addMessageToDb.Do(request));
 
     /// <summary>
@@ -110,7 +113,7 @@ public class StudSocSitApiController : ControllerBase
     /// <param name="request">The request containing login information.</param>
     /// <returns>The result of the authentication operation.</returns>
     [HttpPost("login")]
-    public IActionResult AuthenticateUser([FromBody] LoginUser.Request request) => Ok(new LoginUser(_userManager).Do(request));
+    public IActionResult AuthenticateUser([FromBody] LoginUser.Request request) => Ok(new LoginUser(_userManager, _configuration).Do(request));
 
     /// <summary>
     /// Handles the registration of a new user and returns the result as an <see cref="IActionResult"/>.
@@ -127,32 +130,8 @@ public class StudSocSitApiController : ControllerBase
     /// <param name="id">The student identifier.</param>
     /// <returns>The result of the operation.</returns>
     [HttpGet("student/{id}")]
-    [Authorize(Roles = "student")]
-    public async Task<IActionResult> GetStudentInfoById(int id) 
-    {
-        var user = User;  // Retrieve the current user principal
-
-        if (user == null)
-        {
-            return Unauthorized(); // User is not authenticated
-        }
-
-        var authenticatedUser = await _userManager.GetUserAsync(user);
-
-        if (authenticatedUser == null || authenticatedUser.Student == null)
-        {
-            return NotFound(); // User or associated student not found
-        }
-
-        var isFriend = await _context.Friendship
-            .AnyAsync(fs => fs.StudentId == authenticatedUser.Student.StudentId && fs.FriendId == id);
-
-        if (!isFriend)
-        {
-            return Forbid();
-        }
-        return Ok(await _getStudentInfoById.Do(id));
-    }
+    [Authorize(Roles = UserRoles.User)]
+    public async Task<IActionResult> GetStudentInfoById(int id) => Ok(await _getStudentInfoById.Do(id));
 
     /// <summary>
     /// Gets chat messages based on the provided chat identifier.
@@ -160,7 +139,7 @@ public class StudSocSitApiController : ControllerBase
     /// <param name="id">The chat identifier.</param>
     /// <returns>The result of the operation.</returns>
     [HttpGet("chat/{id}")]
-    [Authorize(Roles = "student")]
+    [Authorize(Roles = UserRoles.User)]
     public async Task<IActionResult> GetChatMessages(int id) => Ok(await _getChatMessages.Do(id));
 
     /// <summary>
@@ -169,7 +148,7 @@ public class StudSocSitApiController : ControllerBase
     /// <param name="request">The request containing updated student information.</param>
     /// <returns>The result of the operation.</returns>
     [HttpPut]
-    [Authorize(Roles = "student")]
+    [Authorize(Roles = UserRoles.User)]
     public async Task<IActionResult> UpdateStudentInfo([FromBody] UpdateStudentInfo.Request request) => Ok(await _updateStudentInfo.Do(request));
 
     /// <summary>
@@ -178,7 +157,7 @@ public class StudSocSitApiController : ControllerBase
     /// <param name="request">The request containing friend request information.</param>
     /// <returns>The result of the operation.</returns>
     [HttpDelete("frequest")]
-    [Authorize(Roles = "student")]
+    [Authorize(Roles = UserRoles.User)]
     public async Task<IActionResult> DeleteFriendRequest([FromBody] DeleteFriendRequest.Request request) => Ok(await _deleteFriendRequest.Do(request));
 }
 
