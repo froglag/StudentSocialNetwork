@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ApplicationDbContext.Migrations
 {
     [DbContext(typeof(ReservoomDbContext))]
-    [Migration("20240319173021_AuthenticationAdded")]
-    partial class AuthenticationAdded
+    [Migration("20240320211738_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

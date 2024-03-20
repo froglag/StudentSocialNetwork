@@ -9,7 +9,6 @@ public class ReservoomDbContext : IdentityDbContext<UserModel>
 {
     public ReservoomDbContext(DbContextOptions<ReservoomDbContext> options) : base(options)
     {
-        Database.EnsureCreated();
     }
 
     public DbSet<UserModel> User {  get; set; }

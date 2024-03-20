@@ -41,7 +41,7 @@ public class StudSocSitApiController : ControllerBase
     /// <param name="context">The database context.</param>
     /// <param name="userManager">The user manager.</param>
     /// <param name="logger">The logger.</param>
-    public StudSocSitApiController(ReservoomDbContext context, UserManager<UserModel> userManager, ILogger logger, IConfiguration configuration)
+    public StudSocSitApiController(ReservoomDbContext context, UserManager<UserModel> userManager, ILogger<StudSocSitApiController> logger, IConfiguration configuration)
     {
         _context = context;
         _logger = logger;
@@ -121,7 +121,7 @@ public class StudSocSitApiController : ControllerBase
     /// <param name="request">The request containing user registration information.</param>
     /// <returns>An <see cref="IActionResult"/> representing the result of the user registration.</returns>
     [HttpPost("signin")]
-    public async Task<IActionResult> SigninUser([FromBody] SighinUser.Request request) => Ok(await new SighinUser(_userManager).Do(request));
+    public async Task<IActionResult> SigninUser([FromQuery] SighinUser.Request request) => Ok(await new SighinUser(_userManager).Do(request));
 
 
     /// <summary>
