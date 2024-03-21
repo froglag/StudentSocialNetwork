@@ -11,14 +11,16 @@ namespace StudentApplication.Authentication;
 public class SighinUser
 {
     private UserManager<UserModel> _userManager;
+    private RoleManager<IdentityRole> _roleManager;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="SighinUser"/> class.
     /// </summary>
     /// <param name="userManager">The user manager for creating and managing users.</param>
-    public SighinUser(UserManager<UserModel> userManager)
+    public SighinUser(UserManager<UserModel> userManager, RoleManager<IdentityRole> roleManager)
     {
         _userManager = userManager;
+        _roleManager = roleManager;
     }
 
     /// <summary>
@@ -41,6 +43,16 @@ public class SighinUser
         var result = await _userManager.CreateAsync(user, request.Password);
         if (!result.Succeeded)
             return Results.Problem("User creation failed! Please check user details and try again.");
+
+        if (!await _roleManager.RoleExistsAsync(UserRoles.Admin))
+            await _roleManager.CreateAsync(new IdentityRole(UserRoles.Admin));
+        if (!await _roleManager.RoleExistsAsync(UserRoles.User))
+            await _roleManager.CreateAsync(new IdentityRole(UserRoles.User));
+
+        if (await _roleManager.RoleExistsAsync(UserRoles.User))
+        {
+            await _userManager.AddToRoleAsync(user, UserRoles.User);
+        }
 
         return Results.Created("User created successfully!", result);
     }

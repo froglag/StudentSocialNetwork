@@ -35,7 +35,14 @@ builder.Services.AddSwaggerGen(options =>
 var connectionString = builder.Configuration.GetConnectionString("Default");
 builder.Services.AddDbContext<ReservoomDbContext>(option => option.UseSqlServer(connectionString));
 
-builder.Services.AddIdentity<UserModel, IdentityRole>()
+builder.Services.AddIdentity<UserModel, IdentityRole>(option =>
+{
+    option.Password.RequireDigit = false;
+    option.Password.RequireLowercase = false;
+    option.Password.RequireNonAlphanumeric = false;
+    option.Password.RequireUppercase = false;
+    option.Password.RequiredLength = 1;
+})
     .AddEntityFrameworkStores<ReservoomDbContext>()
     .AddDefaultTokenProviders();
 

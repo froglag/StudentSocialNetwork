@@ -39,7 +39,7 @@ namespace StudentApplication.Authentication
         /// <param name="request">The request containing information about the student and user credentials.</param>
         public async Task<IResult> Do(Request request)
         {
-            var user = await _userManager.FindByEmailAsync(request.UserName);
+            var user = await _userManager.FindByNameAsync(request.UserName);
 
             // Check if either UserName or PasswordHash is not null before creating a new student
             if (user == null || request.FirstName == null)

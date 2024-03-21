@@ -25,6 +25,7 @@ public class StudSocSitApiController : ControllerBase
     private readonly ILogger _logger;
     private readonly UserManager<UserModel> _userManager;
     private readonly IConfiguration _configuration;
+    private readonly RoleManager<IdentityRole> _roleManager;
     private readonly AddStudentInfo _addStudentInfo;
     private readonly AddChatToDb _addChatToDb;
     private readonly AddFriendRequestToDb _addFriendRequestToDb;
@@ -41,12 +42,13 @@ public class StudSocSitApiController : ControllerBase
     /// <param name="context">The database context.</param>
     /// <param name="userManager">The user manager.</param>
     /// <param name="logger">The logger.</param>
-    public StudSocSitApiController(ReservoomDbContext context, UserManager<UserModel> userManager, ILogger<StudSocSitApiController> logger, IConfiguration configuration)
+    public StudSocSitApiController(ReservoomDbContext context, UserManager<UserModel> userManager, ILogger<StudSocSitApiController> logger, IConfiguration configuration, RoleManager<IdentityRole> roleManager)
     {
         _context = context;
         _logger = logger;
         _userManager = userManager;
         _configuration = configuration;
+        _roleManager = roleManager;
 
         _addStudentInfo = new AddStudentInfo(_context, _logger, _userManager);
         _addChatToDb = new AddChatToDb(_context, _logger);
@@ -68,7 +70,7 @@ public class StudSocSitApiController : ControllerBase
     /// <param name="request">The request containing student information.</param>
     /// <returns>The result of the operation.</returns>
     [HttpPost("addstudent")]
-    [Authorize(Roles = "student")]
+    [Authorize(Roles = UserRoles.User)]
     public async Task<IActionResult> AddStudentToDb([FromBody] AddStudentInfo.Request request) => Ok(await _addStudentInfo.Do(request));
 
     /// <summary>
@@ -77,7 +79,7 @@ public class StudSocSitApiController : ControllerBase
     /// <param name="request">The request containing chat information.</param>
     /// <returns>The result of the operation.</returns>
     [HttpPost("addchat")]
-    [Authorize(Roles = "student")]
+    [Authorize(Roles = UserRoles.User)]
     public async Task<IActionResult> AddChatToDb([FromBody] AddChatToDb.Request request) => Ok(await _addChatToDb.Do(request));
 
     /// <summary>
@@ -104,7 +106,7 @@ public class StudSocSitApiController : ControllerBase
     /// <param name="request">The request containing message information.</param>
     /// <returns>The result of the operation.</returns>
     [HttpPost("addmessage")]
-    [Authorize(Roles = "                        ")]
+    [Authorize(Roles = UserRoles.User)]
     public async Task<IActionResult> AddMessageToDb([FromBody] AddMessageToDb.Request request) => Ok(await _addMessageToDb.Do(request));
 
     /// <summary>
@@ -113,7 +115,7 @@ public class StudSocSitApiController : ControllerBase
     /// <param name="request">The request containing login information.</param>
     /// <returns>The result of the authentication operation.</returns>
     [HttpPost("login")]
-    public IActionResult AuthenticateUser([FromBody] LoginUser.Request request) => Ok(new LoginUser(_userManager, _configuration).Do(request));
+    public async Task<IActionResult> AuthenticateUser([FromBody] LoginUser.Request request) => Ok(await new LoginUser(_userManager, _configuration).Do(request));
 
     /// <summary>
     /// Handles the registration of a new user and returns the result as an <see cref="IActionResult"/>.
@@ -121,7 +123,7 @@ public class StudSocSitApiController : ControllerBase
     /// <param name="request">The request containing user registration information.</param>
     /// <returns>An <see cref="IActionResult"/> representing the result of the user registration.</returns>
     [HttpPost("signin")]
-    public async Task<IActionResult> SigninUser([FromQuery] SighinUser.Request request) => Ok(await new SighinUser(_userManager).Do(request));
+    public async Task<IActionResult> SigninUser([FromBody] SighinUser.Request request) => Ok(await new SighinUser(_userManager, _roleManager).Do(request));
 
 
     /// <summary>
