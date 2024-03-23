@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using StudentApplication.Create;
 using ApplicationDbContext;
 using StudentApplication.Get;
@@ -10,7 +9,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ApplicationDbContext.Authentication;
-using Microsoft.Extensions.Configuration;
 
 namespace StudSocSitApi.Controllers;
 
@@ -34,6 +32,7 @@ public class StudentApiController : ControllerBase
     private readonly GetStudentInfoById _getStudentInfoById;
     private readonly GetChatMessages _getChatMessages;
     private readonly GetFriendRequests _getFriendRequest;
+    private readonly GetAllFriendsInfo _getAllFriendsInfo;
     private readonly UpdateStudentInfo _updateStudentInfo;
     private readonly DeleteFriendRequest _deleteFriendRequest;
 
@@ -61,6 +60,7 @@ public class StudentApiController : ControllerBase
         _getStudentInfoById = new GetStudentInfoById(_context, _logger);
         _getChatMessages = new GetChatMessages(_context, _logger);
         _getFriendRequest = new GetFriendRequests(_context, _logger);
+        _getAllFriendsInfo = new GetAllFriendsInfo(_context, _logger);
 
         _updateStudentInfo = new UpdateStudentInfo(_context, _logger);
 
@@ -74,7 +74,23 @@ public class StudentApiController : ControllerBase
     /// <returns>The result of the operation.</returns>
     [HttpPost("addchat")]
     [Authorize(Roles = UserRoles.User)]
-    public async Task<IActionResult> AddChatToDb([FromBody] AddChatToDb.Request request) => Ok(await _addChatToDb.Do(request));
+    public async Task<IActionResult> AddChatToDb([FromBody] AddChatToDb.Request request)
+    {
+        var student = await _context.Student.Include(s => s.User).FirstOrDefaultAsync(s => s.User.UserName == User.Identity.Name);
+
+        if (student == null)
+        {
+            return NotFound("User not found");
+        }
+
+        if(student.StudentId != request.FirstStudentId)
+        {
+            return BadRequest("You can't create chat through another student");
+        }
+        await _addChatToDb.Do(request);
+        return Ok();
+    }
+        
 
     /// <summary>
     /// Adds a friend request to the database.
@@ -107,16 +123,58 @@ public class StudentApiController : ControllerBase
     /// <returns>The result of the operation.</returns>
     [HttpPost("addfriend")]
     [Authorize(Roles = UserRoles.User)]
-    public async Task<IActionResult> AddFriendToDb([FromBody] AddFriendToDb.Request request) => Ok(await _addFriendToDb.Do(request));
+    public async Task<IActionResult> AddFriendToDb([FromBody] AddFriendToDb.Request request)
+    {
+        var student = await _context.Student.Include(s => s.User).FirstOrDefaultAsync(s => s.User.UserName == User.Identity.Name);
+
+        if (student == null)
+        {
+            return NotFound("User not found");
+        }
+
+        if (student.StudentId != request.StudentId)
+        {
+            return BadRequest("You can't add friend through another user");
+        }
+        await _addFriendToDb.Do(request);
+        return Ok();
+    }
+        
 
     /// <summary>
     /// Adds a message to the database.
     /// </summary>
-    /// <param name="request">The request containing message information.</param>
+    /// <param name="text">The request containing message information.</param>
     /// <returns>The result of the operation.</returns>
     [HttpPost("addmessage")]
     [Authorize(Roles = UserRoles.User)]
-    public async Task<IActionResult> AddMessageToDb([FromBody] AddMessageToDb.Request request) => Ok(await _addMessageToDb.Do(request));
+    public async Task<IActionResult> AddMessageToDb([FromBody] string text)
+    {
+        var student = await _context.Student.Include(s => s.User).FirstOrDefaultAsync(s => s.User.UserName == User.Identity.Name);
+
+        if (student == null)
+        {
+            return NotFound("User not found");
+        }
+
+        var chat = await _context.StudentChat.FirstOrDefaultAsync(sc => sc.StudentId == student.StudentId);
+
+        if (chat == null)
+        {
+            return NotFound("Chat not found");
+        }
+
+        AddMessageToDb.Request request = new()
+        {
+            AuthorId = student.StudentId,
+            ChatId = chat.ChatId,
+            Text = text
+        };
+
+        await _addMessageToDb.Do(request);
+        return Ok();
+    }
+        
 
     /// <summary>
     /// Authenticates a user based on the provided login information.
@@ -131,12 +189,12 @@ public class StudentApiController : ControllerBase
     /// </summary>
     /// <param name="request">The request containing user registration information.</param>
     /// <returns>An <see cref="IActionResult"/> representing the result of the user registration.</returns>
-    [HttpPost("signin")]
-    public async Task<IActionResult> SigninUser([FromBody] SighinUser.Request request)
+    [HttpPost("signup")]
+    public async Task<IActionResult> SigninUser([FromBody] SignupUser.Request request)
     {
         try
         {
-            await new SighinUser(_userManager, _roleManager).Do(request);
+            await new SignupUser(_userManager, _roleManager).Do(request);
             await _addStudentInfo.Do(new AddStudentInfo.Request
             {
                 UserName = request.Username
@@ -194,7 +252,7 @@ public class StudentApiController : ControllerBase
     }
 
     /// <summary>
-    /// Gets FriendRequest of student by id.
+    /// Gets FriendRequest of student.
     /// </summary>
     /// <param name="id">The student identifier.</param>
     /// <returns>The result of the operation.</returns>
@@ -209,6 +267,23 @@ public class StudentApiController : ControllerBase
         }
 
         return Ok(await _getFriendRequest.Do(student.StudentId));
+    }
+
+    /// <summary>
+    /// Gets All Friends of student.
+    /// </summary>
+    /// <returns>The result of the operation.</returns>
+    [HttpGet("allfriendsinfo")]
+    [Authorize(Roles = UserRoles.User)]
+    public async Task<IActionResult> GetAllFriends()
+    {
+        var student = await _context.Student.Include(s => s.User).FirstOrDefaultAsync(s => s.User.UserName == User.Identity.Name);
+        if (student == null)
+        {
+            return NotFound("User not found");
+        }
+
+        return Ok(await _getAllFriendsInfo.Do(student.StudentId));
     }
 
     /// <summary>

@@ -57,6 +57,17 @@ public class AddChatToDb
 
         ChatModel chat = new();
 
+        try
+        {
+            await _context.Chat.AddAsync(chat);
+            await _context.SaveChangesAsync();
+        }catch(Exception ex)
+        {
+            _logger.LogError("Failed to save chat to database:"+ ex.Message);
+            return Results.Problem(detail: ex.Message);
+        }
+        
+
         StudentChatModel firstStudentChat = new()
         {
             StudentId = request.FirstStudentId,
@@ -72,7 +83,6 @@ public class AddChatToDb
         await using var transaction = _context.Database.BeginTransaction();
         try
         {
-            await _context.Chat.AddAsync(chat);
             await _context.StudentChat.AddAsync(firstStudentChat);
             await _context.StudentChat.AddAsync(secondStudentChat);
 

@@ -8,16 +8,16 @@ namespace StudentApplication.Authentication;
 /// <summary>
 /// Handles the creation of a new user and user registration.
 /// </summary>
-public class SighinUser
+public class SignupUser
 {
     private UserManager<UserModel> _userManager;
     private RoleManager<IdentityRole> _roleManager;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="SighinUser"/> class.
+    /// Initializes a new instance of the <see cref="SignupUser"/> class.
     /// </summary>
     /// <param name="userManager">The user manager for creating and managing users.</param>
-    public SighinUser(UserManager<UserModel> userManager, RoleManager<IdentityRole> roleManager)
+    public SignupUser(UserManager<UserModel> userManager, RoleManager<IdentityRole> roleManager)
     {
         _userManager = userManager;
         _roleManager = roleManager;

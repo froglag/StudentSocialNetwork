@@ -38,7 +38,7 @@ namespace StudentApplication.Create
             var friend = await _context.Student.AnyAsync(f => f.StudentId == request.FriendId);
             var findFriendship = await _context.Friendship.AnyAsync(f => (f.StudentId == request.StudentId && f.FriendId == request.FriendId) || (f.StudentId == request.FriendId && f.FriendId == request.StudentId));
             var friendRequests = await _context.FriendRequest
-                .FirstOrDefaultAsync(fr => fr.SenderId == request.StudentId && fr.ReceiverId == request.FriendId);
+                .FirstOrDefaultAsync(fr => fr.ReceiverId == request.StudentId && fr.SenderId == request.FriendId);
 
             if (request.StudentId == request.FriendId)
             {

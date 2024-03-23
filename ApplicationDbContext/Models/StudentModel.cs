@@ -22,11 +22,11 @@ public class StudentModel
     public string UserId { get; set; }
     public UserModel User { get; set; } = null!;
 
-    public ICollection<FriendshipModel>? Friendships { get; set; }
-    public ICollection<FriendshipModel>? FriendshipsAsFriend { get; set; }
+    public IEnumerable<FriendshipModel>? Friendships { get; set; }
+    public IEnumerable<FriendshipModel>? FriendshipsAsFriend { get; set; }
 
-    public ICollection<FriendRequestModel>? FriendRequests { get; set; }
-    public ICollection<FriendRequestModel>? Requests { get; set; }
+    public IEnumerable<FriendRequestModel>? FriendRequests { get; set; }
+    public IEnumerable<FriendRequestModel>? Requests { get; set; }
 
-    public ICollection<StudentChatModel>? StudentChats { get; set;}
+    public IEnumerable<StudentChatModel>? StudentChats { get; set;}
 }
