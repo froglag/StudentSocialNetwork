@@ -1,9 +1,5 @@
 ﻿using ApplicationDbContext;
-using ApplicationDbContext.Models;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Metadata.Ecma335;
 
 namespace StudentApplication.Update
 {
@@ -29,10 +25,11 @@ namespace StudentApplication.Update
         /// Updates student information in the database based on the provided request.
         /// </summary>
         /// <param name="request">The request containing information about the student and the updates to be applied.</param>
-        public async Task<IResult> Do(Request request)
+        /// <param name="studentId">Identification of student</param>
+        public async Task<IResult> Do(Request request, int studentId)
         {
             // Find the student based on the provided student identifier
-            var studentIdentity = await _context.Student.FirstOrDefaultAsync(x => x.StudentId == request.StudentId);
+            var studentIdentity = await _context.Student.FirstOrDefaultAsync(x => x.StudentId == studentId);
 
             if (studentIdentity is null)
             {
@@ -70,9 +67,6 @@ namespace StudentApplication.Update
         /// </summary>
         public class Request
         {
-            // Gets or sets the identifier of the student for whom information is to be updated.
-            public int StudentId { get; set; }
-
             // Gets or sets the updated first name of the student.
             public string? FirstName { get; set; }
 

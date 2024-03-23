@@ -39,7 +39,7 @@ public class AddFriendRequestToDb
         var findFriend = await _context.Friendship.AnyAsync(f => f.StudentId == request.SenderId && f.FriendId == request.ReceiverId);
 
         // If no existing findFriend request or friendship, create a new findFriend request
-        if (!findFriend || !findFriendRequest)
+        if (findFriend || findFriendRequest)
         {
             _logger.LogError("A friendship request has already been added or a friendship already exists");
             return Results.BadRequest("A friendship request has already been added or a friendship already exists");

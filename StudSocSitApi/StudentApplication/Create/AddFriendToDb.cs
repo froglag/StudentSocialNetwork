@@ -57,6 +57,12 @@ namespace StudentApplication.Create
                 return Results.BadRequest("Friendship already exists.");
             }
 
+            if (friendRequests == null)
+            {
+                _logger.LogError("You don't have friendRequest.");
+                return Results.BadRequest("You don't have friendRequest.");
+            }
+
             FriendshipModel friendshipe = new FriendshipModel()
             {
                 StudentId = request.StudentId,

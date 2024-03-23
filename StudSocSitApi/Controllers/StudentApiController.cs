@@ -19,7 +19,7 @@ namespace StudSocSitApi.Controllers;
 /// </summary>
 [Route("[controller]")]
 [ApiController]
-public class StudSocSitApiController : ControllerBase
+public class StudentApiController : ControllerBase
 {
     private readonly ReservoomDbContext _context;
     private readonly ILogger _logger;
@@ -33,16 +33,18 @@ public class StudSocSitApiController : ControllerBase
     private readonly AddMessageToDb _addMessageToDb;
     private readonly GetStudentInfoById _getStudentInfoById;
     private readonly GetChatMessages _getChatMessages;
+    private readonly GetFriendRequests _getFriendRequest;
     private readonly UpdateStudentInfo _updateStudentInfo;
     private readonly DeleteFriendRequest _deleteFriendRequest;
 
+
     /// <summary>
-    /// Initializes a new instance of the <see cref="StudSocSitApiController"/> class.
+    /// Initializes a new instance of the <see cref="StudentApiController"/> class.
     /// </summary>
     /// <param name="context">The database context.</param>
     /// <param name="userManager">The user manager.</param>
     /// <param name="logger">The logger.</param>
-    public StudSocSitApiController(ReservoomDbContext context, UserManager<UserModel> userManager, ILogger<StudSocSitApiController> logger, IConfiguration configuration, RoleManager<IdentityRole> roleManager)
+    public StudentApiController(ReservoomDbContext context, UserManager<UserModel> userManager, ILogger<StudentApiController> logger, IConfiguration configuration, RoleManager<IdentityRole> roleManager)
     {
         _context = context;
         _logger = logger;
@@ -58,20 +60,12 @@ public class StudSocSitApiController : ControllerBase
 
         _getStudentInfoById = new GetStudentInfoById(_context, _logger);
         _getChatMessages = new GetChatMessages(_context, _logger);
+        _getFriendRequest = new GetFriendRequests(_context, _logger);
 
         _updateStudentInfo = new UpdateStudentInfo(_context, _logger);
 
         _deleteFriendRequest = new DeleteFriendRequest(_context, _logger);
     }
-
-    /// <summary>
-    /// Adds a student to the database.
-    /// </summary>
-    /// <param name="request">The request containing student information.</param>
-    /// <returns>The result of the operation.</returns>
-    [HttpPost("addstudent")]
-    [Authorize(Roles = UserRoles.User)]
-    public async Task<IActionResult> AddStudentToDb([FromBody] AddStudentInfo.Request request) => Ok(await _addStudentInfo.Do(request));
 
     /// <summary>
     /// Adds a chat to the database.
@@ -89,7 +83,22 @@ public class StudSocSitApiController : ControllerBase
     /// <returns>The result of the operation.</returns>
     [HttpPost("addfriendrequest")]
     [Authorize(Roles = UserRoles.User)]
-    public async Task<IActionResult> AddFriendRequestToDb([FromBody] AddFriendRequestToDb.Request request) => Ok(await _addFriendRequestToDb.Do(request));
+    public async Task<IActionResult> AddFriendRequestToDb([FromBody] AddFriendRequestToDb.Request request)
+    {
+        var student = await _context.Student.Include(s => s.User).FirstOrDefaultAsync(s => s.User.UserName == User.Identity.Name);
+        
+        if (student == null)
+        {
+            return NotFound("User not found");
+        }
+        if (student.StudentId != request.SenderId)
+        {
+            return BadRequest("You can't send a request through another user");
+        }
+        await _addFriendRequestToDb.Do(request);
+        return Ok();
+    }
+    
 
     /// <summary>
     /// Adds a friend to the database.
@@ -123,17 +132,84 @@ public class StudSocSitApiController : ControllerBase
     /// <param name="request">The request containing user registration information.</param>
     /// <returns>An <see cref="IActionResult"/> representing the result of the user registration.</returns>
     [HttpPost("signin")]
-    public async Task<IActionResult> SigninUser([FromBody] SighinUser.Request request) => Ok(await new SighinUser(_userManager, _roleManager).Do(request));
+    public async Task<IActionResult> SigninUser([FromBody] SighinUser.Request request)
+    {
+        try
+        {
+            await new SighinUser(_userManager, _roleManager).Do(request);
+            await _addStudentInfo.Do(new AddStudentInfo.Request
+            {
+                UserName = request.Username
+            });
+        }
+        catch(Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
 
+        return Ok();
+    }  
+
+
+    /// <summary>
+    /// Gets information about a student by their identifier.
+    /// </summary>
+    /// <returns>The result of the operation.</returns>
+    [HttpGet("userinfo")]
+    [Authorize(Roles = UserRoles.User)]
+    public async Task<IActionResult> GetStudentInfoById()
+    {
+        var student = await _context.Student.Include(s => s.User).FirstOrDefaultAsync(s => s.User.UserName == User.Identity.Name);
+        if (student == null)
+        {
+            return NotFound("User not found");
+        }
+        
+        return Ok(await _getStudentInfoById.Do(student.StudentId));
+    }
 
     /// <summary>
     /// Gets information about a student by their identifier.
     /// </summary>
     /// <param name="id">The student identifier.</param>
     /// <returns>The result of the operation.</returns>
-    [HttpGet("student/{id}")]
+    [HttpGet("friendinfo/{id}")]
     [Authorize(Roles = UserRoles.User)]
-    public async Task<IActionResult> GetStudentInfoById(int id) => Ok(await _getStudentInfoById.Do(id));
+    public async Task<IActionResult> GetStudentInfoById(int id)
+    {
+        var student = await _context.Student.Include(s => s.User).FirstOrDefaultAsync(s => s.User.UserName == User.Identity.Name);
+        if (student == null)
+        {
+            return NotFound("User not found");
+        }
+
+        var friendExise = await _context.Student.Include(s => s.Friendships).AnyAsync(s => s.StudentId == student.StudentId && s.Friendships.Any(f => f.FriendId == id));
+        
+        if (!friendExise)
+        {
+            return NotFound("Friend not found");
+        }
+
+        return Ok(await _getStudentInfoById.Do(id));
+    }
+
+    /// <summary>
+    /// Gets FriendRequest of student by id.
+    /// </summary>
+    /// <param name="id">The student identifier.</param>
+    /// <returns>The result of the operation.</returns>
+    [HttpGet("friendrequest")]
+    [Authorize(Roles = UserRoles.User)]
+    public async Task<IActionResult> GetFriendRequest()
+    {
+        var student = await _context.Student.Include(s => s.User).FirstOrDefaultAsync(s => s.User.UserName == User.Identity.Name);
+        if (student == null)
+        {
+            return NotFound("User not found");
+        }
+
+        return Ok(await _getFriendRequest.Do(student.StudentId));
+    }
 
     /// <summary>
     /// Gets chat messages based on the provided chat identifier.
@@ -149,9 +225,17 @@ public class StudSocSitApiController : ControllerBase
     /// </summary>
     /// <param name="request">The request containing updated student information.</param>
     /// <returns>The result of the operation.</returns>
-    [HttpPut]
+    [HttpPut("studentinfo")]
     [Authorize(Roles = UserRoles.User)]
-    public async Task<IActionResult> UpdateStudentInfo([FromBody] UpdateStudentInfo.Request request) => Ok(await _updateStudentInfo.Do(request));
+    public async Task<IActionResult> UpdateStudentInfo([FromBody] UpdateStudentInfo.Request request) 
+    {
+        var student = await _context.Student.Include(s => s.User).FirstOrDefaultAsync(s => s.User.UserName == User.Identity.Name);
+
+        if (student == null)
+            return BadRequest("User id not found");
+
+        return Ok(await _updateStudentInfo.Do(request, student.StudentId));
+    }
 
     /// <summary>
     /// Deletes a friend request from the database.

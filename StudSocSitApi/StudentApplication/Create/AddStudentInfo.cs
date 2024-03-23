@@ -42,7 +42,7 @@ namespace StudentApplication.Authentication
             var user = await _userManager.FindByNameAsync(request.UserName);
 
             // Check if either UserName or PasswordHash is not null before creating a new student
-            if (user == null || request.FirstName == null)
+            if (user == null)
             {
                 _logger.LogError("Invalid request data");
                 return Results.BadRequest("Invalid request data");

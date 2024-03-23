@@ -3,6 +3,7 @@ using ApplicationDbContext.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -37,17 +38,33 @@ namespace StudentApplication.Get
             try
             {
                 var student = await _context.Student
-                    .Where(s => s.StudentId == studentId)
-                    .FirstOrDefaultAsync();
+                    .FirstOrDefaultAsync(s => s.StudentId == studentId);
 
                 _logger.LogInformation("Student found");
-                return Results.Json(student);
+                return Results.Ok(new Response
+                {
+                    FirstName = student.FirstName,
+                    LastName = student.LastName,
+                    Email = student.Email,
+                    FacultyName = student.FacultyName,
+                    Specialization = student.Specialization
+                });
             }
             catch (Exception ex)
             {
                 _logger.LogError("Student not found");
                 return Results.NotFound(ex.Message);
             }
+        }
+
+        class Response
+        {
+            public string? FirstName { get; set; }
+            public string? LastName { get; set; }
+            public string? Email { get; set; }
+
+            public string? FacultyName { get; set; }
+            public string? Specialization { get; set; }
         }
     }
 }
