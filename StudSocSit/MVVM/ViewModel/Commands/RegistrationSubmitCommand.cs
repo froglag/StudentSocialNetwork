@@ -1,10 +1,9 @@
-﻿using ApplicationDbContext;
-using ApplicationDbContext.Models;
-using StudentApplication.Create;
+﻿using MVVM.Model;
 using StudSocSit.Store;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -18,21 +17,20 @@ namespace Commands;
 /// </summary>
 public class RegistrationSubmitCommand : CommandBase
 {
-    private AddStudentToDb.Request? _studentInfo;
-    private ReservoomDbContext _context;
+    private SighupVM _signup;
     private NavigationStore _navigationStore;
+    private HttpClient _client;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="RegistrationSubmitCommand"/> class.
     /// </summary>
     /// <param name="studentInfo">The student registration information to be submitted.</param>
-    /// <param name="context">The database context used for data operations.</param>
     /// <param name="navigationStore">The navigation store for managing navigation within the application.</param>
-    public RegistrationSubmitCommand(AddStudentToDb.Request? studentInfo, ReservoomDbContext context, NavigationStore navigationStore)
+    public RegistrationSubmitCommand(SighupVM sighinVM, NavigationStore navigationStore, HttpClient client)
     {
-        _studentInfo = studentInfo;
-        _context = context;
+        _signup = sighinVM;
         _navigationStore = navigationStore;
+        _client = client;
     }
 
     /// <summary>
@@ -42,18 +40,23 @@ public class RegistrationSubmitCommand : CommandBase
     public override void Execute(object? parameter)
     {
         // Check if required registration information is provided
-        if (_studentInfo.UserName == null || _studentInfo.Password == null || _studentInfo.FirstName == null)
+        if (_signup.UserName == null || _signup.Password == null || _signup.FirstName == null || _signup.Email == null)
         {
             MessageBox.Show("Not all fields completed");
         }
         else
         {
             // Add student to the database using the provided information
-            var addStudent = new AddStudentToDb(_context);
-            addStudent.Do(_studentInfo);
+            var addStudent = new AddStudent(_client);
+            addStudent.Do(new AddStudent.Request { 
+                Email = _signup.Email, 
+                FirstName = _signup.FirstName,
+                Password = _signup.Password,
+                Username = _signup.UserName,
+            });
 
             // Navigate to the login view model after successful registration
-            _navigationStore.CurrentViewModel = new LoginVM(_context, _navigationStore);
+            _navigationStore.CurrentViewModel = new LoginVM(_navigationStore);
         }
     }
 }

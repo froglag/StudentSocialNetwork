@@ -1,6 +1,4 @@
-﻿using ApplicationDbContext;
-using ApplicationDbContext.Models;
-using Commands;
+﻿using Commands;
 using StudSocSit.Store;
 using System;
 using System.Collections.Generic;
@@ -12,13 +10,11 @@ using System.Windows.Input;
 namespace ViewModel;
 public class AccountPageVM : ViewModelBase
 {
-    private StudentModel _friend;
 
     public ICommand NavigationToSearchPage { get; }
     public ICommand NavigationToMainPage { get; }
-    public AccountPageVM(ReservoomDbContext context, NavigationStore navigationStore, StudentModel? student, StudentModel friend)
+    public AccountPageVM(NavigationStore navigationStore)
     {
-        _friend = friend;
         NavigationToSearchPage = new NavigateToSearchPageCommand(context, navigationStore, student);
         NavigationToMainPage = new NavigateToMainPageCommand(context, navigationStore, student);
     }

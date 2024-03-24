@@ -1,5 +1,6 @@
 ﻿
 using StudSocSit.Store;
+using System.Configuration.Internal;
 
 namespace ViewModel;
 

@@ -71,5 +71,7 @@ public class SignupUser
 
         [Required(ErrorMessage = "Password is required")]
         public string Password { get; set; }
+
+        public string Firstname { get; set; }
     }
 }

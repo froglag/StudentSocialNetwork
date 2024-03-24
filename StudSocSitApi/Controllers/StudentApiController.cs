@@ -32,6 +32,7 @@ public class StudentApiController : ControllerBase
     private readonly GetStudentInfoById _getStudentInfoById;
     private readonly GetChatMessages _getChatMessages;
     private readonly GetFriendRequests _getFriendRequest;
+    private readonly GetMyFriendRequests _getMyFriendRequest;
     private readonly GetAllFriendsInfo _getAllFriendsInfo;
     private readonly UpdateStudentInfo _updateStudentInfo;
     private readonly DeleteFriendRequest _deleteFriendRequest;
@@ -60,6 +61,7 @@ public class StudentApiController : ControllerBase
         _getStudentInfoById = new GetStudentInfoById(_context, _logger);
         _getChatMessages = new GetChatMessages(_context, _logger);
         _getFriendRequest = new GetFriendRequests(_context, _logger);
+        _getMyFriendRequest = new GetMyFriendRequests(_context, _logger);
         _getAllFriendsInfo = new GetAllFriendsInfo(_context, _logger);
 
         _updateStudentInfo = new UpdateStudentInfo(_context, _logger);
@@ -197,6 +199,7 @@ public class StudentApiController : ControllerBase
             await new SignupUser(_userManager, _roleManager).Do(request);
             await _addStudentInfo.Do(new AddStudentInfo.Request
             {
+                FirstName = request.Firstname,
                 UserName = request.Username
             });
         }
@@ -267,6 +270,25 @@ public class StudentApiController : ControllerBase
         }
 
         return Ok(await _getFriendRequest.Do(student.StudentId));
+    }
+
+    /// <summary>
+    /// Gets FriendRequest of student.
+    /// </summary>
+    /// <param name="id">The student identifier.</param>
+    /// <returns>The result of the operation.</returns>
+    [HttpGet("myfriendrequest")]
+    [Authorize(Roles = UserRoles.User)]
+    public async Task<IActionResult> GetMyFriendRequest()
+    {
+        var student = await _context.Student.Include(s => s.User).FirstOrDefaultAsync(s => s.User.UserName == User.Identity.Name);
+
+        if (student == null)
+        {
+            return NotFound("User not found");
+        }
+
+        return Ok(await _getMyFriendRequest.Do(student.StudentId));
     }
 
     /// <summary>

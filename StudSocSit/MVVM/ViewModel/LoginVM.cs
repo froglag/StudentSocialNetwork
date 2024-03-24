@@ -1,11 +1,5 @@
-﻿using ApplicationDbContext;
-using Commands;
+﻿using Commands;
 using StudSocSit.Store;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace ViewModel;
@@ -15,11 +9,11 @@ public class LoginVM : ViewModelBase
     public ICommand Authentication { get; }
     public ICommand NavigateToSighinPage {  get; }
 
-    public LoginVM(ReservoomDbContext context, NavigationStore navigation)
+    public LoginVM(NavigationStore navigation)
     {
         userAuth = new UserAuth();
-        Authentication = new AuthenticationCommand(context, navigation, userAuth);
-        NavigateToSighinPage = new NavigateToSinginPageCommand(context, navigation);
+        Authentication = new AuthenticationCommand(navigation, userAuth);
+        NavigateToSighinPage = new NavigateToSinginPageCommand(navigation);
     }
 
     public string? UserName

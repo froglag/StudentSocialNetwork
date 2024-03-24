@@ -1,28 +1,23 @@
-﻿using ApplicationDbContext;
-using ApplicationDbContext.Models;
-using Commands;
-using StudentApplication.Create;
+﻿using Commands;
 using StudSocSit.Store;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Net.Http;
 using System.Windows.Input;
 
 namespace ViewModel;
-public class SighinVM : ViewModelBase
+public class SighupVM : ViewModelBase
 {
-    private AddStudentToDb.Request? _addStudentRequest;
+    private HttpClient _client;
+    private AddStudentRequest _addStudentRequest;
+
     public ICommand RegistrationSubmit { get;}
     public ICommand NavigationToLoginPage { get;}
 
-    public SighinVM(ReservoomDbContext context, NavigationStore navigationStore)
+    public SighupVM(NavigationStore navigationStore, HttpClient client, AddStudentRequest addStudentRequest)
     {
-        _addStudentRequest = new AddStudentToDb.Request();
-        RegistrationSubmit = new RegistrationSubmitCommand(_addStudentRequest, context, navigationStore);
-        NavigationToLoginPage = new NavigateToLoginPageCommand(context, navigationStore);
+        _client = client;
+        _addStudentRequest = addStudentRequest;
+        RegistrationSubmit = new RegistrationSubmitCommand(this ,navigationStore, _client);
+        NavigationToLoginPage = new NavigateToLoginPageCommand(navigationStore);
     }
 
     public string? UserName
@@ -71,7 +66,7 @@ public class SighinVM : ViewModelBase
             OnPropertyChanged(nameof(Email));
         }
     }
-    public int? PhoneNumber
+    public string? PhoneNumber
     {
         get => _addStudentRequest.PhoneNumber;
         set
@@ -97,5 +92,17 @@ public class SighinVM : ViewModelBase
             _addStudentRequest.Specialization = value;
             OnPropertyChanged(nameof(Specialization));
         }
+    }
+
+    class AddStudentRequest
+    {
+        public string UserName { get; set; }
+        public string Password { get; set; }
+        public string? Email { get; set; }
+        public string? PhoneNumber { get; set;}
+        public string? LastName { get; set; }
+        public string? FirstName { get; set;}
+        public string? FacultyName { get; set; }
+        public string? Specialization { get; set;}
     }
 }

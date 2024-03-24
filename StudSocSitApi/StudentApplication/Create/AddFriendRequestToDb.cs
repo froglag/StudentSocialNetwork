@@ -62,7 +62,7 @@ public class AddFriendRequestToDb
 
             await transaction.CommitAsync();
             _logger.LogInformation("A friendship request created");
-            return Results.Created("A friendship request created", friendRequest);
+            return Results.Ok();
         }
         catch (Exception ex)
         {

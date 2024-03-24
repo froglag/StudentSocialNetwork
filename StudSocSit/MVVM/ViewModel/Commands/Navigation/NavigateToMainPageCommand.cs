@@ -1,11 +1,4 @@
-﻿using ApplicationDbContext;
-using ApplicationDbContext.Models;
-using StudSocSit.Store;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using StudSocSit.Store;
 using ViewModel;
 using ViewModel.Commands;
 
@@ -13,12 +6,11 @@ namespace Commands;
 public class NavigateToMainPageCommand : CommandBase
 {
     private readonly NavigationStore _navigationStore;
-    private ReservoomDbContext _context;
     private StudentModel? _student;
+    private object studentInfo;
 
-    public NavigateToMainPageCommand(ReservoomDbContext context, NavigationStore navigationStore, StudentModel? student)
+    public NavigateToMainPageCommand(NavigationStore navigationStore, StudentModel? student)
     {
-        _context = context;
         _navigationStore = navigationStore;
         _student = student;
     }
@@ -26,7 +18,7 @@ public class NavigateToMainPageCommand : CommandBase
     {
         if(_student!=null)
         {
-            _navigationStore.CurrentViewModel = new MainPageVM(_context, _navigationStore, _student);
+            _navigationStore.CurrentViewModel = new MainPageVM(_navigationStore, _student);
         }
     }
 }

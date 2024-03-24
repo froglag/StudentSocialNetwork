@@ -3,10 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace StudentApplication.Get;
 
-/// <summary>
-/// Represents a service for retrieving friend requests for a given student ID.
-/// </summary>
-public class GetFriendRequests
+public class GetMyFriendRequests
 {
     private ReservoomDbContext _context;
     private ILogger _logger;
@@ -16,7 +13,7 @@ public class GetFriendRequests
     /// </summary>
     /// <param name="context">The database context.</param>
     /// <param name="logger">The logger.</param>
-    public GetFriendRequests(ReservoomDbContext context, ILogger logger)
+    public GetMyFriendRequests(ReservoomDbContext context, ILogger logger)
     {
         _context = context;
         _logger = logger;
@@ -30,7 +27,7 @@ public class GetFriendRequests
     public async Task<IResult> Do(int id)
     {
         // Retrieve friend requests for the specified student ID
-        var friendRequest = _context.FriendRequest.Where(f => f.ReceiverId == id).Select(f => f).ToList();
+        var friendRequest = _context.FriendRequest.Where(f => f.SenderId == id).Select(f => f).ToList();
 
         // If no friend requests found, log error and return not found result
         if (friendRequest == null)
@@ -45,7 +42,7 @@ public class GetFriendRequests
         {
             listResponse.Add(new Response
             {
-                SenderId = request.SenderId,
+                ReceiverId = request.ReceiverId,
                 Text = request.Text,
             });
         });
@@ -55,7 +52,7 @@ public class GetFriendRequests
     }
     class Response
     {
-        public int SenderId { get; set; }
+        public int ReceiverId { get; set; }
         public string? Text { get; set; }
     }
 }

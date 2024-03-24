@@ -1,6 +1,4 @@
-﻿using ApplicationDbContext;
-using StudentApplication.Get;
-using StudSocSit.Store;
+﻿using StudSocSit.Store;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +16,6 @@ namespace Commands;
 /// </summary>
 public class AuthenticationCommand : CommandBase
 {
-    private ReservoomDbContext _context;
     private NavigationStore _navigationStore;
     private UserAuth _userAuth;
 
@@ -28,9 +25,8 @@ public class AuthenticationCommand : CommandBase
     /// <param name="context">The database context used for data operations.</param>
     /// <param name="navigationStore">The navigation store for managing navigation within the application.</param>
     /// <param name="userAuth">The user authentication information.</param>
-    public AuthenticationCommand(ReservoomDbContext context, NavigationStore navigationStore, UserAuth userAuth)
+    public AuthenticationCommand(NavigationStore navigationStore, UserAuth userAuth)
     {
-        _context = context;
         _navigationStore = navigationStore;
         _userAuth = userAuth;
     }
@@ -41,29 +37,17 @@ public class AuthenticationCommand : CommandBase
     /// <param name="parameter">The command parameter.</param>
     public override void Execute(object? parameter)
     {
-        // Find the user based on the provided username and password
-        var user = _context.User.FirstOrDefault(u => u.UserName == _userAuth.UserName && u.Password == _userAuth.Password);
+        // Request student information for the authorized user
+        var studentInfoRequest = new StudentInfo.Request { UserName = user.UserName, Password = user.Password };
+        var studentInfo = new GetAuthorizedStudentInfo(_context).Do(studentInfoRequest);
 
-        // If user is found, proceed with authentication
-        if (user != null)
+        // If student information is found, navigate to the main page
+        if (studentInfo == null)
         {
-            // Request student information for the authorized user
-            var studentInfoRequest = new GetAuthorizedStudentInfo.Request { UserName = user.UserName, Password = user.Password };
-            var studentInfo = new GetAuthorizedStudentInfo(_context).Do(studentInfoRequest);
+            MessageBox.Show("Student Doesn't Exist");
+        }
 
-            // If student information is found, navigate to the main page
-            if (studentInfo != null)
-            {
-                new NavigateToMainPageCommand(_context, _navigationStore, studentInfo).Execute(parameter);
-            }
-            else
-            {
-                MessageBox.Show("Student Doesn't Exist");
-            }
-        }
-        else
-        {
-            MessageBox.Show("Wrong Login or Password");
-        }
+        new NavigateToMainPageCommand(_navigationStore, studentInfo).Execute(parameter);
+
     }
 }

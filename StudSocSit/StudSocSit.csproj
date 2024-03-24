@@ -50,13 +50,9 @@
     <Compile Update="MVVM\View\MainPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="MVVM\View\SighinPage.xaml.cs">
+    <Compile Update="MVVM\View\SighupPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="MVVM\Model\" />
   </ItemGroup>
 
 </Project>
