@@ -42,8 +42,27 @@ namespace StudentApplication.Get
                 return Results.NotFound("Chat messages not found");
             }
 
+            List<Response> response = new List<Response>();
+
+            messageList.ForEach(m =>
+            {
+                response.Add(new Response 
+                {
+                    Text = m.Text,
+                    AuthorId = m.AuthorId,
+                    Timestamp = m.Timestamp,
+                });
+            });
             _logger.LogInformation("Messages succesfully retrieved");
-            return Results.Json(messageList);
+            return Results.Json(response);
+        }
+
+        public class Response
+        {
+            public required string Text { get; set; }
+            public DateTime Timestamp { get; set; }
+
+            public int AuthorId { get; set; }
         }
     }
 }

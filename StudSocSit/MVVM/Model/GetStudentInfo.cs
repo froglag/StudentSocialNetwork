@@ -26,16 +26,6 @@ public class GetStudentInfo
         _client.DefaultRequestHeaders.Add("Authorization", "Bearer " + JWT);
         var getResponse = _client.GetAsync("/userinfo").Result;
 
-        var userInfo = getResponse.Content.ReadFromJsonAsync<StudentModel>();
-
-        StudentModel studentModel = new StudentModel()
-        {
-            FirstName = userInfo.Result.FirstName,
-            LastName = userInfo.Result.LastName,
-            Email = userInfo.Result.Email,
-            FacultyName = userInfo.Result.FacultyName,
-            Specialization = userInfo.Result.Specialization,
-        };
-        return studentModel;
+        return getResponse.Content.ReadFromJsonAsync<StudentModel>().Result;
     }
 }

@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Net.Http;
 using System.Windows.Input;
+using Commands;
+using MVVM.Model;
 using MVVM.Model.DataFields;
 using StudSocSit.Store;
 
@@ -12,21 +14,33 @@ public class MainPageVM : ViewModelBase
     private StudentModel _student;
     private NavigationStore _navigationStore;
     private string? message;
+    private List<StudentModel> friends;
+    private int friendId;
+
 
     public ICommand GetMessages { get; }
+    public ICommand AddMessage { get; }
     public ICommand NavigationToSearchPage { get; }
     public ICommand NavigationToAccountSettingPage { get; }
     public ICommand NavigationToLoginPage { get; }
     public ICommand NavigationToFriendRequest {  get; }
-    public ICommand AddMessage {  get; }
 
-    public MainPageVM(NavigationStore navigationStore, HttpClient client StudentModel student)
+    public MainPageVM(NavigationStore navigationStore, HttpClient client, StudentModel student, string JWT)
     {
         _client = client;
         _student = student;
         _navigationStore = navigationStore;
 
+        friends = new GetFriendsInfo(_client, JWT).Do();
         
+        GetMessages = new GetChatMessagesCommand(_client, this, JWT);
+        AddMessage = new AddMessageCommand(this, _client, JWT);
+
+        NavigationToSearchPage = new NavigateToSearchPageCommand();
+        NavigationToAccountSettingPage = new NavigateToAccountSettingPageCommand();
+        NavigationToLoginPage = new NavigateToLoginPageCommand();
+        NavigationToFriendRequest = new NavigateToFriendRequestPageCommand();
+
     }
     public StudentModel StudentInfo
     {
@@ -63,5 +77,15 @@ public class MainPageVM : ViewModelBase
     public List<StudentModel> Friends
     {
         get => friends;
+    }
+
+    public int FriendId
+    {
+        get => friendId;
+        set
+        {
+            friendId = value;
+            OnPropertyChanged(nameof(FriendId));
+        }
     }
 }

@@ -49,7 +49,7 @@ public class AuthenticationCommand : CommandBase
             MessageBox.Show("Student Doesn't Exist");
         }
 
-        new NavigateToMainPageCommand(_navigationStore, studentInfo).Execute(parameter);
+        new NavigateToMainPageCommand(_navigationStore, _client, studentInfo, JWT).Execute(parameter);
 
     }
 }

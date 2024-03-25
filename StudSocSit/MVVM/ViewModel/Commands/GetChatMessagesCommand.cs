@@ -11,6 +11,10 @@ using System.Collections.ObjectModel;
 using static ViewModel.MainPageVM;
 using Microsoft.Win32.SafeHandles;
 using ViewModel.Commands;
+using System.Net.Http;
+using System.Net.Http.Json;
+using MVVM.Model.DataFields;
+using MVVM.Model;
 
 namespace Commands;
 
@@ -19,18 +23,20 @@ namespace Commands;
 /// </summary>
 public class GetChatMessagesCommand : CommandBase
 {
-    private ReservoomDbContext _context;
+    private readonly HttpClient _client;
     private readonly MainPageVM _mainPageVM;
+    private readonly string _JWT;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="GetChatMessagesCommand"/> class.
     /// </summary>
     /// <param name="context">The database context used for data operations.</param>
     /// <param name="mainPageVM">The ViewModel associated with the main page.</param>
-    public GetChatMessagesCommand(ReservoomDbContext context, MainPageVM mainPageVM)
+    public GetChatMessagesCommand(HttpClient client, MainPageVM mainPageVM, string JWT)
     {
-        _context = context;
+        _client = client;
         _mainPageVM = mainPageVM;
+        _JWT = JWT;
     }
 
     /// <summary>
@@ -39,48 +45,17 @@ public class GetChatMessagesCommand : CommandBase
     /// <param name="parameter">The friend identifier associated with the chat.</param>
     public override void Execute(object? parameter)
     {
-        // Clear existing message content
-        _mainPageVM.MessageContent = null;
-
-        var friendId = parameter as int?;
-
-        // Check if friendId is not null
-        if (friendId != null)
+        var getResponse = new GetChatMessage(_client, _JWT).Do(parameter.ToString());
+        _mainPageVM.FriendId = (int)parameter;
+        getResponse.ForEach(m =>
         {
-            // Set the FriendId property in the ViewModel
-            _mainPageVM.FriendId = friendId;
-
-            // Find the chat between the logged-in student and the friend
-            var chat = _context.Chat.FirstOrDefault(c => (c.FirstStudentId == _mainPageVM.StudentInfo.StudentId && c.SecondStudentId == (int)_mainPageVM.FriendId) || (c.FirstStudentId == (int)_mainPageVM.FriendId && c.SecondStudentId == _mainPageVM.StudentInfo.StudentId));
-
-            // If the chat exists, retrieve messages
-            if (chat != null)
+            _mainPageVM.MessageContent.Add(new MessageCollection
             {
-                var chatId = chat.ChatId;
-                var messages = _context.Message.Where(m => m.ChatId == chatId);
-
-                // Check if messages and friendId are not null
-                if (friendId != null && messages != null)
-                {
-                    // Initialize MessageContent list if null
-                    if (_mainPageVM.MessageContent == null)
-                    {
-                        _mainPageVM.MessageContent = new List<MessageCollection>();
-                    }
-
-                    // Add messages to the MessageContent list
-                    foreach (var message in messages)
-                    {
-                        _mainPageVM.MessageContent.Add(new MessageCollection
-                        {
-                            Messages = message,
-                            StudentId = _mainPageVM.StudentInfo.StudentId,
-                            FriendId = friendId,
-                        });
-                    }
-                }
-            }
-        }
+                Messages = m,
+                StudentId = _mainPageVM.StudentInfo.StudentId,
+                FriendId = (int)parameter,
+            });
+        });
     }
 }
 

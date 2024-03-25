@@ -1,12 +1,6 @@
-﻿using ApplicationDbContext;
-using ApplicationDbContext.Models;
-using StudentApplication.Create;
-using StudentApplication.Get;
-using System;
-using System.Collections.Generic;
+﻿using MVVM.Model;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Net.Http;
 using ViewModel;
 using ViewModel.Commands;
 
@@ -17,18 +11,20 @@ namespace Commands;
 /// </summary>
 public class AddMessageCommand : CommandBase
 {
-    private ReservoomDbContext _context;
     private readonly MainPageVM _mainPageVM;
+    private readonly HttpClient _client;
+    private readonly string _JWT;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="AddMessageCommand"/> class.
     /// </summary>
     /// <param name="context">The database context used for data operations.</param>
     /// <param name="mainPageVM">The ViewModel associated with the main page.</param>
-    public AddMessageCommand(ReservoomDbContext context, MainPageVM mainPageVM)
+    public AddMessageCommand(MainPageVM mainPageVM, HttpClient client, string JWT)
     {
-        _context = context;
         _mainPageVM = mainPageVM;
+        _client = client;
+        _JWT = JWT;
     }
 
     /// <summary>
@@ -37,39 +33,11 @@ public class AddMessageCommand : CommandBase
     /// <param name="parameter">The friend identifier associated with the chat.</param>
     public override void Execute(object? parameter)
     {
-        // Check if FriendId is not null
-        if (_mainPageVM.FriendId != null)
-        {
-            // Find the chat between the logged-in student and the friend
-            var myChat = _context.Chat.FirstOrDefault(c => (c.FirstStudentId == _mainPageVM.StudentInfo.StudentId && c.SecondStudentId == (int)_mainPageVM.FriendId) || (c.FirstStudentId == (int)_mainPageVM.FriendId && c.SecondStudentId == _mainPageVM.StudentInfo.StudentId));
+        var response = new AddMessage(_client, _JWT).Do(parameter.ToString());
 
-            // If no chat exists, create a new chat
-            if (myChat == null)
-            {
-                new AddChatToDb(_context).Do(new AddChatToDb.Request
-                {
-                    FirstStudentId = _mainPageVM.StudentInfo.StudentId,
-                    SecondStudentId = (int)_mainPageVM.FriendId,
-                });
-            }
+        // Execute a command to retrieve and update chat messages
+        new GetChatMessagesCommand(_client, _mainPageVM, _JWT).Execute(_mainPageVM.FriendId);
 
-            // Retrieve the chat again
-            myChat = _context.Chat.FirstOrDefault(c => (c.FirstStudentId == _mainPageVM.StudentInfo.StudentId && c.SecondStudentId == (int)_mainPageVM.FriendId) || (c.FirstStudentId == (int)_mainPageVM.FriendId && c.SecondStudentId == _mainPageVM.StudentInfo.StudentId));
-
-            // If the chat exists, add the message to the chat
-            if (myChat != null)
-            {
-                new AddMessageToDb(_context).Do(new AddMessageToDb.Request
-                {
-                    AuthorId = _mainPageVM.StudentInfo.StudentId,
-                    ChatId = myChat.ChatId,
-                    Text = _mainPageVM.Message
-                });
-            }
-
-            // Execute a command to retrieve and update chat messages
-            new GetChatMessagesCommand(_context, _mainPageVM).Execute(_mainPageVM.FriendId);
-        }
     }
 }
 

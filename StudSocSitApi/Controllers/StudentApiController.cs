@@ -313,9 +313,25 @@ public class StudentApiController : ControllerBase
     /// </summary>
     /// <param name="id">The chat identifier.</param>
     /// <returns>The result of the operation.</returns>
-    [HttpGet("chat/{id}")]
+    [HttpGet("chatmessages/{id}")]
     [Authorize(Roles = UserRoles.User)]
-    public async Task<IActionResult> GetChatMessages(int id) => Ok(await _getChatMessages.Do(id));
+    public async Task<IActionResult> GetChatMessages(int id)
+    {
+        var student = await _context.Student.Include(s => s.User).FirstOrDefaultAsync(s => s.User.UserName == User.Identity.Name);
+
+        if (student == null)
+            return BadRequest("User id not found");
+
+        var chatId = await _context.Chat.Include(c => c.StudentChats).FirstOrDefaultAsync(c => c.StudentChats.Any(sc => sc.StudentId == student.StudentId && sc.StudentId == id));
+        
+        if (chatId == null)
+        {
+            return BadRequest("Chat not found");
+        }
+
+        return Ok(await _getChatMessages.Do(chatId.ChatId));
+    }
+        
 
     /// <summary>
     /// Updates student information based on the provided request.

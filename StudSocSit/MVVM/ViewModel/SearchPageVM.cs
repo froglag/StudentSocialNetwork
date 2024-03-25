@@ -1,13 +1,11 @@
-﻿using ApplicationDbContext;
-using StudSocSit.Store;
+﻿using StudSocSit.Store;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using Commands;
-using ApplicationDbContext.Models;
+using MVVM.Model.DataFields;
+using System.Net.Http;
 
 namespace ViewModel;
 public class SearchPageVM : ViewModelBase
@@ -19,12 +17,10 @@ public class SearchPageVM : ViewModelBase
     public ICommand NavigationToAccountPage { get; }
     public ICommand MakeFriendRequest { get; }
 
-    public SearchPageVM(ReservoomDbContext context, NavigationStore navigationStore, StudentModel? student)
+    public SearchPageVM(NavigationStore navigationStore, HttpClient client, StudentModel? student, string JWT)
     {
-        studentsList = context.Student.ToList();
-        studentsList.Remove(student);
-        NavigationToMainPage = new NavigateToMainPageCommand(context, navigationStore, student);
-        NavigationToAccountPage = new NavigateToAccountPageCommand(context, navigationStore, student);
+        NavigationToMainPage = new NavigateToMainPageCommand(navigationStore, client, student, JWT);
+        NavigationToAccountPage = new NavigateToAccountPageCommand(navigationStore, student);
         MakeFriendRequest = new MakeFriendRequestCommand(context, navigationStore, student);
     }
 
