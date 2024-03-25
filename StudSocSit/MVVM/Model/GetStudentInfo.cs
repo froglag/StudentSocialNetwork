@@ -1,8 +1,10 @@
-﻿using System;
+﻿using MVVM.Model.DataFields;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -18,16 +20,22 @@ public class GetStudentInfo
         _client = client;
     }
     
-    public void Do(Request request, string JWT)
+    public StudentModel Do(string JWT)
     {
         _client.DefaultRequestHeaders.Accept.Clear();
         _client.DefaultRequestHeaders.Add("Authorization", "Bearer " + JWT);
-        _client.GetAsync(JsonSerializer.Serialize(request));
-    }
+        var getResponse = _client.GetAsync("/userinfo").Result;
 
-    public class Request
-    {
-        public string Username { get; set; }
-        public string Password { get; set; }
+        var userInfo = getResponse.Content.ReadFromJsonAsync<StudentModel>();
+
+        StudentModel studentModel = new StudentModel()
+        {
+            FirstName = userInfo.Result.FirstName,
+            LastName = userInfo.Result.LastName,
+            Email = userInfo.Result.Email,
+            FacultyName = userInfo.Result.FacultyName,
+            Specialization = userInfo.Result.Specialization,
+        };
+        return studentModel;
     }
 }

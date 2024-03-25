@@ -1,6 +1,4 @@
-﻿using ApplicationDbContext;
-using ApplicationDbContext.Models;
-using Commands;
+﻿using Commands;
 using StudSocSit.Store;
 using System;
 using System.Collections.Generic;
@@ -8,7 +6,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using StudentApplication.Get;
 
 namespace ViewModel;
 public class FriendRequestPageVM : ViewModelBase
@@ -17,7 +14,7 @@ public class FriendRequestPageVM : ViewModelBase
     public ICommand NavigationToMainPage { get; }
     public ICommand AcceptFriendRequest { get; }
 
-    public FriendRequestPageVM(ReservoomDbContext context, NavigationStore navigationStore, StudentModel student)
+    public FriendRequestPageVM(NavigationStore navigationStore, StudentModel student)
     {
         Friends = new List<StudentModel>();
         var friendRequest = context.FriendRequest.Where(f => f.ReceiverId == student.StudentId).ToList();

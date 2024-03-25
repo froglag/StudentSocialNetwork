@@ -1,11 +1,7 @@
-﻿using StudSocSit.Store;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MVVM.Model;
+using StudSocSit.Store;
+using System.Net.Http;
 using System.Windows;
-using ViewModel;
 using ViewModel.Commands;
 using static ViewModel.LoginVM;
 
@@ -16,8 +12,9 @@ namespace Commands;
 /// </summary>
 public class AuthenticationCommand : CommandBase
 {
-    private NavigationStore _navigationStore;
     private UserAuth _userAuth;
+    private NavigationStore _navigationStore;
+    private HttpClient _client;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="AuthenticationCommand"/> class.
@@ -25,10 +22,11 @@ public class AuthenticationCommand : CommandBase
     /// <param name="context">The database context used for data operations.</param>
     /// <param name="navigationStore">The navigation store for managing navigation within the application.</param>
     /// <param name="userAuth">The user authentication information.</param>
-    public AuthenticationCommand(NavigationStore navigationStore, UserAuth userAuth)
+    public AuthenticationCommand(NavigationStore navigationStore, HttpClient client, UserAuth userAuth)
     {
-        _navigationStore = navigationStore;
         _userAuth = userAuth;
+        _navigationStore = navigationStore;
+        _client = client;
     }
 
     /// <summary>
@@ -37,9 +35,13 @@ public class AuthenticationCommand : CommandBase
     /// <param name="parameter">The command parameter.</param>
     public override void Execute(object? parameter)
     {
+        var JWT = new Login(_client).Do(new Login.Request
+        {
+            Username = _userAuth.UserName,
+            Password = _userAuth.Password
+        });
         // Request student information for the authorized user
-        var studentInfoRequest = new StudentInfo.Request { UserName = user.UserName, Password = user.Password };
-        var studentInfo = new GetAuthorizedStudentInfo(_context).Do(studentInfoRequest);
+        var studentInfo = new GetStudentInfo(_client).Do(JWT);
 
         // If student information is found, navigate to the main page
         if (studentInfo == null)

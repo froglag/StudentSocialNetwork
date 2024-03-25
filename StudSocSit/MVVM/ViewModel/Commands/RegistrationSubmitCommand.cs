@@ -56,7 +56,7 @@ public class RegistrationSubmitCommand : CommandBase
             });
 
             // Navigate to the login view model after successful registration
-            _navigationStore.CurrentViewModel = new LoginVM(_navigationStore);
+            _navigationStore.CurrentViewModel = new LoginVM(_navigationStore, _client);
         }
     }
 }

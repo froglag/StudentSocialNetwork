@@ -2,99 +2,100 @@
 using StudSocSit.Store;
 using System.Net.Http;
 using System.Windows.Input;
+using static ViewModel.SighupVM;
 
 namespace ViewModel;
 public class SighupVM : ViewModelBase
 {
+    private AddStudentRequest addStudentRequest;
     private HttpClient _client;
-    private AddStudentRequest _addStudentRequest;
 
     public ICommand RegistrationSubmit { get;}
     public ICommand NavigationToLoginPage { get;}
 
-    public SighupVM(NavigationStore navigationStore, HttpClient client, AddStudentRequest addStudentRequest)
+    public SighupVM(NavigationStore navigationStore, HttpClient client)
     {
+        addStudentRequest = new AddStudentRequest();
         _client = client;
-        _addStudentRequest = addStudentRequest;
         RegistrationSubmit = new RegistrationSubmitCommand(this ,navigationStore, _client);
-        NavigationToLoginPage = new NavigateToLoginPageCommand(navigationStore);
+        NavigationToLoginPage = new NavigateToLoginPageCommand(navigationStore, _client);
     }
 
     public string? UserName
     {
-        get => _addStudentRequest.UserName;
+        get => addStudentRequest.UserName;
         set
         {
-            _addStudentRequest.UserName = value;
+            addStudentRequest.UserName = value;
             OnPropertyChanged(nameof(UserName));
         }
     }
 
     public string? Password
     {
-        get => _addStudentRequest.Password;
+        get => addStudentRequest.Password;
         set
         {
-            _addStudentRequest.Password = value;
+            addStudentRequest.Password = value;
             OnPropertyChanged(nameof(Password));
         }
     }
     public string? FirstName
     {
-        get => _addStudentRequest.FirstName;
+        get => addStudentRequest.FirstName;
         set
         {
-            _addStudentRequest.FirstName = value;
+            addStudentRequest.FirstName = value;
             OnPropertyChanged(nameof(FirstName));
         }
     }
     public string? LastName
     {
-        get => _addStudentRequest.LastName;
+        get => addStudentRequest.LastName;
         set
         {
-            _addStudentRequest.LastName = value;
+            addStudentRequest.LastName = value;
             OnPropertyChanged(nameof(LastName));
         }
     }
     public string? Email
     {
-        get => _addStudentRequest.Email;
+        get => addStudentRequest.Email;
         set
         {
-            _addStudentRequest.Email = value;
+            addStudentRequest.Email = value;
             OnPropertyChanged(nameof(Email));
         }
     }
     public string? PhoneNumber
     {
-        get => _addStudentRequest.PhoneNumber;
+        get => addStudentRequest.PhoneNumber;
         set
         {
-            _addStudentRequest.PhoneNumber = value;
+            addStudentRequest.PhoneNumber = value;
             OnPropertyChanged(nameof(PhoneNumber));
         }
     }
     public string? FacultyName
     {
-        get => _addStudentRequest.FacultyName;
+        get => addStudentRequest.FacultyName;
         set
         {
-            _addStudentRequest.FacultyName = value;
+            addStudentRequest.FacultyName = value;
             OnPropertyChanged(nameof(FacultyName));
         }
     }
     public string? Specialization
     {
-        get => _addStudentRequest.Specialization;
+        get => addStudentRequest.Specialization;
         set
         {
-            _addStudentRequest.Specialization = value;
+            addStudentRequest.Specialization = value;
             OnPropertyChanged(nameof(Specialization));
         }
     }
 
-    class AddStudentRequest
+    public class AddStudentRequest
     {
         public string UserName { get; set; }
         public string Password { get; set; }

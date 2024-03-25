@@ -1,8 +1,8 @@
-﻿using ApplicationDbContext;
-using StudSocSit.Store;
+﻿using StudSocSit.Store;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using ViewModel;
@@ -11,16 +11,16 @@ using ViewModel.Commands;
 namespace Commands;
 public class NavigateToSinginPageCommand : CommandBase
 {
+    private readonly HttpClient _client;
     private readonly NavigationStore _navigationStore;
-    private ReservoomDbContext _context;
 
-    public NavigateToSinginPageCommand(ReservoomDbContext context, NavigationStore navigation)
+    public NavigateToSinginPageCommand(NavigationStore navigation, HttpClient client)
     {
-        _context = context;
+        _client = client;
         _navigationStore = navigation;
     }
     public override void Execute(object? parameter)
     {
-        _navigationStore.CurrentViewModel = new SighinVM(_context, _navigationStore);
+        _navigationStore.CurrentViewModel = new SighupVM(_navigationStore, _client);
     }
 }

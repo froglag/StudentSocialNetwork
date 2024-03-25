@@ -1,4 +1,5 @@
-﻿using StudSocSit.Store;
+﻿using MVVM.Model.DataFields;
+using StudSocSit.Store;
 using ViewModel;
 using ViewModel.Commands;
 
@@ -6,19 +7,18 @@ namespace Commands;
 public class NavigateToMainPageCommand : CommandBase
 {
     private readonly NavigationStore _navigationStore;
-    private StudentModel? _student;
-    private object studentInfo;
+    private readonly StudentModel _studentInfo;
 
-    public NavigateToMainPageCommand(NavigationStore navigationStore, StudentModel? student)
+    public NavigateToMainPageCommand(NavigationStore navigationStore, StudentModel studentInfo)
     {
         _navigationStore = navigationStore;
-        _student = student;
+        _studentInfo = studentInfo;
     }
     public override void Execute(object? parameter)
     {
-        if(_student!=null)
+        if(_studentInfo != null)
         {
-            _navigationStore.CurrentViewModel = new MainPageVM(_navigationStore, _student);
+            _navigationStore.CurrentViewModel = new MainPageVM(_navigationStore, _studentInfo);
         }
     }
 }

@@ -1,12 +1,4 @@
-﻿using ApplicationDbContext.Models;
-using ApplicationDbContext;
-using StudSocSit.Store;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using StudSocSit.Store;
 using System.Windows.Input;
 using Commands;
 
@@ -19,7 +11,7 @@ public class AccountSettingVM : ViewModelBase
     public ICommand NavigationToAccountSettingPage { get; }
     public ICommand NavigationToLoginPage { get; }
 
-    public AccountSettingVM(ReservoomDbContext context, NavigationStore navigationStore, StudentModel? student)
+    public AccountSettingVM(NavigationStore navigationStore, StudentModel? student)
     {
         _student = student;
         NavigationToMainPage = new NavigateToMainPageCommand(context, navigationStore, student);
