@@ -41,7 +41,7 @@ public class AuthenticationCommand : CommandBase
             Password = _userAuth.Password
         });
         // Request student information for the authorized user
-        var studentInfo = new GetStudentInfo(_client).Do(JWT);
+        var studentInfo = new GetStudentInfo(_client, JWT).Do();
 
         // If student information is found, navigate to the main page
         if (studentInfo == null)

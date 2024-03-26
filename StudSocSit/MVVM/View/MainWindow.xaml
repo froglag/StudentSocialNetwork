@@ -17,8 +17,8 @@
             <DataTemplate DataType="{x:Type TypeName= viewModel:LoginVM}">
                 <view:LoginPage/>
             </DataTemplate>
-            <DataTemplate DataType="{x:Type TypeName= viewModel:SighinVM}">
-                <view:SighinPage/>
+            <DataTemplate DataType="{x:Type TypeName= viewModel:SighupVM}">
+                <view:SighupPage/>
             </DataTemplate>
             <DataTemplate DataType="{x:Type TypeName= viewModel:SearchPageVM}">
                 <view:SearchPage/>

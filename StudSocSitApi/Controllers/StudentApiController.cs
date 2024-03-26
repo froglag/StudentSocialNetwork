@@ -125,7 +125,7 @@ public class StudentApiController : ControllerBase
     /// <returns>The result of the operation.</returns>
     [HttpPost("addfriend")]
     [Authorize(Roles = UserRoles.User)]
-    public async Task<IActionResult> AddFriendToDb([FromBody] AddFriendToDb.Request request)
+    public async Task<IActionResult> AddFriendToDb([FromBody] int friendId)
     {
         var student = await _context.Student.Include(s => s.User).FirstOrDefaultAsync(s => s.User.UserName == User.Identity.Name);
 
@@ -134,11 +134,11 @@ public class StudentApiController : ControllerBase
             return NotFound("User not found");
         }
 
-        if (student.StudentId != request.StudentId)
+        await _addFriendToDb.Do(new AddFriendToDb.Request
         {
-            return BadRequest("You can't add friend through another user");
-        }
-        await _addFriendToDb.Do(request);
+            StudentId = student.StudentId,
+            FriendId = friendId
+        });
         return Ok();
     }
         

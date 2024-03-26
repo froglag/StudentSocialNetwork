@@ -20,8 +20,8 @@ public class SearchPageVM : ViewModelBase
     public SearchPageVM(NavigationStore navigationStore, HttpClient client, StudentModel? student, string JWT)
     {
         NavigationToMainPage = new NavigateToMainPageCommand(navigationStore, client, student, JWT);
-        NavigationToAccountPage = new NavigateToAccountPageCommand(navigationStore, student);
-        MakeFriendRequest = new MakeFriendRequestCommand(context, navigationStore, student);
+        NavigationToAccountPage = new NavigateToAccountPageCommand(navigationStore, client, student, JWT);
+        MakeFriendRequest = new MakeFriendRequestCommand(navigationStore, client, student, JWT);
     }
 
     public List<StudentModel> Students

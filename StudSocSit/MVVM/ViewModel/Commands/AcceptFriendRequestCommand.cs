@@ -1,12 +1,6 @@
-﻿using ApplicationDbContext;
-using ApplicationDbContext.Models;
-using StudentApplication.Create;
-using StudentApplication.Delete;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MVVM.Model;
+using MVVM.Model.DataFields;
+using System.Net.Http;
 using ViewModel.Commands;
 
 namespace Commands;
@@ -16,18 +10,20 @@ namespace Commands;
 /// </summary>
 public class AcceptFriendRequestCommand : CommandBase
 {
-    private ReservoomDbContext _context;
-    private StudentModel? _student;
+    private StudentModel _student;
+    private HttpClient _client;
+    private string _JWT;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="AcceptFriendRequestCommand"/> class.
     /// </summary>
     /// <param name="context">The database context used for data operations.</param>
     /// <param name="student">The student associated with the command.</param>
-    public AcceptFriendRequestCommand(ReservoomDbContext context, StudentModel? student)
+    public AcceptFriendRequestCommand(HttpClient client, StudentModel student, string JWT)
     {
-        _context = context;
         _student = student;
+        _client = client;
+        _JWT = JWT;
     }
 
     /// <summary>
@@ -36,27 +32,9 @@ public class AcceptFriendRequestCommand : CommandBase
     /// <param name="parameter">The friend identifier to be accepted.</param>
     public override void Execute(object? parameter)
     {
-        var friendId = parameter as int?;
+        var friendId = (int)parameter;
 
-        // Check if the student is not null
-        if (_student != null)
-        {
-            // Add the friend to the database as a friend of the student
-            new AddFriendToDb(_context).Do(new AddFriendToDb.Request
-            {
-                FriendId = friendId,
-                StudentId = _student.StudentId
-            });
+        new AddFriend(_client, _JWT).Do(friendId);
 
-            // Add the student as a friend of the accepted friend
-            new AddFriendToDb(_context).Do(new AddFriendToDb.Request
-            {
-                FriendId = _student.StudentId,
-                StudentId = friendId
-            });
-
-            // Delete the friend request from the database
-            new DeleteFriendRequest(_context).Do(friendId);
-        }
     }
 }

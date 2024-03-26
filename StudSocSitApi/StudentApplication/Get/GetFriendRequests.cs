@@ -43,9 +43,12 @@ public class GetFriendRequests
 
         friendRequest.ForEach(request =>
         {
+            var student = _context.Student.FirstOrDefault(s => s.StudentId == request.SenderId);
             listResponse.Add(new Response
             {
                 SenderId = request.SenderId,
+                Firstname = student.FirstName, 
+                Lastname = student.LastName,
                 Text = request.Text,
             });
         });
@@ -56,6 +59,8 @@ public class GetFriendRequests
     class Response
     {
         public int SenderId { get; set; }
+        public string? Firstname { get; set; }
+        public string? Lastname { get; set; }
         public string? Text { get; set; }
     }
 }

@@ -1,29 +1,26 @@
-﻿using ApplicationDbContext;
-using ApplicationDbContext.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using MVVM.Model.DataFields;
 using StudSocSit.Store;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Net.Http;
 using ViewModel;
 using ViewModel.Commands;
 
 namespace Commands;
 public class NavigateToAccountSettingPageCommand : CommandBase
 {
-    private ReservoomDbContext _context;
-    private StudentModel? _student;
+    private StudentModel _student;
     private readonly NavigationStore _navigationStore;
-    public NavigateToAccountSettingPageCommand(ReservoomDbContext context, NavigationStore navigationStore, StudentModel? student)
+    private readonly HttpClient _client;
+    private readonly string _JWT;
+
+    public NavigateToAccountSettingPageCommand(NavigationStore navigationStore, HttpClient client, StudentModel student, string JWT)
     {
-        _context = context;
         _student = student;
         _navigationStore = navigationStore;
+        _client = client;
+        _JWT = JWT;
     }
     public override void Execute(object? parameter)
     {
-        _navigationStore.CurrentViewModel = new AccountSettingVM(_context, _navigationStore, _student);
+        _navigationStore.CurrentViewModel = new AccountSettingVM(_navigationStore, _client, _student, _JWT);
     }
 }

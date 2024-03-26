@@ -1,23 +1,25 @@
 ﻿using StudSocSit.Store;
 using System.Windows.Input;
 using Commands;
+using MVVM.Model.DataFields;
+using System.Net.Http;
 
 namespace ViewModel;
 public class AccountSettingVM : ViewModelBase
 {
-    private StudentModel? _student;
+    private StudentModel _student;
     public ICommand NavigationToMainPage { get; }
     public ICommand UpdateUserInfo { get; }
     public ICommand NavigationToAccountSettingPage { get; }
     public ICommand NavigationToLoginPage { get; }
 
-    public AccountSettingVM(NavigationStore navigationStore, StudentModel? student)
+    public AccountSettingVM(NavigationStore navigationStore, HttpClient client, StudentModel student, string JWT)
     {
         _student = student;
-        NavigationToMainPage = new NavigateToMainPageCommand(context, navigationStore, student);
-        UpdateUserInfo = new UpdateUserInfoCommand(context, _student);
-        NavigationToAccountSettingPage = new NavigateToAccountSettingPageCommand(context, navigationStore, student);
-        NavigationToLoginPage = new NavigateToLoginPageCommand(context, navigationStore);
+        NavigationToMainPage = new NavigateToMainPageCommand(navigationStore, client, _student, JWT);
+        UpdateUserInfo = new UpdateUserInfoCommand(client, _student, JWT);
+        NavigationToAccountSettingPage = new NavigateToAccountSettingPageCommand(navigationStore, client, _student, JWT);
+        NavigationToLoginPage = new NavigateToLoginPageCommand(navigationStore, client);
     }
 
     public string FirstName
@@ -50,7 +52,7 @@ public class AccountSettingVM : ViewModelBase
         }
     }
 
-    public int? Phonenumber
+    public string? Phonenumber
     {
         get => _student.PhoneNumber;
         set

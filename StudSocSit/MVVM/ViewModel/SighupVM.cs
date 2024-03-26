@@ -2,7 +2,6 @@
 using StudSocSit.Store;
 using System.Net.Http;
 using System.Windows.Input;
-using static ViewModel.SighupVM;
 
 namespace ViewModel;
 public class SighupVM : ViewModelBase

@@ -1,6 +1,7 @@
 ﻿using System.Net.Http;
 using System.Text.Json;
 using System.Text;
+using System.Net.Http.Json;
 
 namespace MVVM.Model;
 
@@ -18,7 +19,7 @@ public class Login
         var content = new StringContent(json, Encoding.UTF8, "application/json");
         var response = _client.PostAsync("login", content).Result;
 
-        return response.Content.ToString();
+        return response.Content.ReadAsStringAsync().Result.ToString();
     }
 
     public class Request

@@ -1,11 +1,6 @@
-﻿using ApplicationDbContext;
-using ApplicationDbContext.Models;
-using StudentApplication.Update;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MVVM.Model;
+using MVVM.Model.DataFields;
+using System.Net.Http;
 using ViewModel.Commands;
 
 namespace Commands;
@@ -15,18 +10,21 @@ namespace Commands;
 /// </summary>
 public class UpdateUserInfoCommand : CommandBase
 {
-    private StudentModel? _student;
-    private ReservoomDbContext _context;
+    private StudentModel _student;
+    private HttpClient _client;
+    private string _JWT;
+
 
     /// <summary>
     /// Initializes a new instance of the <see cref="UpdateUserInfoCommand"/> class.
     /// </summary>
     /// <param name="context">The database context used for data operations.</param>
     /// <param name="student">The student associated with the command.</param>
-    public UpdateUserInfoCommand(ReservoomDbContext context, StudentModel? student)
+    public UpdateUserInfoCommand(HttpClient client, StudentModel student, string JWT)
     {
-        _context = context;
         _student = student;
+        _client = client;
+        _JWT = JWT;
     }
 
     /// <summary>
@@ -36,15 +34,14 @@ public class UpdateUserInfoCommand : CommandBase
     public override void Execute(object? parameter)
     {
         // Update user information in the database using the provided student information
-        new UpdateStudentInfo(_context).Do(new UpdateStudentInfo.Request
+        new UpdateUserInfo(_client, _JWT).Do(new UpdateUserInfo.Request
         {
-            StudentId = _student.StudentId,
             FirstName = _student.FirstName,
             LastName = _student.LastName,
             Email = _student.Email,
             FacultyName = _student.FacultyName,
             PhoneNumber = _student.PhoneNumber,
-            Specialization = _student.Specialization
+            Specialization = _student.Specialization,
         });
     }
 }

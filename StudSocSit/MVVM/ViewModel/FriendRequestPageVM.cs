@@ -1,41 +1,28 @@
 ﻿using Commands;
+using MVVM.Model;
+using MVVM.Model.DataFields;
 using StudSocSit.Store;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Net.Http;
 using System.Windows.Input;
 
 namespace ViewModel;
 public class FriendRequestPageVM : ViewModelBase
 {
-    private ICollection<StudentModel>? friends; 
+    private List<FriendRequestModel>? friends; 
     public ICommand NavigationToMainPage { get; }
     public ICommand AcceptFriendRequest { get; }
 
-    public FriendRequestPageVM(NavigationStore navigationStore, StudentModel student)
+    public FriendRequestPageVM(NavigationStore navigationStore, HttpClient client, StudentModel student, string JWT)
     {
-        Friends = new List<StudentModel>();
-        var friendRequest = context.FriendRequest.Where(f => f.ReceiverId == student.StudentId).ToList();
-        if (student != null && friendRequest != null)
-        {
-            
-            foreach (var friendId in friendRequest)
-            {
-                var info = new GetStudentInfoById(context).Do(friendId.SenderId);
-                if (info != null)
-                {
-                    Friends.Add(info);
-                }
-            }
-        }
+        Friends = new GetFriendRequest(client, JWT).Do();
 
-        NavigationToMainPage = new NavigateToMainPageCommand(context, navigationStore, student);
-        AcceptFriendRequest = new AcceptFriendRequestCommand(context, student);
+        NavigationToMainPage = new NavigateToMainPageCommand(navigationStore, client, student, JWT);
+        AcceptFriendRequest = new AcceptFriendRequestCommand(client, student, JWT);
     }
 
-    public ICollection<StudentModel>? Friends
+    public List<FriendRequestModel>? Friends
     {
         get => friends;
         set

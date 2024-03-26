@@ -1,13 +1,9 @@
-﻿using ApplicationDbContext;
-using ApplicationDbContext.Models;
-using StudentApplication.Create;
+﻿using MVVM.Model;
+using MVVM.Model.DataFields;
 using StudSocSit.Store;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Net.Http;
 using ViewModel.Commands;
+
 
 namespace Commands;
 
@@ -16,8 +12,9 @@ namespace Commands;
 /// </summary>
 public class MakeFriendRequestCommand : CommandBase
 {
-    private ReservoomDbContext _context;
-    private StudentModel? _student;
+    private StudentModel _student;
+    private HttpClient _client;
+    private string _JWT;
     private NavigationStore _navigationStore;
 
     /// <summary>
@@ -26,11 +23,12 @@ public class MakeFriendRequestCommand : CommandBase
     /// <param name="context">The database context used for data operations.</param>
     /// <param name="navigationStore">The navigation store for managing navigation within the application.</param>
     /// <param name="student">The student associated with the command.</param>
-    public MakeFriendRequestCommand(ReservoomDbContext context, NavigationStore navigationStore, StudentModel? student)
+    public MakeFriendRequestCommand(NavigationStore navigationStore, HttpClient client, StudentModel student, string JWT)
     {
-        _context = context;
         _navigationStore = navigationStore;
         _student = student;
+        _client = client;
+        _JWT = JWT;
     }
 
     /// <summary>
@@ -42,14 +40,11 @@ public class MakeFriendRequestCommand : CommandBase
         // Check if the student is not null
         if (_student != null)
         {
-            // Extract friendId from the parameter
-            var friendId = parameter as int?;
-
             // Create and send a friend request
-            new AddFriendRiquest(_context).Do(new AddFriendRiquest.Request
+            new AddFriendRequest(_client, _JWT).Do(new AddFriendRequest.Request
             {
                 SenderId = _student.StudentId,
-                ReceiverId = friendId
+                ReceiverId = (int)parameter,
             });
         }
     }

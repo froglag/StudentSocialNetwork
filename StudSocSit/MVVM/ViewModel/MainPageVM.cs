@@ -36,10 +36,10 @@ public class MainPageVM : ViewModelBase
         GetMessages = new GetChatMessagesCommand(_client, this, JWT);
         AddMessage = new AddMessageCommand(this, _client, JWT);
 
-        NavigationToSearchPage = new NavigateToSearchPageCommand();
-        NavigationToAccountSettingPage = new NavigateToAccountSettingPageCommand();
-        NavigationToLoginPage = new NavigateToLoginPageCommand();
-        NavigationToFriendRequest = new NavigateToFriendRequestPageCommand();
+        NavigationToSearchPage = new NavigateToSearchPageCommand(navigationStore, client, student, JWT);
+        NavigationToAccountSettingPage = new NavigateToAccountSettingPageCommand(navigationStore, client, student, JWT);
+        NavigationToLoginPage = new NavigateToLoginPageCommand(navigationStore, client);
+        NavigationToFriendRequest = new NavigateToFriendRequestPageCommand(navigationStore, client, student, JWT);
 
     }
     public StudentModel StudentInfo

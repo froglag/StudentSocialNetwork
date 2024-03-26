@@ -1,19 +1,7 @@
-﻿using ApplicationDbContext;
-using ApplicationDbContext.Models;
-using StudentApplication.Get;
-using ViewModel;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Collections.ObjectModel;
+﻿using ViewModel;
 using static ViewModel.MainPageVM;
-using Microsoft.Win32.SafeHandles;
 using ViewModel.Commands;
 using System.Net.Http;
-using System.Net.Http.Json;
-using MVVM.Model.DataFields;
 using MVVM.Model;
 
 namespace Commands;

@@ -1,11 +1,6 @@
-﻿using ApplicationDbContext;
-using ApplicationDbContext.Models;
+﻿using MVVM.Model.DataFields;
 using StudSocSit.Store;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Net.Http;
 using ViewModel;
 using ViewModel.Commands;
 
@@ -13,17 +8,20 @@ namespace Commands;
 public class NavigateToFriendRequestPageCommand : CommandBase
 {
     private NavigationStore _navigationStore;
-    private ReservoomDbContext _context;
     private StudentModel _student;
-    public NavigateToFriendRequestPageCommand(ReservoomDbContext context, NavigationStore navigationStore, StudentModel student)
+    private HttpClient _client;
+    private string _JWT;
+
+    public NavigateToFriendRequestPageCommand(NavigationStore navigationStore, HttpClient client, StudentModel student, string JWT)
     {
-        _context = context;
         _navigationStore = navigationStore;
         _student = student;
+        _client = client;
+        _JWT = JWT;
     }
 
     public override void Execute(object? parameter)
     {
-        _navigationStore.CurrentViewModel = new FriendRequestPageVM(_context, _navigationStore, _student);
+        _navigationStore.CurrentViewModel = new FriendRequestPageVM(_navigationStore, _client, _student, _JWT);
     }
 }
