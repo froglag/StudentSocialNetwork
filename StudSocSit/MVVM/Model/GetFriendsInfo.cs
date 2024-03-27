@@ -19,9 +19,7 @@ public class GetFriendsInfo
     public List<StudentModel> Do()
     {
         _client.DefaultRequestHeaders.Accept.Clear();
-        _client.DefaultRequestHeaders.Add("Authorization", "Bearer " + _JWT);
         var getResponse = _client.GetAsync("/allfriendsinfo").Result;
-
         return getResponse.Content.ReadFromJsonAsync<List<StudentModel>>().Result;
     }
 }

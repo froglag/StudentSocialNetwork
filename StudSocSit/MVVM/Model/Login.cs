@@ -1,7 +1,7 @@
 ﻿using System.Net.Http;
 using System.Text.Json;
 using System.Text;
-using System.Net.Http.Json;
+using Newtonsoft.Json.Linq;
 
 namespace MVVM.Model;
 
@@ -17,9 +17,12 @@ public class Login
     {
         var json = JsonSerializer.Serialize(request);
         var content = new StringContent(json, Encoding.UTF8, "application/json");
-        var response = _client.PostAsync("login", content).Result;
+        var postResponse = _client.PostAsync("login", content).Result;
 
-        return response.Content.ReadAsStringAsync().Result.ToString();
+        var stringResponse = postResponse.Content.ReadAsStringAsync().Result;
+        var response = JValue.Parse(stringResponse);
+        return response["value"].Value<string>("token");
+        
     }
 
     public class Request

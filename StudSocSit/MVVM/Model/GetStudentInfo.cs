@@ -1,13 +1,7 @@
 ﻿using MVVM.Model.DataFields;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Net.Http.Json;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace MVVM.Model;
 
@@ -26,8 +20,19 @@ public class GetStudentInfo
     {
         _client.DefaultRequestHeaders.Accept.Clear();
         _client.DefaultRequestHeaders.Add("Authorization", "Bearer " + _JWT);
-        var getResponse = _client.GetAsync("/userinfo").Result;
+        var getResponse = _client.GetAsync("userinfo").Result;
 
-        return getResponse.Content.ReadFromJsonAsync<StudentModel>().Result;
+        var jsonString = getResponse.Content.ReadAsStringAsync().Result;
+        var jsonValue = JValue.Parse(jsonString);
+        return new StudentModel 
+        {
+            FirstName = jsonValue["value"].Value<string>("firstName"),
+            LastName = jsonValue["value"].Value<string>("lastName"),
+            Email = jsonValue["value"].Value<string>("email"),
+            FacultyName = jsonValue["value"].Value<string>("facultyName"),
+            PhoneNumber = jsonValue["value"].Value<string>("phoneNumber"),
+            Specialization = jsonValue["value"].Value<string>("specialization")
+
+        };
     }
 }
