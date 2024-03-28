@@ -43,6 +43,7 @@ namespace StudentApplication.Get
                 _logger.LogInformation("Student found");
                 return Results.Ok(new Response
                 {
+                    StudentId = studentId,
                     FirstName = student.FirstName,
                     LastName = student.LastName,
                     Email = student.Email,
@@ -59,6 +60,7 @@ namespace StudentApplication.Get
 
         class Response
         {
+            public int StudentId { get; set; }
             public string? FirstName { get; set; }
             public string? LastName { get; set; }
             public string? Email { get; set; }

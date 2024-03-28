@@ -20,7 +20,7 @@ public class SighupVM : ViewModelBase
         NavigationToLoginPage = new NavigateToLoginPageCommand(navigationStore, _client);
     }
 
-    public string? UserName
+    public string UserName
     {
         get => addStudentRequest.UserName;
         set
@@ -30,7 +30,7 @@ public class SighupVM : ViewModelBase
         }
     }
 
-    public string? Password
+    public string Password
     {
         get => addStudentRequest.Password;
         set
@@ -39,7 +39,7 @@ public class SighupVM : ViewModelBase
             OnPropertyChanged(nameof(Password));
         }
     }
-    public string? FirstName
+    public string FirstName
     {
         get => addStudentRequest.FirstName;
         set
@@ -101,7 +101,7 @@ public class SighupVM : ViewModelBase
         public string? Email { get; set; }
         public string? PhoneNumber { get; set;}
         public string? LastName { get; set; }
-        public string? FirstName { get; set;}
+        public string FirstName { get; set;}
         public string? FacultyName { get; set; }
         public string? Specialization { get; set;}
     }

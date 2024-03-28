@@ -23,6 +23,7 @@ public class GetStudentInfo
         var jsonValue = JObject.Parse(jsonString);
         return new StudentModel 
         {
+            StudentId = (int)jsonValue["value"]["studentId"],
             FirstName = (string)jsonValue["value"]["firstName"],
             LastName = (string)jsonValue["value"]["lastName"],
             Email = (string)jsonValue["value"]["email"],
