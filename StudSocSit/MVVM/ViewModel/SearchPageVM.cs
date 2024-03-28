@@ -6,6 +6,7 @@ using System.Windows.Input;
 using Commands;
 using MVVM.Model.DataFields;
 using System.Net.Http;
+using MVVM.Model;
 
 namespace ViewModel;
 public class SearchPageVM : ViewModelBase
@@ -17,8 +18,9 @@ public class SearchPageVM : ViewModelBase
     public ICommand NavigationToAccountPage { get; }
     public ICommand MakeFriendRequest { get; }
 
-    public SearchPageVM(NavigationStore navigationStore, HttpClient client, StudentModel? student)
+    public SearchPageVM(NavigationStore navigationStore, HttpClient client, StudentModel student)
     {
+        studentsList = new GetSearchInfo(client).Do();
         
         NavigationToMainPage = new NavigateToMainPageCommand(navigationStore, client, student);
         NavigationToAccountPage = new NavigateToAccountPageCommand(navigationStore, client, student);

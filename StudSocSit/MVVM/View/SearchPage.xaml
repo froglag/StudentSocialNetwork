@@ -53,7 +53,7 @@
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <Button Command="{Binding ElementName=ListStudentView, Path=DataContext.NavigationToAccountPage}" CommandParameter="{Binding StudentId}" Background="Transparent" BorderBrush="Transparent">
-                                        <TextBlock Foreground="LightGray" Text="{Binding FirstName}" />
+                                        <TextBlock Foreground="LightGray" Text="{Binding Firstname}" />
                                     </Button>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>

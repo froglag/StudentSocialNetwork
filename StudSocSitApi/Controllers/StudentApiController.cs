@@ -34,6 +34,7 @@ public class StudentApiController : ControllerBase
     private readonly GetFriendRequests _getFriendRequest;
     private readonly GetMyFriendRequests _getMyFriendRequest;
     private readonly GetAllFriendsInfo _getAllFriendsInfo;
+    private readonly GetStudentSearchInfo _getSearchInfo;
     private readonly UpdateStudentInfo _updateStudentInfo;
     private readonly DeleteFriendRequest _deleteFriendRequest;
 
@@ -63,6 +64,7 @@ public class StudentApiController : ControllerBase
         _getFriendRequest = new GetFriendRequests(_context, _logger);
         _getMyFriendRequest = new GetMyFriendRequests(_context, _logger);
         _getAllFriendsInfo = new GetAllFriendsInfo(_context, _logger);
+        _getSearchInfo = new GetStudentSearchInfo(_context, _logger);
 
         _updateStudentInfo = new UpdateStudentInfo(_context, _logger);
 
@@ -331,7 +333,22 @@ public class StudentApiController : ControllerBase
 
         return Ok(await _getChatMessages.Do(chatId.ChatId));
     }
-        
+
+    /// <summary>
+    /// Gets basic student information for searching purpose.
+    /// </summary>
+    /// <returns>The result of the operation.</returns>
+    [HttpGet("searchinfo")]
+    [Authorize(Roles = UserRoles.User)]
+    public async Task<IActionResult> GetSearchInfo()
+    {
+        var student = await _context.Student.Include(s => s.User).FirstOrDefaultAsync(s => s.User.UserName == User.Identity.Name);
+
+        if (student == null)
+            return BadRequest("User id not found");
+
+        return Ok(await _getSearchInfo.Do(student.StudentId));
+    }
 
     /// <summary>
     /// Updates student information based on the provided request.
