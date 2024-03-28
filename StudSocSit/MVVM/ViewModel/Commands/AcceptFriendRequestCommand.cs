@@ -12,18 +12,16 @@ public class AcceptFriendRequestCommand : CommandBase
 {
     private StudentModel _student;
     private HttpClient _client;
-    private string _JWT;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="AcceptFriendRequestCommand"/> class.
     /// </summary>
     /// <param name="context">The database context used for data operations.</param>
     /// <param name="student">The student associated with the command.</param>
-    public AcceptFriendRequestCommand(HttpClient client, StudentModel student, string JWT)
+    public AcceptFriendRequestCommand(HttpClient client, StudentModel student)
     {
         _student = student;
         _client = client;
-        _JWT = JWT;
     }
 
     /// <summary>
@@ -34,7 +32,7 @@ public class AcceptFriendRequestCommand : CommandBase
     {
         var friendId = (int)parameter;
 
-        new AddFriend(_client, _JWT).Do(friendId);
+        new AddFriend(_client).Do(friendId);
 
     }
 }

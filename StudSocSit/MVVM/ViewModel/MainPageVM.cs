@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Windows.Input;
 using Commands;
@@ -25,21 +26,21 @@ public class MainPageVM : ViewModelBase
     public ICommand NavigationToLoginPage { get; }
     public ICommand NavigationToFriendRequest {  get; }
 
-    public MainPageVM(NavigationStore navigationStore, HttpClient client, StudentModel student, string JWT)
+    public MainPageVM(NavigationStore navigationStore, HttpClient client, StudentModel student)
     {
         _client = client;
         _student = student;
         _navigationStore = navigationStore;
-
-        friends = new GetFriendsInfo(_client, JWT).Do();
+        if(friends == null)
+            friends = new GetFriendsInfo(_client).Do();
         
-        GetMessages = new GetChatMessagesCommand(_client, this, JWT);
-        AddMessage = new AddMessageCommand(this, _client, JWT);
+        GetMessages = new GetChatMessagesCommand(_client, this);
+        AddMessage = new AddMessageCommand(this, _client);
 
-        NavigationToSearchPage = new NavigateToSearchPageCommand(navigationStore, client, student, JWT);
-        NavigationToAccountSettingPage = new NavigateToAccountSettingPageCommand(navigationStore, client, student, JWT);
+        NavigationToSearchPage = new NavigateToSearchPageCommand(navigationStore, client, student);
+        NavigationToAccountSettingPage = new NavigateToAccountSettingPageCommand(navigationStore, client, student);
         NavigationToLoginPage = new NavigateToLoginPageCommand(navigationStore, client);
-        NavigationToFriendRequest = new NavigateToFriendRequestPageCommand(navigationStore, client, student, JWT);
+        NavigationToFriendRequest = new NavigateToFriendRequestPageCommand(navigationStore, client, student);
 
     }
     public StudentModel StudentInfo

@@ -10,19 +10,14 @@ namespace MVVM.Model;
 public class UpdateUserInfo
 {
     private HttpClient _client;
-    private string _JWT;
 
-    public UpdateUserInfo(HttpClient client, string JWT)
+    public UpdateUserInfo(HttpClient client)
     {
         _client = client;
-        _JWT = JWT;
     }
 
     public void Do(Request request)
     {
-        _client.DefaultRequestHeaders.Accept.Clear();
-        _client.DefaultRequestHeaders.Add("Authorization", "Bearer " + _JWT);
-
         var json = JsonSerializer.Serialize(request);
         var content = new StringContent(json, Encoding.UTF8, "application/json");
 

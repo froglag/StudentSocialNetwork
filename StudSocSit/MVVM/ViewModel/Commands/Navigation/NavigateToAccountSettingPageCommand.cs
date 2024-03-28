@@ -10,17 +10,15 @@ public class NavigateToAccountSettingPageCommand : CommandBase
     private StudentModel _student;
     private readonly NavigationStore _navigationStore;
     private readonly HttpClient _client;
-    private readonly string _JWT;
 
-    public NavigateToAccountSettingPageCommand(NavigationStore navigationStore, HttpClient client, StudentModel student, string JWT)
+    public NavigateToAccountSettingPageCommand(NavigationStore navigationStore, HttpClient client, StudentModel student)
     {
         _student = student;
         _navigationStore = navigationStore;
         _client = client;
-        _JWT = JWT;
     }
     public override void Execute(object? parameter)
     {
-        _navigationStore.CurrentViewModel = new AccountSettingVM(_navigationStore, _client, _student, _JWT);
+        _navigationStore.CurrentViewModel = new AccountSettingVM(_navigationStore, _client, _student);
     }
 }

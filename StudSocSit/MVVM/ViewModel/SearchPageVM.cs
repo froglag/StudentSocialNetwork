@@ -11,20 +11,21 @@ namespace ViewModel;
 public class SearchPageVM : ViewModelBase
 {
     private string? userInput;
-    private List<StudentModel> studentsList;
+    private List<SearchInfo> studentsList;
 
     public ICommand NavigationToMainPage { get; }
     public ICommand NavigationToAccountPage { get; }
     public ICommand MakeFriendRequest { get; }
 
-    public SearchPageVM(NavigationStore navigationStore, HttpClient client, StudentModel? student, string JWT)
+    public SearchPageVM(NavigationStore navigationStore, HttpClient client, StudentModel? student)
     {
-        NavigationToMainPage = new NavigateToMainPageCommand(navigationStore, client, student, JWT);
-        NavigationToAccountPage = new NavigateToAccountPageCommand(navigationStore, client, student, JWT);
-        MakeFriendRequest = new MakeFriendRequestCommand(navigationStore, client, student, JWT);
+        
+        NavigationToMainPage = new NavigateToMainPageCommand(navigationStore, client, student);
+        NavigationToAccountPage = new NavigateToAccountPageCommand(navigationStore, client, student);
+        MakeFriendRequest = new MakeFriendRequestCommand(navigationStore, client, student);
     }
 
-    public List<StudentModel> Students
+    public List<SearchInfo> Students
     {
         get
         {
@@ -34,7 +35,7 @@ public class SearchPageVM : ViewModelBase
             }
             else
             {
-                return studentsList.Where(s => s.FirstName.Contains(userInput)).ToList();
+                return studentsList.Where(s => s.Firstname.Contains(userInput)).ToList();
             }
 
         }

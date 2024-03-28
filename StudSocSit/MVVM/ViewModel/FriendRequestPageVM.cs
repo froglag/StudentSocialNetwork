@@ -14,12 +14,12 @@ public class FriendRequestPageVM : ViewModelBase
     public ICommand NavigationToMainPage { get; }
     public ICommand AcceptFriendRequest { get; }
 
-    public FriendRequestPageVM(NavigationStore navigationStore, HttpClient client, StudentModel student, string JWT)
+    public FriendRequestPageVM(NavigationStore navigationStore, HttpClient client, StudentModel student)
     {
-        Friends = new GetFriendRequest(client, JWT).Do();
+        Friends = new GetFriendRequest(client).Do();
 
-        NavigationToMainPage = new NavigateToMainPageCommand(navigationStore, client, student, JWT);
-        AcceptFriendRequest = new AcceptFriendRequestCommand(client, student, JWT);
+        NavigationToMainPage = new NavigateToMainPageCommand(navigationStore, client, student);
+        AcceptFriendRequest = new AcceptFriendRequestCommand(client, student);
     }
 
     public List<FriendRequestModel>? Friends

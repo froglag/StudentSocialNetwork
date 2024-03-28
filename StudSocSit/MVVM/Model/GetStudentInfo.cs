@@ -10,29 +10,25 @@ public class GetStudentInfo
     private HttpClient _client;
     private string _JWT;
 
-    public GetStudentInfo(HttpClient client, string JWT)
+    public GetStudentInfo(HttpClient client)
     {
         _client = client;
-        _JWT = JWT;
     }
     
     public StudentModel Do()
     {
-        _client.DefaultRequestHeaders.Accept.Clear();
-        _client.DefaultRequestHeaders.Add("Authorization", "Bearer " + _JWT);
         var getResponse = _client.GetAsync("userinfo").Result;
 
         var jsonString = getResponse.Content.ReadAsStringAsync().Result;
-        var jsonValue = JValue.Parse(jsonString);
+        var jsonValue = JObject.Parse(jsonString);
         return new StudentModel 
         {
-            FirstName = jsonValue["value"].Value<string>("firstName"),
-            LastName = jsonValue["value"].Value<string>("lastName"),
-            Email = jsonValue["value"].Value<string>("email"),
-            FacultyName = jsonValue["value"].Value<string>("facultyName"),
-            PhoneNumber = jsonValue["value"].Value<string>("phoneNumber"),
-            Specialization = jsonValue["value"].Value<string>("specialization")
-
+            FirstName = (string)jsonValue["value"]["firstName"],
+            LastName = (string)jsonValue["value"]["lastName"],
+            Email = (string)jsonValue["value"]["email"],
+            FacultyName = (string)jsonValue["value"]["facultyName"],
+            PhoneNumber = (string)jsonValue["value"]["phoneNumber"],
+            Specialization = (string)jsonValue["value"]["specialization"]
         };
     }
 }

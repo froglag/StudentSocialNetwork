@@ -13,12 +13,12 @@ public class AccountSettingVM : ViewModelBase
     public ICommand NavigationToAccountSettingPage { get; }
     public ICommand NavigationToLoginPage { get; }
 
-    public AccountSettingVM(NavigationStore navigationStore, HttpClient client, StudentModel student, string JWT)
+    public AccountSettingVM(NavigationStore navigationStore, HttpClient client, StudentModel student)
     {
         _student = student;
-        NavigationToMainPage = new NavigateToMainPageCommand(navigationStore, client, _student, JWT);
-        UpdateUserInfo = new UpdateUserInfoCommand(client, _student, JWT);
-        NavigationToAccountSettingPage = new NavigateToAccountSettingPageCommand(navigationStore, client, _student, JWT);
+        NavigationToMainPage = new NavigateToMainPageCommand(navigationStore, client, _student);
+        UpdateUserInfo = new UpdateUserInfoCommand(client, _student);
+        NavigationToAccountSettingPage = new NavigateToAccountSettingPageCommand(navigationStore, client, _student);
         NavigationToLoginPage = new NavigateToLoginPageCommand(navigationStore, client);
     }
 

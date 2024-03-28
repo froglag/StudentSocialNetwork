@@ -13,18 +13,16 @@ public class GetChatMessagesCommand : CommandBase
 {
     private readonly HttpClient _client;
     private readonly MainPageVM _mainPageVM;
-    private readonly string _JWT;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="GetChatMessagesCommand"/> class.
     /// </summary>
     /// <param name="context">The database context used for data operations.</param>
     /// <param name="mainPageVM">The ViewModel associated with the main page.</param>
-    public GetChatMessagesCommand(HttpClient client, MainPageVM mainPageVM, string JWT)
+    public GetChatMessagesCommand(HttpClient client, MainPageVM mainPageVM)
     {
         _client = client;
         _mainPageVM = mainPageVM;
-        _JWT = JWT;
     }
 
     /// <summary>
@@ -33,7 +31,7 @@ public class GetChatMessagesCommand : CommandBase
     /// <param name="parameter">The friend identifier associated with the chat.</param>
     public override void Execute(object? parameter)
     {
-        var getResponse = new GetChatMessage(_client, _JWT).Do(parameter.ToString());
+        var getResponse = new GetChatMessage(_client).Do(parameter.ToString());
         _mainPageVM.FriendId = (int)parameter;
         getResponse.ForEach(m =>
         {

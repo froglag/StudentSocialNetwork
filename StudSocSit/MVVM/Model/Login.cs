@@ -20,8 +20,8 @@ public class Login
         var postResponse = _client.PostAsync("login", content).Result;
 
         var stringResponse = postResponse.Content.ReadAsStringAsync().Result;
-        var response = JValue.Parse(stringResponse);
-        return response["value"].Value<string>("token");
+        var response = JObject.Parse(stringResponse);
+        return (string)response["value"]["token"];
         
     }
 

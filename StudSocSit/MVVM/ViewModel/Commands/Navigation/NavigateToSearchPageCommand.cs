@@ -10,17 +10,15 @@ public class NavigateToSearchPageCommand : CommandBase
     private readonly NavigationStore _navigationStore;
     private readonly StudentModel _student;
     private readonly HttpClient _client;
-    private readonly string _JWT;
 
-    public NavigateToSearchPageCommand(NavigationStore navigation, HttpClient client, StudentModel student, string JWT)
+    public NavigateToSearchPageCommand(NavigationStore navigation, HttpClient client, StudentModel student)
     {
         _navigationStore = navigation;
         _student = student;
         _client = client;
-        _JWT = JWT;
     }
     public override void Execute(object? parameter)
     {
-        _navigationStore.CurrentViewModel = new SearchPageVM(_navigationStore, _client, _student, _JWT);
+        _navigationStore.CurrentViewModel = new SearchPageVM(_navigationStore, _client, _student);
     }
 }

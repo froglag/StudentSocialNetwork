@@ -14,7 +14,6 @@ public class MakeFriendRequestCommand : CommandBase
 {
     private StudentModel _student;
     private HttpClient _client;
-    private string _JWT;
     private NavigationStore _navigationStore;
 
     /// <summary>
@@ -23,12 +22,11 @@ public class MakeFriendRequestCommand : CommandBase
     /// <param name="context">The database context used for data operations.</param>
     /// <param name="navigationStore">The navigation store for managing navigation within the application.</param>
     /// <param name="student">The student associated with the command.</param>
-    public MakeFriendRequestCommand(NavigationStore navigationStore, HttpClient client, StudentModel student, string JWT)
+    public MakeFriendRequestCommand(NavigationStore navigationStore, HttpClient client, StudentModel student)
     {
         _navigationStore = navigationStore;
         _student = student;
         _client = client;
-        _JWT = JWT;
     }
 
     /// <summary>
@@ -41,7 +39,7 @@ public class MakeFriendRequestCommand : CommandBase
         if (_student != null)
         {
             // Create and send a friend request
-            new AddFriendRequest(_client, _JWT).Do(new AddFriendRequest.Request
+            new AddFriendRequest(_client).Do(new AddFriendRequest.Request
             {
                 SenderId = _student.StudentId,
                 ReceiverId = (int)parameter,

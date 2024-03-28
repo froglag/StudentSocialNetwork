@@ -10,18 +10,16 @@ public class NavigateToFriendRequestPageCommand : CommandBase
     private NavigationStore _navigationStore;
     private StudentModel _student;
     private HttpClient _client;
-    private string _JWT;
 
-    public NavigateToFriendRequestPageCommand(NavigationStore navigationStore, HttpClient client, StudentModel student, string JWT)
+    public NavigateToFriendRequestPageCommand(NavigationStore navigationStore, HttpClient client, StudentModel student)
     {
         _navigationStore = navigationStore;
         _student = student;
         _client = client;
-        _JWT = JWT;
     }
 
     public override void Execute(object? parameter)
     {
-        _navigationStore.CurrentViewModel = new FriendRequestPageVM(_navigationStore, _client, _student, _JWT);
+        _navigationStore.CurrentViewModel = new FriendRequestPageVM(_navigationStore, _client, _student);
     }
 }

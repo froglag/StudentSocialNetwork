@@ -40,8 +40,12 @@ public class AuthenticationCommand : CommandBase
             Username = _userAuth.UserName,
             Password = _userAuth.Password
         });
+
+        _client.DefaultRequestHeaders.Accept.Clear();
+        _client.DefaultRequestHeaders.Add("Authorization", "Bearer " + JWT);
+
         // Request student information for the authorized user
-        var studentInfo = new GetStudentInfo(_client, JWT).Do();
+        var studentInfo = new GetStudentInfo(_client).Do();
 
         // If student information is found, navigate to the main page
         if (studentInfo == null)
@@ -49,7 +53,7 @@ public class AuthenticationCommand : CommandBase
             MessageBox.Show("Student Doesn't Exist");
         }
 
-        new NavigateToMainPageCommand(_navigationStore, _client, studentInfo, JWT).Execute(parameter);
+        new NavigateToMainPageCommand(_navigationStore, _client, studentInfo).Execute(parameter);
 
     }
 }

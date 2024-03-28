@@ -11,11 +11,11 @@ public class AccountPageVM : ViewModelBase
 
     public ICommand NavigationToSearchPage { get; }
     public ICommand NavigationToMainPage { get; }
-    public AccountPageVM(NavigationStore navigation, HttpClient client, StudentModel student, string JWT, StudentModel friend)
+    public AccountPageVM(NavigationStore navigation, HttpClient client, StudentModel student, StudentModel friend)
     {
         _friend = friend;
-        NavigationToSearchPage = new NavigateToSearchPageCommand(navigation, client, student, JWT);
-        NavigationToMainPage = new NavigateToMainPageCommand(navigation, client, student, JWT);
+        NavigationToSearchPage = new NavigateToSearchPageCommand(navigation, client, student);
+        NavigationToMainPage = new NavigateToMainPageCommand(navigation, client, student);
     }
 
     public StudentModel? Friend
