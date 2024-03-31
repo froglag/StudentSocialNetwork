@@ -14,7 +14,7 @@ public class MainPageVM : ViewModelBase
     private HttpClient _client;
     private StudentModel _student;
     private NavigationStore _navigationStore;
-    private string? message;
+    private string message;
     private List<StudentModel> friends;
     private int friendId;
 
@@ -33,7 +33,7 @@ public class MainPageVM : ViewModelBase
         _navigationStore = navigationStore;
         if(friends == null)
             friends = new GetFriendsInfo(_client).Do();
-        
+
         GetMessages = new GetChatMessagesCommand(_client, this);
         AddMessage = new AddMessageCommand(this, _client);
 
@@ -65,7 +65,7 @@ public class MainPageVM : ViewModelBase
         public int? StudentId { get; set; }
         public int? FriendId { get; set; }
     }
-    public string? Message
+    public string Message
     {
         get => message;
         set

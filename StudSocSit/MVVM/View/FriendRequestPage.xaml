@@ -52,7 +52,7 @@
                         <GridViewColumn>
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
-                                    <Button Command="{Binding ElementName=ListStudentView, Path=DataContext.AcceptFriendRequest}" CommandParameter="{Binding StudentId}" Foreground="LightGray" Content="Add Friend" Background="Transparent"/>
+                                    <Button Command="{Binding ElementName=ListStudentView, Path=DataContext.AcceptFriendRequest}" CommandParameter="{Binding SenderId}" Foreground="LightGray" Content="Add Friend" Background="Transparent"/>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>

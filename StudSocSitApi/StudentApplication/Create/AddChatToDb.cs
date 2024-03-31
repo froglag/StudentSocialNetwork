@@ -34,14 +34,21 @@ public class AddChatToDb
     /// <param name="request">The request containing information about the chat.</param>
     public async Task<IResult> Do(Request request)
     {
-        var firstStudent = await _context.Student.FirstOrDefaultAsync(s => s.StudentId == request.FirstStudentId);
-        var secondStudent = await _context.Student.FirstOrDefaultAsync(s => s.StudentId == request.SecondStudentId);
+        var firstStudent = await _context.Student.AnyAsync(s => s.StudentId == request.FirstStudentId);
+        var secondStudent = await _context.Student.AnyAsync(s => s.StudentId == request.SecondStudentId);
 
-        var chatExists = await _context.StudentChat
-        .AnyAsync(sc => (sc.StudentId == request.FirstStudentId || sc.StudentId == request.SecondStudentId) && sc.ChatId == _context.StudentChat
-            .Where(innerSc => innerSc.StudentId == request.FirstStudentId || innerSc.StudentId == request.SecondStudentId)
-            .Select(innerSc => innerSc.ChatId)
-            .FirstOrDefault());
+        if (!firstStudent || !secondStudent)
+        {
+            _logger.LogError("Invalid student identifiers.");
+            return Results.BadRequest("Invalid student identifiers.");
+        }
+
+
+        var firstStudentChat = _context.StudentChat.Where(sc => sc.StudentId == request.FirstStudentId).Select(sc => sc.ChatId);
+        
+        var secondStudentChat = _context.StudentChat.Where(sc => sc.StudentId == request.SecondStudentId).Select(sc => sc.ChatId);
+
+        var chatExists = await firstStudentChat.AnyAsync(f => secondStudentChat.Any(s => s == f));
 
         if (chatExists)
         {
@@ -49,11 +56,7 @@ public class AddChatToDb
             return Results.BadRequest("Chat already exists.");
         }
 
-        if (firstStudent == null || secondStudent == null)
-        {
-            _logger.LogError("Invalid student identifiers.");
-            return Results.BadRequest("Invalid student identifiers.");
-        }
+
 
         ChatModel chat = new();
 
@@ -68,13 +71,13 @@ public class AddChatToDb
         }
         
 
-        StudentChatModel firstStudentChat = new()
+        StudentChatModel addFirstStudentChat = new()
         {
             StudentId = request.FirstStudentId,
             ChatId = chat.ChatId,
         };
 
-        StudentChatModel secondStudentChat = new()
+        StudentChatModel addSecondStudentChat = new()
         {
             StudentId = request.SecondStudentId,
             ChatId = chat.ChatId,
@@ -83,15 +86,15 @@ public class AddChatToDb
         await using var transaction = _context.Database.BeginTransaction();
         try
         {
-            await _context.StudentChat.AddAsync(firstStudentChat);
-            await _context.StudentChat.AddAsync(secondStudentChat);
+            await _context.StudentChat.AddAsync(addFirstStudentChat);
+            await _context.StudentChat.AddAsync(addSecondStudentChat);
 
             await _context.SaveChangesAsync();
 
             await transaction.CommitAsync();
 
             _logger.LogInformation("Chat successfully created.");
-            return Results.Created("Chat successfully created.", new { chat, firstStudentChat, secondStudentChat });
+            return Results.Created("Chat successfully created.", new { chat, addFirstStudentChat, addSecondStudentChat });
         }
         catch (Exception ex)
         {
@@ -108,12 +111,12 @@ public class AddChatToDb
     public class Request
     {
         /// <summary>
-        /// Gets or sets the identifier of the first student participating in the chat.
+        /// Gets or sets the identifier of the addFirstStudentChat student participating in the chat.
         /// </summary>
         public int FirstStudentId { get; set; }
 
         /// <summary>
-        /// Gets or sets the identifier of the second student participating in the chat.
+        /// Gets or sets the identifier of the addSecondStudentChat student participating in the chat.
         /// </summary>
         public int SecondStudentId { get; set; }
     }

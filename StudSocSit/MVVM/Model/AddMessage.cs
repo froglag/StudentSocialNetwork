@@ -14,13 +14,11 @@ public class AddMessage
         _client = client;
     }
 
-    public async Task<string> Do(string text)
+    public async Task Do(string text)
     {
         var json = JsonSerializer.Serialize(text);
         var content = new StringContent(json, Encoding.UTF8, "application/json");
+        
         var response = await _client.PostAsync("addmessage", content);
-        response.EnsureSuccessStatusCode();
-
-        return await response.Content.ReadAsStringAsync();
     }
 }

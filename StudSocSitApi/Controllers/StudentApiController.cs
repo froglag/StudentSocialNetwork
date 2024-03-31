@@ -70,30 +70,6 @@ public class StudentApiController : ControllerBase
 
         _deleteFriendRequest = new DeleteFriendRequest(_context, _logger);
     }
-
-    /// <summary>
-    /// Adds a chat to the database.
-    /// </summary>
-    /// <param name="request">The request containing chat information.</param>
-    /// <returns>The result of the operation.</returns>
-    [HttpPost("addchat")]
-    [Authorize(Roles = UserRoles.User)]
-    public async Task<IActionResult> AddChatToDb([FromBody] AddChatToDb.Request request)
-    {
-        var student = await _context.Student.Include(s => s.User).FirstOrDefaultAsync(s => s.User.UserName == User.Identity.Name);
-
-        if (student == null)
-        {
-            return NotFound("User not found");
-        }
-
-        if(student.StudentId != request.FirstStudentId)
-        {
-            return BadRequest("You can't create chat through another student");
-        }
-        await _addChatToDb.Do(request);
-        return Ok();
-    }
         
 
     /// <summary>
@@ -324,12 +300,25 @@ public class StudentApiController : ControllerBase
         if (student == null)
             return BadRequest("User id not found");
 
-        var chatId = await _context.Chat.Include(c => c.StudentChats).FirstOrDefaultAsync(c => c.StudentChats.Any(sc => sc.StudentId == student.StudentId && sc.StudentId == id));
+        var chatId = await _context.Chat.Include(c => c.StudentChats).FirstOrDefaultAsync(c => c.StudentChats.FirstOrDefault(sc => sc.StudentId == student.StudentId).ChatId == c.StudentChats.FirstOrDefault(sc => sc.StudentId == id).ChatId);
         
         if (chatId == null)
         {
-            return BadRequest("Chat not found");
+            try
+            {
+                await _addChatToDb.Do(new AddChatToDb.Request
+                {
+                    FirstStudentId = student.StudentId,
+                    SecondStudentId = id,
+                });
+            }
+            catch
+            {
+                return Problem("Chat not created");
+            }
+            
         }
+        chatId = await _context.Chat.Include(c => c.StudentChats).FirstOrDefaultAsync(c => c.StudentChats.FirstOrDefault(sc => sc.StudentId == student.StudentId).ChatId == c.StudentChats.FirstOrDefault(sc => sc.StudentId == id).ChatId);
 
         return Ok(await _getChatMessages.Do(chatId.ChatId));
     }
