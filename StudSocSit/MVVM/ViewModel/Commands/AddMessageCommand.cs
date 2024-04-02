@@ -31,7 +31,11 @@ public class AddMessageCommand : CommandBase
     /// <param name="parameter">The friend identifier associated with the chat.</param>
     public override void Execute(object? parameter)
     {
-        new AddMessage(_client).Do(_mainPageVM.Message);
+        new AddMessage(_client).Do(new AddMessage.Request
+        {
+            FriendId = _mainPageVM.FriendId,
+            Text = _mainPageVM.Message
+        });
 
         // Execute a command to retrieve and update chat messages
         new GetChatMessagesCommand(_client, _mainPageVM).Execute(_mainPageVM.FriendId);

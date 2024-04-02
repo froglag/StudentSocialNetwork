@@ -128,7 +128,7 @@ public class StudentApiController : ControllerBase
     /// <returns>The result of the operation.</returns>
     [HttpPost("addmessage")]
     [Authorize(Roles = UserRoles.User)]
-    public async Task<IActionResult> AddMessageToDb([FromBody] string text)
+    public async Task<IActionResult> AddMessageToDb([FromBody] AddMessageRequest request)
     {
         var student = await _context.Student.Include(s => s.User).FirstOrDefaultAsync(s => s.User.UserName == User.Identity.Name);
 
@@ -137,24 +137,31 @@ public class StudentApiController : ControllerBase
             return NotFound("User not found");
         }
 
-        var chat = await _context.StudentChat.FirstOrDefaultAsync(sc => sc.StudentId == student.StudentId);
+        var chat = await _context.Chat.Include(c => c.StudentChats).FirstOrDefaultAsync(c => c.StudentChats.FirstOrDefault(sc => sc.StudentId == student.StudentId).ChatId == c.StudentChats.FirstOrDefault(sc => sc.StudentId == request.FriendId).ChatId);
 
         if (chat == null)
         {
             return NotFound("Chat not found");
         }
 
-        AddMessageToDb.Request request = new()
+
+
+        AddMessageToDb.Request requestDb = new()
         {
             AuthorId = student.StudentId,
             ChatId = chat.ChatId,
-            Text = text
+            Text = request.Text,
         };
 
-        await _addMessageToDb.Do(request);
+        await _addMessageToDb.Do(requestDb);
         return Ok();
     }
-        
+
+    public class AddMessageRequest
+    {
+        public int FriendId { get; set; }
+        public string Text { get; set; }
+    }
 
     /// <summary>
     /// Authenticates a user based on the provided login information.

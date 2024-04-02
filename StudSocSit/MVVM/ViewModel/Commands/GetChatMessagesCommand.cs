@@ -33,7 +33,9 @@ public class GetChatMessagesCommand : CommandBase
     {
         var getResponse = new GetChatMessage(_client).Do(parameter.ToString());
         _mainPageVM.FriendId = (int)parameter;
+
         _mainPageVM.MessageContent = new();
+
         getResponse.ForEach(m =>
         {
             _mainPageVM.MessageContent.Add(new MessageCollection
@@ -43,8 +45,6 @@ public class GetChatMessagesCommand : CommandBase
                 FriendId = (int)parameter,
             });
         });
-
-        
     }
 }
 

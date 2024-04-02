@@ -41,7 +41,6 @@ public class MainPageVM : ViewModelBase
         NavigationToAccountSettingPage = new NavigateToAccountSettingPageCommand(navigationStore, client, student);
         NavigationToLoginPage = new NavigateToLoginPageCommand(navigationStore, client);
         NavigationToFriendRequest = new NavigateToFriendRequestPageCommand(navigationStore, client, student);
-
     }
     public StudentModel StudentInfo
     {

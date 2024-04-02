@@ -14,11 +14,17 @@ public class AddMessage
         _client = client;
     }
 
-    public async Task Do(string text)
+    public async Task Do(Request request)
     {
-        var json = JsonSerializer.Serialize(text);
+        var json = JsonSerializer.Serialize(request);
         var content = new StringContent(json, Encoding.UTF8, "application/json");
         
-        var response = await _client.PostAsync("addmessage", content);
+        await _client.PostAsync("addmessage", content);
+    }
+
+    public class Request
+    {
+        public int FriendId { get; set; }
+        public string Text { get; set; }
     }
 }

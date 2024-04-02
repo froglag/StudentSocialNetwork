@@ -41,7 +41,7 @@ public class AuthenticationCommand : CommandBase
             Password = _userAuth.Password
         });
 
-        _client.DefaultRequestHeaders.Accept.Clear();
+        _client.DefaultRequestHeaders.Clear();
         _client.DefaultRequestHeaders.Add("Authorization", "Bearer " + JWT);
 
         // Request student information for the authorized user
