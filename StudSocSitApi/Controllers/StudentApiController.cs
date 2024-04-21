@@ -19,25 +19,11 @@ namespace StudSocSitApi.Controllers;
 [ApiController]
 public class StudentApiController : ControllerBase
 {
-    private readonly ReservoomDbContext _context;
-    private readonly ILogger _logger;
-    private readonly UserManager<UserModel> _userManager;
-    private readonly IConfiguration _configuration;
-    private readonly RoleManager<IdentityRole> _roleManager;
-    private readonly AddStudentInfo _addStudentInfo;
-    private readonly AddChatToDb _addChatToDb;
-    private readonly AddFriendRequestToDb _addFriendRequestToDb;
-    private readonly AddFriendToDb _addFriendToDb;
-    private readonly AddMessageToDb _addMessageToDb;
-    private readonly GetStudentInfoById _getStudentInfoById;
-    private readonly GetChatMessages _getChatMessages;
-    private readonly GetFriendRequests _getFriendRequest;
-    private readonly GetMyFriendRequests _getMyFriendRequest;
-    private readonly GetAllFriendsInfo _getAllFriendsInfo;
-    private readonly GetStudentSearchInfo _getSearchInfo;
-    private readonly UpdateStudentInfo _updateStudentInfo;
-    private readonly DeleteFriendRequest _deleteFriendRequest;
-
+    private ReservoomDbContext _context;
+    private ILogger<StudentApiController> _logger;
+    private UserManager<UserModel> _userManager;
+    private IConfiguration _configuration;
+    private RoleManager<IdentityRole> _roleManager;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="StudentApiController"/> class.
@@ -52,23 +38,6 @@ public class StudentApiController : ControllerBase
         _userManager = userManager;
         _configuration = configuration;
         _roleManager = roleManager;
-
-        _addStudentInfo = new AddStudentInfo(_context, _logger, _userManager);
-        _addChatToDb = new AddChatToDb(_context, _logger);
-        _addFriendRequestToDb = new AddFriendRequestToDb(_context, _logger);
-        _addFriendToDb = new AddFriendToDb(_context, _logger);
-        _addMessageToDb = new AddMessageToDb(_context);
-
-        _getStudentInfoById = new GetStudentInfoById(_context, _logger);
-        _getChatMessages = new GetChatMessages(_context, _logger);
-        _getFriendRequest = new GetFriendRequests(_context, _logger);
-        _getMyFriendRequest = new GetMyFriendRequests(_context, _logger);
-        _getAllFriendsInfo = new GetAllFriendsInfo(_context, _logger);
-        _getSearchInfo = new GetStudentSearchInfo(_context, _logger);
-
-        _updateStudentInfo = new UpdateStudentInfo(_context, _logger);
-
-        _deleteFriendRequest = new DeleteFriendRequest(_context, _logger);
     }
         
 
@@ -91,7 +60,7 @@ public class StudentApiController : ControllerBase
         {
             return BadRequest("You can't send a request through another user");
         }
-        await _addFriendRequestToDb.Do(request);
+        await new AddFriendRequestToDb(_context, _logger).Do(request);
         return Ok();
     }
     
@@ -112,7 +81,7 @@ public class StudentApiController : ControllerBase
             return NotFound("User not found");
         }
 
-        await _addFriendToDb.Do(new AddFriendToDb.Request
+        await new AddFriendToDb(_context, _logger).Do(new AddFriendToDb.Request
         {
             StudentId = student.StudentId,
             FriendId = friendId
@@ -153,7 +122,7 @@ public class StudentApiController : ControllerBase
             Text = request.Text,
         };
 
-        await _addMessageToDb.Do(requestDb);
+        await new AddMessageToDb(_context).Do(requestDb);
         return Ok();
     }
 
@@ -182,7 +151,7 @@ public class StudentApiController : ControllerBase
         try
         {
             await new SignupUser(_userManager, _roleManager).Do(request);
-            await _addStudentInfo.Do(new AddStudentInfo.Request
+            await new AddStudentInfo(_context, _logger, _userManager).Do(new AddStudentInfo.Request
             {
                 FirstName = request.Firstname,
                 UserName = request.Username
@@ -211,7 +180,7 @@ public class StudentApiController : ControllerBase
             return NotFound("User not found");
         }
         
-        return Ok(await _getStudentInfoById.Do(student.StudentId));
+        return Ok(await new GetStudentInfoById(_context, _logger).Do(student.StudentId));
     }
 
     /// <summary>
@@ -236,7 +205,7 @@ public class StudentApiController : ControllerBase
             return NotFound("Friend not found");
         }
 
-        return Ok(await _getStudentInfoById.Do(id));
+        return Ok(await new GetStudentInfoById(_context, _logger).Do(id));
     }
 
     /// <summary>
@@ -254,7 +223,7 @@ public class StudentApiController : ControllerBase
             return NotFound("User not found");
         }
 
-        return Ok(await _getFriendRequest.Do(student.StudentId));
+        return Ok(await new GetFriendRequests(_context, _logger).Do(student.StudentId));
     }
 
     /// <summary>
@@ -273,7 +242,7 @@ public class StudentApiController : ControllerBase
             return NotFound("User not found");
         }
 
-        return Ok(await _getMyFriendRequest.Do(student.StudentId));
+        return Ok(await new GetMyFriendRequests(_context, _logger).Do(student.StudentId));
     }
 
     /// <summary>
@@ -290,7 +259,7 @@ public class StudentApiController : ControllerBase
             return NotFound("User not found");
         }
 
-        return Ok(await _getAllFriendsInfo.Do(student.StudentId));
+        return Ok(await new GetAllFriendsInfo(_context, _logger).Do(student.StudentId));
     }
 
     /// <summary>
@@ -313,7 +282,7 @@ public class StudentApiController : ControllerBase
         {
             try
             {
-                await _addChatToDb.Do(new AddChatToDb.Request
+                await new AddChatToDb(_context, _logger).Do(new AddChatToDb.Request
                 {
                     FirstStudentId = student.StudentId,
                     SecondStudentId = id,
@@ -327,7 +296,7 @@ public class StudentApiController : ControllerBase
         }
         chatId = await _context.Chat.Include(c => c.StudentChats).FirstOrDefaultAsync(c => c.StudentChats.FirstOrDefault(sc => sc.StudentId == student.StudentId).ChatId == c.StudentChats.FirstOrDefault(sc => sc.StudentId == id).ChatId);
 
-        return Ok(await _getChatMessages.Do(chatId.ChatId));
+        return Ok(await new GetChatMessages(_context, _logger).Do(chatId.ChatId));
     }
 
     /// <summary>
@@ -343,7 +312,7 @@ public class StudentApiController : ControllerBase
         if (student == null)
             return BadRequest("User id not found");
 
-        return Ok(await _getSearchInfo.Do(student.StudentId));
+        return Ok(await new GetStudentSearchInfo(_context, _logger).Do(student.StudentId));
     }
 
     /// <summary>
@@ -360,7 +329,7 @@ public class StudentApiController : ControllerBase
         if (student == null)
             return BadRequest("User id not found");
 
-        return Ok(await _updateStudentInfo.Do(request, student.StudentId));
+        return Ok(await new UpdateStudentInfo(_context, _logger).Do(request, student.StudentId));
     }
 
     /// <summary>
@@ -370,6 +339,6 @@ public class StudentApiController : ControllerBase
     /// <returns>The result of the operation.</returns>
     [HttpDelete("frequest")]
     [Authorize(Roles = UserRoles.User)]
-    public async Task<IActionResult> DeleteFriendRequest([FromBody] DeleteFriendRequest.Request request) => Ok(await _deleteFriendRequest.Do(request));
+    public async Task<IActionResult> DeleteFriendRequest([FromBody] DeleteFriendRequest.Request request) => Ok(await new DeleteFriendRequest(_context, _logger).Do(request));
 }
 
