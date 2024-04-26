@@ -15,7 +15,7 @@ namespace StudSocSitApi.Controllers;
 /// <summary>
 /// API controller for Student Social Network operations.
 /// </summary>
-[Route("[controller]")]
+[Route("studsocsitapi")]
 [ApiController]
 public class StudentApiController : ControllerBase
 {
