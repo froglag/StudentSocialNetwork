@@ -11,17 +11,24 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApplicationDbContext", "App
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StudSocSitWebApp", "StudSocSitWebApp\StudSocSitWebApp.csproj", "{6076EEEB-8E69-4210-8409-61A978E0D86F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthService", "AuthService\AuthService.csproj", "{CA9B50F1-50F7-47A6-85F3-730980587F61}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthService", "AuthService\AuthService.csproj", "{CA9B50F1-50F7-47A6-85F3-730980587F61}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserProfileService", "UserProfileService\UserProfileService.csproj", "{482560D2-2C18-484A-A623-78C35DA68C37}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserService", "UserProfileService\UserService.csproj", "{482560D2-2C18-484A-A623-78C35DA68C37}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessagingService", "MessagingService\MessagingService.csproj", "{B7665ABD-94D3-4948-ABB6-BAD5BEF2CBA6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MessagingService", "MessagingService\MessagingService.csproj", "{B7665ABD-94D3-4948-ABB6-BAD5BEF2CBA6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FriendsService", "FriendsService\FriendsService.csproj", "{400DD939-73F4-42DF-9861-3EA001A53291}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FriendingService", "FriendsService\FriendingService.csproj", "{400DD939-73F4-42DF-9861-3EA001A53291}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SearchService", "SearchService\SearchService.csproj", "{3FD21D24-D258-4B15-B61A-2D5C19A7BB1F}"
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "UserServiceDb", "UserServiceDb\UserServiceDb.sqlproj", "{2E618F08-2381-475C-A92C-FC144766381F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoordinatorService", "CoordinatorService\CoordinatorService.csproj", "{01F72951-E609-4AA9-B6B0-E5EA4AACCD8C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniversityService", "UniversityService\UniversityService.csproj", "{C043E5EE-E1EB-4EB0-8910-C1F9EE1F6A07}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\DataAccess.csproj", "{6FC83450-1633-49EB-A486-36AB261ADEAE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{BD73CBC6-342D-43CB-9162-EC89421FE32D}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -61,14 +68,20 @@ Global
 		{400DD939-73F4-42DF-9861-3EA001A53291}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{400DD939-73F4-42DF-9861-3EA001A53291}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{400DD939-73F4-42DF-9861-3EA001A53291}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3FD21D24-D258-4B15-B61A-2D5C19A7BB1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3FD21D24-D258-4B15-B61A-2D5C19A7BB1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3FD21D24-D258-4B15-B61A-2D5C19A7BB1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3FD21D24-D258-4B15-B61A-2D5C19A7BB1F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{01F72951-E609-4AA9-B6B0-E5EA4AACCD8C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{01F72951-E609-4AA9-B6B0-E5EA4AACCD8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{01F72951-E609-4AA9-B6B0-E5EA4AACCD8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{01F72951-E609-4AA9-B6B0-E5EA4AACCD8C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E618F08-2381-475C-A92C-FC144766381F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E618F08-2381-475C-A92C-FC144766381F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E618F08-2381-475C-A92C-FC144766381F}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{2E618F08-2381-475C-A92C-FC144766381F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E618F08-2381-475C-A92C-FC144766381F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E618F08-2381-475C-A92C-FC144766381F}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{C043E5EE-E1EB-4EB0-8910-C1F9EE1F6A07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C043E5EE-E1EB-4EB0-8910-C1F9EE1F6A07}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C043E5EE-E1EB-4EB0-8910-C1F9EE1F6A07}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C043E5EE-E1EB-4EB0-8910-C1F9EE1F6A07}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6FC83450-1633-49EB-A486-36AB261ADEAE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6FC83450-1633-49EB-A486-36AB261ADEAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6FC83450-1633-49EB-A486-36AB261ADEAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6FC83450-1633-49EB-A486-36AB261ADEAE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
