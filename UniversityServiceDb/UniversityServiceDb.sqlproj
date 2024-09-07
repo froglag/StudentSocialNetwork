@@ -3,16 +3,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <Name>UserServiceDb</Name>
+    <Name>UniversityServiceDb</Name>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectVersion>4.1</ProjectVersion>
-    <ProjectGuid>{2e618f08-2381-475c-a92c-fc144766381f}</ProjectGuid>
+    <ProjectGuid>{2a06e007-6b5a-4a49-8eae-55e376c6b280}</ProjectGuid>
     <DSP>Microsoft.Data.Tools.Schema.Sql.Sql150DatabaseSchemaProvider</DSP>
     <OutputType>Database</OutputType>
     <RootPath>
     </RootPath>
-    <RootNamespace>UserServiceDb</RootNamespace>
-    <AssemblyName>UserServiceDb</AssemblyName>
+    <RootNamespace>UniversityServiceDb</RootNamespace>
+    <AssemblyName>UniversityServiceDb</AssemblyName>
     <ModelCollation>1033, CI</ModelCollation>
     <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
     <DeployToDatabase>True</DeployToDatabase>
@@ -61,19 +61,31 @@
     <Folder Include="StoredProcedures" />
   </ItemGroup>
   <ItemGroup>
-    <Build Include="dbo\Tables\User.sql" />
-    <Build Include="StoredProcedures\spUser_GetAll.sql" />
-    <Build Include="StoredProcedures\spUser_Get.sql" />
-    <Build Include="StoredProcedures\spUser_Insert.sql" />
-    <Build Include="StoredProcedures\spUser_Update.sql" />
+    <Build Include="dbo\Tables\University.sql" />
+    <Build Include="dbo\Tables\Faculty.sql" />
+    <Build Include="dbo\Tables\Specialization.sql" />
+    <Build Include="StoredProcedures\spUniversity_Insert.sql" />
+    <Build Include="StoredProcedures\spFaculty_Insert.sql" />
+    <Build Include="StoredProcedures\spSpecialization_Insert.sql" />
+    <Build Include="StoredProcedures\spUniversity_GetAll.sql" />
+    <Build Include="StoredProcedures\spFaculty_Get.sql" />
+    <Build Include="StoredProcedures\spUniversity_Get.sql" />
+    <Build Include="StoredProcedures\spSpecialization_Get.sql" />
+    <Build Include="StoredProcedures\spUniversity_Update.sql" />
+    <Build Include="StoredProcedures\spFaculty_Update.sql" />
+    <Build Include="StoredProcedures\spSpecialization_Update.sql" />
+    <Build Include="StoredProcedures\spFaculty_GetAll.sql" />
+    <Build Include="StoredProcedures\spSpecialization_GetAll.sql" />
+    <Build Include="StoredProcedures\spFaculty_GetUniversityId.sql" />
+    <Build Include="StoredProcedures\spSpecialization_GetFacultyId.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="UniversityServiceDb.refactorlog" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Script.PostDeployment.sql" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="UserServiceDb.publish.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <RefactorLog Include="UserServiceDb.refactorlog" />
+    <None Include="UniversityServiceDb.publish.xml" />
   </ItemGroup>
 </Project>

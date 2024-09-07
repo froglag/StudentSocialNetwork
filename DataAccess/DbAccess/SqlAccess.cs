@@ -25,4 +25,12 @@ public class SqlAccess : ISqlAccess
 
         await connection.ExecuteAsync(storedProcedure, parameters, commandType: CommandType.StoredProcedure);
     }
+
+    public async Task<int> SaveDataWithFeedback<T>(string storedProcedure, T parameters, string connectionId = "Default")
+    {
+        using IDbConnection connection = new SqlConnection(_configuration.GetConnectionString(connectionId));
+
+        var result = await connection.ExecuteScalarAsync<int>(storedProcedure, parameters, commandType: CommandType.StoredProcedure);
+        return result;
+    }
 }

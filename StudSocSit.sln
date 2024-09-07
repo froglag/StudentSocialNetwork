@@ -21,14 +21,16 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FriendingService", "Friends
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "UserServiceDb", "UserServiceDb\UserServiceDb.sqlproj", "{2E618F08-2381-475C-A92C-FC144766381F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniversityService", "UniversityService\UniversityService.csproj", "{C043E5EE-E1EB-4EB0-8910-C1F9EE1F6A07}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UniversityService", "UniversityService\UniversityService.csproj", "{C043E5EE-E1EB-4EB0-8910-C1F9EE1F6A07}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\DataAccess.csproj", "{6FC83450-1633-49EB-A486-36AB261ADEAE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccess", "DataAccess\DataAccess.csproj", "{6FC83450-1633-49EB-A486-36AB261ADEAE}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{BD73CBC6-342D-43CB-9162-EC89421FE32D}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 	EndProjectSection
+EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "UniversityServiceDb", "UniversityServiceDb\UniversityServiceDb.sqlproj", "{2A06E007-6B5A-4A49-8EAE-55E376C6B280}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -82,6 +84,12 @@ Global
 		{6FC83450-1633-49EB-A486-36AB261ADEAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6FC83450-1633-49EB-A486-36AB261ADEAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6FC83450-1633-49EB-A486-36AB261ADEAE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A06E007-6B5A-4A49-8EAE-55E376C6B280}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A06E007-6B5A-4A49-8EAE-55E376C6B280}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A06E007-6B5A-4A49-8EAE-55E376C6B280}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{2A06E007-6B5A-4A49-8EAE-55E376C6B280}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A06E007-6B5A-4A49-8EAE-55E376C6B280}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A06E007-6B5A-4A49-8EAE-55E376C6B280}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
