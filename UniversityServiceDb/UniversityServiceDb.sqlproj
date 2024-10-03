@@ -78,6 +78,8 @@
     <Build Include="StoredProcedures\spSpecialization_GetAll.sql" />
     <Build Include="StoredProcedures\spFaculty_GetUniversityId.sql" />
     <Build Include="StoredProcedures\spSpecialization_GetFacultyId.sql" />
+    <Build Include="StoredProcedures\spUniversity_GetFullTable.sql" />
+    <Build Include="StoredProcedures\spUniversity_GetFullTableId.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="UniversityServiceDb.refactorlog" />

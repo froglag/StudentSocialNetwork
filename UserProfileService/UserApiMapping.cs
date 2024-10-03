@@ -1,4 +1,4 @@
-﻿using DataAccess.Models;
+﻿using UserApplication.Models;
 
 namespace UserService;
 
@@ -13,7 +13,7 @@ public static class UserApiMapping
         app.MapPut("/users", UpdateUser);
     }
 
-    private static async Task<IResult> GetUsers(IUserApplication user)
+    private static async Task<IResult> GetUsers(IApplication user)
     {
         try
         {
@@ -25,7 +25,7 @@ public static class UserApiMapping
         }
     }
 
-    private static async Task<IResult> GetUser(IUserApplication user, int id)
+    private static async Task<IResult> GetUser(IApplication user, int id)
     {
         try
         {
@@ -39,7 +39,7 @@ public static class UserApiMapping
         }
     }
 
-    private static async Task<IResult> InsertUser(IUserApplication user, UserModel userModel)
+    private static async Task<IResult> InsertUser(IApplication user, UserModel userModel)
     {
         try
         {
@@ -52,7 +52,7 @@ public static class UserApiMapping
         }
     }
 
-    private static async Task<IResult> UpdateUser(IUserApplication user, UserModel userModel)
+    private static async Task<IResult> UpdateUser(IApplication user, UserModel userModel)
     {
         try
         {

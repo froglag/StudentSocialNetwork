@@ -15,8 +15,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthService", "AuthService\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserService", "UserProfileService\UserService.csproj", "{482560D2-2C18-484A-A623-78C35DA68C37}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MessagingService", "MessagingService\MessagingService.csproj", "{B7665ABD-94D3-4948-ABB6-BAD5BEF2CBA6}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FriendingService", "FriendsService\FriendingService.csproj", "{400DD939-73F4-42DF-9861-3EA001A53291}"
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "UserServiceDb", "UserServiceDb\UserServiceDb.sqlproj", "{2E618F08-2381-475C-A92C-FC144766381F}"
@@ -31,6 +29,18 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	EndProjectSection
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "UniversityServiceDb", "UniversityServiceDb\UniversityServiceDb.sqlproj", "{2A06E007-6B5A-4A49-8EAE-55E376C6B280}"
+EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "FriendingServiceDb", "FriendingServiceDb\FriendingServiceDb.sqlproj", "{3C335929-E2C1-4B6E-ABB7-74D724F5B0A2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FriendingApplication", "FriendingDataAccess\FriendingApplication.csproj", "{976F1404-A7C9-4333-9507-45F7169EEC6C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserApplication", "UserApplication\UserApplication.csproj", "{FC3B6C42-70BA-4AD3-9E90-15B584B51903}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniversityApplication", "UniversityApplication\UniversityApplication.csproj", "{3D6A6793-9CCE-47D3-A680-A8D8ABC5C96C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessagingService", "MessagingService\MessagingService.csproj", "{166A4B66-65DE-463B-931F-24E88BD9B35B}"
+EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "MessagingServiceDb", "MessagingServiceDb\MessagingServiceDb.sqlproj", "{59A47D30-BE08-4890-96EC-E1A2ED831F55}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -62,10 +72,6 @@ Global
 		{482560D2-2C18-484A-A623-78C35DA68C37}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{482560D2-2C18-484A-A623-78C35DA68C37}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{482560D2-2C18-484A-A623-78C35DA68C37}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B7665ABD-94D3-4948-ABB6-BAD5BEF2CBA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B7665ABD-94D3-4948-ABB6-BAD5BEF2CBA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B7665ABD-94D3-4948-ABB6-BAD5BEF2CBA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B7665ABD-94D3-4948-ABB6-BAD5BEF2CBA6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{400DD939-73F4-42DF-9861-3EA001A53291}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{400DD939-73F4-42DF-9861-3EA001A53291}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{400DD939-73F4-42DF-9861-3EA001A53291}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -90,6 +96,34 @@ Global
 		{2A06E007-6B5A-4A49-8EAE-55E376C6B280}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2A06E007-6B5A-4A49-8EAE-55E376C6B280}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2A06E007-6B5A-4A49-8EAE-55E376C6B280}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{3C335929-E2C1-4B6E-ABB7-74D724F5B0A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C335929-E2C1-4B6E-ABB7-74D724F5B0A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C335929-E2C1-4B6E-ABB7-74D724F5B0A2}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{3C335929-E2C1-4B6E-ABB7-74D724F5B0A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C335929-E2C1-4B6E-ABB7-74D724F5B0A2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C335929-E2C1-4B6E-ABB7-74D724F5B0A2}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{976F1404-A7C9-4333-9507-45F7169EEC6C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{976F1404-A7C9-4333-9507-45F7169EEC6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{976F1404-A7C9-4333-9507-45F7169EEC6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{976F1404-A7C9-4333-9507-45F7169EEC6C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC3B6C42-70BA-4AD3-9E90-15B584B51903}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC3B6C42-70BA-4AD3-9E90-15B584B51903}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC3B6C42-70BA-4AD3-9E90-15B584B51903}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC3B6C42-70BA-4AD3-9E90-15B584B51903}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D6A6793-9CCE-47D3-A680-A8D8ABC5C96C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D6A6793-9CCE-47D3-A680-A8D8ABC5C96C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D6A6793-9CCE-47D3-A680-A8D8ABC5C96C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D6A6793-9CCE-47D3-A680-A8D8ABC5C96C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{166A4B66-65DE-463B-931F-24E88BD9B35B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{166A4B66-65DE-463B-931F-24E88BD9B35B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{166A4B66-65DE-463B-931F-24E88BD9B35B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{166A4B66-65DE-463B-931F-24E88BD9B35B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{59A47D30-BE08-4890-96EC-E1A2ED831F55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{59A47D30-BE08-4890-96EC-E1A2ED831F55}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{59A47D30-BE08-4890-96EC-E1A2ED831F55}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{59A47D30-BE08-4890-96EC-E1A2ED831F55}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{59A47D30-BE08-4890-96EC-E1A2ED831F55}.Release|Any CPU.Build.0 = Release|Any CPU
+		{59A47D30-BE08-4890-96EC-E1A2ED831F55}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

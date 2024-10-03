@@ -5,7 +5,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<ISqlAccess, SqlAccess>();
-builder.Services.AddSingleton<IUniversityApplication, UniversityApplication>();
+builder.Services.AddSingleton<IApplication, Application>();
 
 var app = builder.Build();
 

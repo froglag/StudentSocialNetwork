@@ -1,4 +1,4 @@
-﻿using DataAccess.Models;
+﻿using UniversityApplication.Models;
 
 namespace UniversityService;
 
@@ -19,16 +19,14 @@ public static class ApiMapping
         app.MapGet("faculty/{id}", FacultyGet);
         app.MapGet("specialization/{id}", SpecializationGet);
 
-        app.MapGet("university/{universityid}/faculties", FacultyGetUniversityId);
-        app.MapGet("faculty/{facultyid}/specializations", SpecializationGetFacultyId);
-
-
         app.MapPut("university", UniversityUpdate);
         app.MapPut("faculty", FacultyUpdate);
         app.MapPut("specialization", SpecializationUpdate);
+
+        app.MapGet("university/faculity/specialization", UniversityGetFullTable);
     }
 
-    public static async Task<IResult> UniversityInsert(IUniversityApplication application, UniversityModel university)
+    public static async Task<IResult> UniversityInsert(IApplication application, UniversityModel university)
     {
         try
         {
@@ -41,7 +39,7 @@ public static class ApiMapping
         }
     }
 
-    public static async Task<IResult> FacultyInsert(IUniversityApplication application, FacultyModel faculty)
+    public static async Task<IResult> FacultyInsert(IApplication application, FacultyModel faculty)
     {
         try
         {
@@ -55,7 +53,7 @@ public static class ApiMapping
         }
     }
 
-    public static async Task<IResult> SpecializationInsert(IUniversityApplication application, SpecializationModel specialization)
+    public static async Task<IResult> SpecializationInsert(IApplication application, SpecializationModel specialization)
     {
         try
         {
@@ -69,7 +67,7 @@ public static class ApiMapping
         }
     }
 
-    public static async Task<IResult> UniversityGetAll(IUniversityApplication application)
+    public static async Task<IResult> UniversityGetAll(IApplication application)
     {
         try
         {
@@ -82,7 +80,7 @@ public static class ApiMapping
         }
     }
 
-    public static async Task<IResult> FacultyGetAll(IUniversityApplication application)
+    public static async Task<IResult> FacultyGetAll(IApplication application)
     {
         try
         {
@@ -95,7 +93,7 @@ public static class ApiMapping
         }
     }
 
-    public static async Task<IResult> SpecializationGetAll(IUniversityApplication application)
+    public static async Task<IResult> SpecializationGetAll(IApplication application)
     {
         try
         {
@@ -108,7 +106,7 @@ public static class ApiMapping
         }
     }
 
-    public static async Task<IResult> UniversityGet(IUniversityApplication application, int id)
+    public static async Task<IResult> UniversityGet(IApplication application, int id)
     {
         try
         {
@@ -121,7 +119,7 @@ public static class ApiMapping
         }
     }
 
-    public static async Task<IResult> FacultyGet(IUniversityApplication application, int id)
+    public static async Task<IResult> FacultyGet(IApplication application, int id)
     {
         try
         {
@@ -134,7 +132,7 @@ public static class ApiMapping
         }
     }
 
-    public static async Task<IResult> SpecializationGet(IUniversityApplication application, int id)
+    public static async Task<IResult> SpecializationGet(IApplication application, int id)
     {
         try
         {
@@ -147,33 +145,7 @@ public static class ApiMapping
         }
     }
 
-    public static async Task<IResult> FacultyGetUniversityId(IUniversityApplication application, int universityId)
-    {
-        try
-        {
-            var result = await application.FacultyGetUniversityId(universityId);
-            return Results.Ok(result);
-        }
-        catch (Exception ex)
-        {
-            return Results.Problem(ex.Message);
-        }
-    }
-
-    public static async Task<IResult> SpecializationGetFacultyId(IUniversityApplication application, int facultyId)
-    {
-        try
-        {
-            var result = await application.SpecializationGetFacultyId(facultyId);
-            return Results.Ok(result);
-        }
-        catch (Exception ex)
-        {
-            return Results.Problem(ex.Message);
-        }
-    }
-
-    public static async Task<IResult> UniversityUpdate(IUniversityApplication application, UniversityModel university)
+    public static async Task<IResult> UniversityUpdate(IApplication application, UniversityModel university)
     {
         try
         {
@@ -186,7 +158,7 @@ public static class ApiMapping
         }
     }
 
-    public static async Task<IResult> FacultyUpdate(IUniversityApplication application, FacultyModel faculty)
+    public static async Task<IResult> FacultyUpdate(IApplication application, FacultyModel faculty)
     {
         try
         {
@@ -199,12 +171,25 @@ public static class ApiMapping
         }
     }
 
-    public static async Task<IResult> SpecializationUpdate(IUniversityApplication application, SpecializationModel specialization)
+    public static async Task<IResult> SpecializationUpdate(IApplication application, SpecializationModel specialization)
     {
         try
         {
             await application.SpecializationUpdate(specialization);
             return Results.Ok();
+        }
+        catch (Exception ex)
+        {
+            return Results.Problem(ex.Message);
+        }
+    }
+
+    public static async Task<IResult> UniversityGetFullTable(IApplication application)
+    {
+        try
+        {
+            var result = await application.UniversityGetFullTable();
+            return Results.Ok(result);
         }
         catch (Exception ex)
         {

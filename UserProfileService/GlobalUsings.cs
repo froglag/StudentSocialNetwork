@@ -1,2 +1,2 @@
-﻿global using DataAccess.Application;
+﻿global using UserApplication;
 global using DataAccess.DbAccess;
