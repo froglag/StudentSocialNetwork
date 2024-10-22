@@ -32,15 +32,17 @@ Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "UniversityServiceDb", "Univ
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "FriendingServiceDb", "FriendingServiceDb\FriendingServiceDb.sqlproj", "{3C335929-E2C1-4B6E-ABB7-74D724F5B0A2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FriendingApplication", "FriendingDataAccess\FriendingApplication.csproj", "{976F1404-A7C9-4333-9507-45F7169EEC6C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FriendingApplication", "FriendingDataAccess\FriendingApplication.csproj", "{976F1404-A7C9-4333-9507-45F7169EEC6C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserApplication", "UserApplication\UserApplication.csproj", "{FC3B6C42-70BA-4AD3-9E90-15B584B51903}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserApplication", "UserApplication\UserApplication.csproj", "{FC3B6C42-70BA-4AD3-9E90-15B584B51903}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniversityApplication", "UniversityApplication\UniversityApplication.csproj", "{3D6A6793-9CCE-47D3-A680-A8D8ABC5C96C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UniversityApplication", "UniversityApplication\UniversityApplication.csproj", "{3D6A6793-9CCE-47D3-A680-A8D8ABC5C96C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessagingService", "MessagingService\MessagingService.csproj", "{166A4B66-65DE-463B-931F-24E88BD9B35B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MessagingService", "MessagingService\MessagingService.csproj", "{166A4B66-65DE-463B-931F-24E88BD9B35B}"
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "MessagingServiceDb", "MessagingServiceDb\MessagingServiceDb.sqlproj", "{59A47D30-BE08-4890-96EC-E1A2ED831F55}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessagingApplication", "MessagingApplication\MessagingApplication.csproj", "{6A6660D2-5556-45BE-A554-0F758B5A2DAF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -124,6 +126,10 @@ Global
 		{59A47D30-BE08-4890-96EC-E1A2ED831F55}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{59A47D30-BE08-4890-96EC-E1A2ED831F55}.Release|Any CPU.Build.0 = Release|Any CPU
 		{59A47D30-BE08-4890-96EC-E1A2ED831F55}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{6A6660D2-5556-45BE-A554-0F758B5A2DAF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A6660D2-5556-45BE-A554-0F758B5A2DAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A6660D2-5556-45BE-A554-0F758B5A2DAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A6660D2-5556-45BE-A554-0F758B5A2DAF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
