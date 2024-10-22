@@ -4,5 +4,5 @@ AS
 
 begin
 	insert into dbo.[Chat] (Name, CreatedAt)
-	values (@Name, GETDATE())
+	values (@Name, GETDATE());
 end

@@ -1,61 +1,62 @@
 ﻿using DataAccess.DbAccess;
 using MessagingApplication.Models;
+using System.Threading.Tasks.Dataflow;
 
 namespace MessagingApplication;
 
 public class Application : IApplication
 {
-    private SqlAccess _access;
+    private ISqlAccess _access;
 
-    public Application(SqlAccess access)
+    public Application(ISqlAccess access)
     {
         _access = access;
     }
     public async Task MessageInsert(MessageModel message)
     {
-        await _access.SaveData<dynamic>("spMessage_Insert", new { message.StudentId, message.ChatId, message.Content });
+        await _access.SaveData<dynamic>("dbo.spMessage_Insert", new { message.StudentId, message.ChatId, message.Content });
     }
 
     public async Task<IEnumerable<MessageModel>> MessageGetAllByChatId(int chatId)
     {
-        var result = await _access.LoadData<MessageModel, dynamic>("spMessage_GetAllByChatId", new { ChatId = chatId });
+        var result = await _access.LoadData<MessageModel, dynamic>("dbo.spMessage_GetAllByChatId", new { ChatId = chatId });
         return result;
     }
 
     public async Task MessageUpdate(MessageModel message)
     {
-        await _access.SaveData<dynamic>("spMessage_Update", new { message.Id, message.Content });
+        await _access.SaveData<dynamic>("dbo.spMessage_Update", new { message.Id, message.Content });
     }
 
     public async Task MessageDelete(int id)
     {
-        await _access.SaveData<dynamic>("spMessage_Delete", new { Id = id });
+        await _access.SaveData<dynamic>("dbo.spMessage_Delete", new { Id = id });
     }
 
     public async Task ChatInsert(ChatModel chat)
     {
-        await _access.SaveData<dynamic>("spChat_Insert", new { chat.Name });
+        await _access.SaveData<dynamic>("dbo.spChat_Insert", new { chat.Name });
     }
 
     public async Task<ChatModel?> ChatGet(int id)
     {
-        var result = await _access.LoadData<ChatModel, dynamic>("spChat_Get", new { Id = id });
+        var result = await _access.LoadData<ChatModel, dynamic>("dbo.spChat_Get", new { Id = id });
         return result.FirstOrDefault();
     }
 
     public async Task<IEnumerable<ChatModel>> ChatGetAllByStudentId(int studentId)
     {
-        var result = await _access.LoadData<ChatModel, dynamic>("spChat_GetAllByStudentId", new { StudentId = studentId });
+        var result = await _access.LoadData<ChatModel, dynamic>("dbo.spChat_GetAllByStudentId", new { StudentId = studentId });
         return result;
     }
 
     public async Task ChatUpdate(ChatModel chat)
     {
-        await _access.SaveData<dynamic>("spChat_Update", new { chat.Id, chat.Name });
+        await _access.SaveData<dynamic>("dbo.spChat_Update", new { chat.Id, chat.Name });
     }
 
     public async Task ChatDelete(int id)
     {
-        await _access.SaveData<dynamic>("spChat_Delete", new { Id = id });
+        await _access.SaveData<dynamic>("dbo.spChat_Delete", new { Id = id });
     }
 }

@@ -27,13 +27,13 @@ message MessageModel{
 	int32 studentId = 2;
 	int32 chatId = 3;
 	string content = 4;
-	google.protobuf.Timestamp sendAt = 5;
+	optional google.protobuf.Timestamp sendAt = 5;
 }
 
 message ChatModel{
 	optional int32 id = 1;
 	string name = 2;
-	google.protobuf.Timestamp createdAt = 3;
+	optional google.protobuf.Timestamp createdAt = 3;
 }
 
 message GetMessageRequest{

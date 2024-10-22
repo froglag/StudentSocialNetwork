@@ -3,7 +3,6 @@
 AS
 
 begin
-	
 	delete from dbo.[Chat]
 	where Id = @Id
 end

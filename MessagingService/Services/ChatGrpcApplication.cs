@@ -7,7 +7,7 @@ namespace MessagingService.Services;
 public class ChatGrpcApplication : Chat.ChatBase
 {
     private readonly ILogger<ChatGrpcApplication> _logger;
-    private readonly IApplication _application;
+    private IApplication _application;
 
     public ChatGrpcApplication(ILogger<ChatGrpcApplication> logger, IApplication application)
     {

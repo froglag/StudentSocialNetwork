@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectVersion>4.1</ProjectVersion>
     <ProjectGuid>{59a47d30-be08-4890-96ec-e1a2ed831f55}</ProjectGuid>
-    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql160DatabaseSchemaProvider</DSP>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql150DatabaseSchemaProvider</DSP>
     <OutputType>Database</OutputType>
     <RootPath>
     </RootPath>
@@ -75,5 +75,8 @@
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="MessagingServiceDb.refactorlog" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="MessagingServiceDb.publish.xml" />
   </ItemGroup>
 </Project>
