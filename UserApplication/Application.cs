@@ -24,7 +24,7 @@ public class Application : IApplication
 
     public async Task InsertUser(UserModel user)
     {
-        await _sqlAccess.SaveData("dbo.spUser_Insert", new { user.FirstName, user.LastName, user.UniversityId, user.FacultyId, user.SpecializationId, user.Email });
+        await _sqlAccess.SaveData("dbo.spUser_Insert", new { user.FirstName, user.LastName, user.UniversityId, user.FacultyId, user.SpecializationId, user.Email, user.Image });
     }
 
     public async Task UpdateUser(UserModel user)

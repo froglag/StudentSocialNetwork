@@ -1,10 +1,13 @@
 ﻿CREATE PROCEDURE [dbo].[spMessage_GetAllByChatId]
-	@ChatId int
+	@ChatId int,
+    @Offset int
 AS
 
 begin
-	select top 500 *
-	from dbo.[Message]
-	where ChatId = @ChatId
-	order by SendAt DESC
+	select *
+    from dbo.[Message]
+    where ChatId = @ChatId
+    ORDER BY dbo.[Message].SendAt DESC
+    OFFSET @Offset ROWS
+    FETCH NEXT 100 ROWS ONLY;
 end

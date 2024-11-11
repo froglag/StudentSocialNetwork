@@ -23,7 +23,7 @@ public class MessagingGrpsApplication : Message.MessageBase
 
     public override async Task MessageGet(GetMessageRequest request, IServerStreamWriter<MessageModel> responseStream, ServerCallContext context)
     {
-        var messages = await _application.MessageGetAllByChatId(request.ChatId);
+        var messages = await _application.MessageGetAllByChatId(request.ChatId, request.Offset);
 
         foreach (var message in messages)
         {

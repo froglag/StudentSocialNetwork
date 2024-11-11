@@ -9,7 +9,7 @@ public interface IApplication
     Task ChatInsert(ChatModel chat);
     Task ChatUpdate(ChatModel chat);
     Task MessageDelete(int id);
-    Task<IEnumerable<MessageModel>> MessageGetAllByChatId(int chatId);
+    Task<IEnumerable<MessageModel>> MessageGetAllByChatId(int chatId, int offset);
     Task MessageInsert(MessageModel message);
     Task MessageUpdate(MessageModel message);
 }

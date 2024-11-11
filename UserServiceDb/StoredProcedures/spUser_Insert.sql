@@ -4,10 +4,11 @@
 	@UniversityId int,
 	@FacultyId int,
 	@SpecializationId int,
-	@Email nvarchar(50)
+	@Email nvarchar(50),
+	@Image varbinary(max)
 AS
 
 begin
-	insert into dbo.[User] (FirstName, LastName, UniversityId, FacultyId, SpecializationId, Email)
-	values (@FirstName, @LastName, @UniversityId, @FacultyId, @SpecializationId, @Email);
+	insert into dbo.[User] (FirstName, LastName, UniversityId, FacultyId, SpecializationId, Email, Image)
+	values (@FirstName, @LastName, @UniversityId, @FacultyId, @SpecializationId, @Email, @Image);
 end

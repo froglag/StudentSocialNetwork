@@ -6,5 +6,6 @@
     [UniversityId] INT NULL, 
     [FacultyId] INT NULL, 
     [SpecializationId] INT NULL, 
-    [Email] NVARCHAR(50) NULL
+    [Email] NVARCHAR(50) NULL, 
+    [Image] VARBINARY(MAX) NULL
 )

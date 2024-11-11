@@ -17,9 +17,9 @@ public class Application : IApplication
         await _access.SaveData<dynamic>("dbo.spMessage_Insert", new { message.StudentId, message.ChatId, message.Content });
     }
 
-    public async Task<IEnumerable<MessageModel>> MessageGetAllByChatId(int chatId)
+    public async Task<IEnumerable<MessageModel>> MessageGetAllByChatId(int chatId, int offset)
     {
-        var result = await _access.LoadData<MessageModel, dynamic>("dbo.spMessage_GetAllByChatId", new { ChatId = chatId });
+        var result = await _access.LoadData<MessageModel, dynamic>("dbo.spMessage_GetAllByChatId", new { ChatId = chatId, Offset = offset });
         return result;
     }
 

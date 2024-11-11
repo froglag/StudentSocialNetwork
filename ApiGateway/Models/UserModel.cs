@@ -1,4 +1,4 @@
-﻿namespace UserApplication.Models;
+﻿namespace ApiGateway.Models;
 
 public class UserModel
 {
