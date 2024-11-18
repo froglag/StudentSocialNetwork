@@ -73,8 +73,7 @@ This project is licensed under the **Apache 2.0** license. See the [LICENSE](./L
 
 ## 📞 Contact  
 
-For any inquiries or feedback:  
-- **Email**: 
-- **LinkedIn**: [Your LinkedIn profile]  
+For any inquiries or feedback:
+- **LinkedIn**: www.linkedin.com/in/yergazy-karibay 
 
 ---
