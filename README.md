@@ -67,7 +67,9 @@ Here's a polished and well-structured version of your README file formatted to s
 
 ## 📜 License  
 
-This project is licensed under the **Apache 2.0** license. See the [LICENSE](./LICENSE) file for details.  
+This project is licensed under the **GNU AGPLv3** license. See the [LICENSE](./LICENSE) file for details. 
+
+This license applies retroactively to all versions of the code in this repository.
 
 ---
 
