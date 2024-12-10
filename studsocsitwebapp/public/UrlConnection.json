@@ -1,0 +1,6 @@
+{
+    "Development":{
+        "SideBar":"https://localhost:7249/api/sidebar",
+        "ChatMessages":""
+    }
+}

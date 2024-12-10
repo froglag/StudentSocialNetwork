@@ -1,0 +1,63 @@
+syntax = "proto3";
+
+option csharp_namespace = "MessagingService";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+
+
+service Message{
+	rpc MessageInsert (MessageModel) returns (google.protobuf.Empty);
+	rpc MessageGet (GetMessageRequest) returns (stream MessageModel);
+	rpc MessageUpdate (UpdateMessageRequest) returns (google.protobuf.Empty);
+	rpc MessageDelete (DeleteMessageRequest) returns (google.protobuf.Empty);
+}
+
+service Chat{
+	rpc ChatInsert (ChatModel) returns (google.protobuf.Empty);
+	rpc ChatGetAll (GetAllChatRequest) returns (stream ChatModel);
+	rpc ChatGet (GetChatRequest) returns (ChatModel);
+	rpc ChatUpdate (ChatModel) returns (google.protobuf.Empty);
+	rpc ChatDelete (DeleteChatRequest) returns (google.protobuf.Empty);
+}
+
+
+message MessageModel{
+	optional int32 id = 1;
+	int32 studentId = 2;
+	int32 chatId = 3;
+	string content = 4;
+	optional google.protobuf.Timestamp sendAt = 5;
+}
+
+message ChatModel{
+	optional int32 id = 1;
+	string name = 2;
+	optional google.protobuf.Timestamp createdAt = 3;
+}
+
+message GetMessageRequest{
+	int32 chatId = 1;
+	int32 offset = 2;
+}
+
+message UpdateMessageRequest{
+	int32 id = 1;
+	string content = 2;
+}
+
+message DeleteMessageRequest{
+	int32 id = 1;
+}
+
+message GetAllChatRequest{
+	int32 studentId = 1;
+}
+
+message GetChatRequest{
+	int32 id = 1;
+}
+
+message DeleteChatRequest{
+	int32 id = 1;
+}
